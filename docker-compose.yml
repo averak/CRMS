@@ -1,0 +1,15 @@
+version: "3"
+services:
+  mysql:
+    build: ./mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: "crs"
+      MYSQL_USER: "crs"
+      MYSQL_PASSWORD: "crs"
+      MYSQL_ROOT_PASSWORD: "crs"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/log/:/var/log/mysql
