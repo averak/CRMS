@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url:
+    username:
+    password:
+    driver: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    baselineOnMigrate: true
+    validateOnMigrate: false
+    outOfOrder: false
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver: ${spring.datasource.driver}
+    locations: classpath:db/migration
+
+crs:
+  package: dev.abelab.crs
+  mybatis:
+    config:
+      file: generatorConfig.xml
+    model:
+      package: db.entity
+    client:
+      package: db.mapper
+      type: XMLMAPPER
+    map:
+      package: db.mapper
