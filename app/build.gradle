@@ -82,24 +82,18 @@ ext {
     PROPERTY_ROOT_PATH = "${rootProject.rootDir.path}/${RESOURCES_ROOT_PATH}"
     GRADLE_ROOT_PATH = "../gradle"
 
-    // application property file
-    BASE_PROPERTY_FILE = "application.yml"
-    task_name = project.gradle.startParameter.taskNames[0]
-    environment = task_name == "test" ? "test" : "local"
-    EXTENSION_PROPERTY_FILE = "application-${environment}.yml"
-
     // application property
-    BASE_PROPERTY = new org.yaml.snakeyaml.Yaml().load(new File("${PROPERTY_ROOT_PATH}/${BASE_PROPERTY_FILE}").newInputStream())
-    EXTENSION_PROPERTY = new org.yaml.snakeyaml.Yaml().load(new File("${PROPERTY_ROOT_PATH}/${EXTENSION_PROPERTY_FILE}").newInputStream())
+    APPLICATION_PROPERTY_FILE = "application.yml"
+    APPLICATION_PROPERTY = new org.yaml.snakeyaml.Yaml().load(new File("${PROPERTY_ROOT_PATH}/${APPLICATION_PROPERTY_FILE}").newInputStream())
 
     // datasource
-    DATASOURCE_DRIVER = BASE_PROPERTY.spring.datasource.driver
-    DATASOURCE_URL = EXTENSION_PROPERTY.spring.datasource.url
-    DATASOURCE_USERNAME = EXTENSION_PROPERTY.spring.datasource.username
-    DATASOURCE_PASSWORD = EXTENSION_PROPERTY.spring.datasource.password
+    DATASOURCE_DRIVER = APPLICATION_PROPERTY.spring.datasource.driver
+    DATASOURCE_URL = APPLICATION_PROPERTY.spring.datasource.url
+    DATASOURCE_USERNAME = APPLICATION_PROPERTY.spring.datasource.username
+    DATASOURCE_PASSWORD = APPLICATION_PROPERTY.spring.datasource.password
 
     // mybatis
-    MYBATIS_PROPERTY = BASE_PROPERTY.crs.mybatis
+    MYBATIS_PROPERTY = APPLICATION_PROPERTY.crs.mybatis
 }
 
 apply from: "${GRADLE_ROOT_PATH}/flyway.gradle"
