@@ -40,4 +40,4 @@ This app is a clubroom reservation system.
 This project support Swagger UI.
 
 1. Run application
-2. Access to [Swagger UI](http://localhost:8080/swagger-ui.html)
+2. Access to [Swagger UI](http://localhost:8080/swagger-ui/)
