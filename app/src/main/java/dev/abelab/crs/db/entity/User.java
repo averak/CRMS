@@ -54,7 +54,7 @@ public class User {
      *
      * @mbg.generated
      */
-    private Byte roleId;
+    private Integer roleId;
 
     /**
      *

@@ -10,7 +10,7 @@
     <result column="first_name" jdbcType="VARCHAR" property="firstName" />
     <result column="last_name" jdbcType="VARCHAR" property="lastName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role_id" jdbcType="TINYINT" property="roleId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -142,7 +142,7 @@
       role_id, created_at, updated_at
       )
     values (#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{roleId,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      #{roleId,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="dev.abelab.crs.db.entity.User" useGeneratedKeys="true">
@@ -182,7 +182,7 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="roleId != null">
-        #{roleId,jdbcType=TINYINT},
+        #{roleId,jdbcType=INTEGER},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -222,7 +222,7 @@
         password = #{record.password,jdbcType=VARCHAR},
       </if>
       <if test="record.roleId != null">
-        role_id = #{record.roleId,jdbcType=TINYINT},
+        role_id = #{record.roleId,jdbcType=INTEGER},
       </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -245,7 +245,7 @@
       first_name = #{record.firstName,jdbcType=VARCHAR},
       last_name = #{record.lastName,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
-      role_id = #{record.roleId,jdbcType=TINYINT},
+      role_id = #{record.roleId,jdbcType=INTEGER},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -269,7 +269,7 @@
         password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="roleId != null">
-        role_id = #{roleId,jdbcType=TINYINT},
+        role_id = #{roleId,jdbcType=INTEGER},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -289,7 +289,7 @@
     set first_name = #{firstName,jdbcType=VARCHAR},
       last_name = #{lastName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      role_id = #{roleId,jdbcType=TINYINT},
+      role_id = #{roleId,jdbcType=INTEGER},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
