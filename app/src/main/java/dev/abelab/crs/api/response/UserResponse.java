@@ -1,0 +1,31 @@
+package dev.abelab.crs.api.response;
+
+import lombok.Value;
+
+/**
+ * ユーザ情報レスポンス
+ */
+@Value
+public class UserResponse {
+
+    /**
+     * ユーザID
+     */
+    Integer id;
+
+    /**
+     * ファーストネーム
+     */
+    String firstName;
+
+    /**
+     * ラストネーム
+     */
+    String lastName;
+
+    /**
+     * ロールID
+     */
+    Integer roleId;
+
+}

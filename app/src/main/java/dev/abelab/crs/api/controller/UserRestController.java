@@ -7,6 +7,8 @@ import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import dev.abelab.crs.api.request.UserRequest;
+import dev.abelab.crs.api.response.UsersResponse;
 
 @Api(tags = "User")
 @RequiredArgsConstructor
@@ -23,14 +25,15 @@ public class UserRestController {
     )
     @ApiResponses( //
         value = { //
-                @ApiResponse(code = 200, message = "取得成功"), //
+                @ApiResponse(code = 200, message = "取得成功", response = UsersResponse.class), //
                 @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
                 @ApiResponse(code = 403, message = "ユーザに権限がない") //
         })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void getUsers() {
+    public UsersResponse getUsers() {
         // FIXME
+        return new UsersResponse(null);
     }
 
     /**
@@ -49,7 +52,10 @@ public class UserRestController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser() {
+    public void createUser( //
+        @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報")
+        @RequestBody final UserRequest userRequest //
+    ) {
         // FIXME
     }
 
@@ -73,7 +79,9 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.OK)
     public void updateUser( //
         @ApiParam(name = "user_id", required = true, value = "ユーザID")
-        @PathVariable("user_id") final int userId //
+        @PathVariable("user_id") final int userId, //
+        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報")
+        @RequestBody final UserRequest userRequest //
     ) {
         // FIXME
     }
