@@ -8,6 +8,7 @@ services:
       MYSQL_USER: "crs"
       MYSQL_PASSWORD: "crs"
       MYSQL_ROOT_PASSWORD: "crs"
+      TZ: "Asia/Tokyo"
     ports:
       - "3306:3306"
     volumes:
