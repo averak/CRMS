@@ -18,10 +18,12 @@ import dev.abelab.crs.service.UserService;
 @Validated
 public class UserRestController {
 
-    private final UserService UserService;
+    private final UserService userService;
 
     /**
      * ユーザ一覧取得API
+     *
+     * @return ユーザ一覧レスポンス
      */
     @ApiOperation(value = "ユーザ一覧の取得", //
         notes = "ユーザ一覧を取得する。" //
@@ -35,19 +37,20 @@ public class UserRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public UsersResponse getUsers() {
-        // FIXME
-        return new UsersResponse(null);
+        return this.userService.getUsers();
     }
 
     /**
      * ユーザ作成API
+     *
+     * @param userRequest ユーザ作成リクエスト
      */
     @ApiOperation(value = "ユーザの作成", //
         notes = "ユーザを作成する。" //
     )
     @ApiResponses( //
         value = { //
-                @ApiResponse(code = 200, message = "作成成功"), //
+                @ApiResponse(code = 201, message = "作成成功"), //
                 @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
                 @ApiResponse(code = 403, message = "ユーザに権限がない"), //
                 @ApiResponse(code = 409, message = "ユーザが既に存在している"), //
@@ -59,13 +62,15 @@ public class UserRestController {
         @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報")
         @RequestBody final UserRequest userRequest //
     ) {
-        // FIXME
+        this.userService.createUser(userRequest);
     }
 
     /**
      * ユーザ更新API
      *
      * @param userId ユーザID
+     *
+     * @param userRequest ユーザ更新リクエスト
      */
     @ApiOperation(value = "ユーザの更新", //
         notes = "ユーザを更新する。" //

@@ -1,13 +1,10 @@
 package dev.abelab.crs.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import mockit.Expectations;
 import mockit.Injectable;
@@ -17,7 +14,7 @@ import dev.abelab.crs.db.entity.User;
 import dev.abelab.crs.db.mapper.UserMapper;
 import dev.abelab.crs.enums.UserRoleEnum;
 
-class UserRepositoryTest {
+class UserRepositoryTest extends AbstractRepositoryTest {
 
 	@Injectable
 	UserMapper userMapper;
@@ -26,10 +23,10 @@ class UserRepositoryTest {
 	UserRepository userRepository;
 
 	private final User userSample = User.builder() //
-		.id(anyInt()) //
-		.firstName(anyString()) //
-		.lastName(anyString()) //
-		.password(anyString()) //
+		.id(SAMPLE_INT) //
+		.firstName(SAMPLE_STR) //
+		.lastName(SAMPLE_STR) //
+		.password(SAMPLE_STR) //
 		.roleId(UserRoleEnum.MEMBER.getId()) //
 		.build();
 
