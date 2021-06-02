@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import dev.abelab.crs.api.request.UserRequest;
 import dev.abelab.crs.api.response.UsersResponse;
+import dev.abelab.crs.service.UserService;
 
 @Api(tags = "User")
 @RequiredArgsConstructor
@@ -16,6 +17,8 @@ import dev.abelab.crs.api.response.UsersResponse;
 @RequestMapping(path = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class UserRestController {
+
+    private final UserService UserService;
 
     /**
      * ユーザ一覧取得API

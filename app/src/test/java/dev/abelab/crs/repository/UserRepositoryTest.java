@@ -15,6 +15,7 @@ import mockit.Tested;
 
 import dev.abelab.crs.db.entity.User;
 import dev.abelab.crs.db.mapper.UserMapper;
+import dev.abelab.crs.enums.UserRoleEnum;
 
 class UserRepositoryTest {
 
@@ -29,7 +30,7 @@ class UserRepositoryTest {
 		.firstName(anyString()) //
 		.lastName(anyString()) //
 		.password(anyString()) //
-		.roleId(anyInt()) //
+		.roleId(UserRoleEnum.MEMBER.getId()) //
 		.build();
 
 	@Test
