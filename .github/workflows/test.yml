@@ -20,5 +20,8 @@ jobs:
           distribution: "adopt"
           java-version: "11"
 
+      - name: Docker
+        run: docker-compose up -d
+
       - name: Run test
         run: ./gradlew test
