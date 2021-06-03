@@ -1,8 +1,11 @@
 package dev.abelab.crs.api.controller;
 
+import static org.assertj.core.api.Assertions.*;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.MultiValueMap;
@@ -55,8 +58,7 @@ public abstract class AbstractRestControllerTest {
 	 *
 	 * @return HTTP request builder
 	 */
-	public MockHttpServletRequestBuilder postRequest(final String path,
-		final MultiValueMap<String, String> params) {
+	public MockHttpServletRequestBuilder postRequest(final String path, final MultiValueMap<String, String> params) {
 		return MockMvcRequestBuilders.post(path) //
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED) //
 			.params(params);
@@ -102,5 +104,44 @@ public abstract class AbstractRestControllerTest {
 	public MockHttpServletRequestBuilder deleteRequest(final String path) {
 		return MockMvcRequestBuilders.delete(path);
 	}
+
+	/**
+	 * Execute request
+	 *
+	 * @param request HTTP request builder
+	 *
+	 * @param status  expected HTTP status
+	 *
+	 * @return MVC result
+	 *
+	 * @throws Exception exception
+	 */
+	public MvcResult execute(final MockHttpServletRequestBuilder request, final HttpStatus status) throws Exception {
+		final var result = mockMvc.perform(request).andReturn();
+		assertThat(result.getResponse().getStatus()).isEqualTo(status.value());
+
+		return result;
+	}
+
+	/**
+	 * Execute request / return response
+	 *
+	 * @param request HTTP request builder
+	 *
+	 * @param status  expected HTTP status
+	 *
+	 * @param clazz   response class
+	 *
+	 * @return response
+	 *
+	 * @throws Exception exception
+	 */
+	public <T> T execute(final MockHttpServletRequestBuilder request, final HttpStatus status, final Class<T> clazz) throws Exception {
+		final var result = mockMvc.perform(request).andReturn();
+		assertThat(result.getResponse().getStatus()).isEqualTo(status.value());
+
+		return ConvertUtil.convertJsonToObject(result.getResponse().getContentAsString(), clazz);
+	}
+
 
 }
