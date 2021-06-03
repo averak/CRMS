@@ -68,8 +68,10 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.jmockit:jmockit:1.49"
 
-    // yaml
+    // file type
     implementation "org.yaml:snakeyaml:1.28"
+    implementation "com.google.code.gson:gson:2.8.7"
+
 }
 
 bootJar{
