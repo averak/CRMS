@@ -28,8 +28,7 @@ public class UserService {
     public UsersResponse getUsers() {
         final var users = userRepository.findAll();
         final var userResponses = users.stream().map(user -> {
-            return new UserResponse(user.getId(), user.getFirstName(), user.getLastName(),
-                user.getRoleId());
+            return new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getRoleId());
         }).collect(Collectors.toList());
 
         return new UsersResponse(userResponses);

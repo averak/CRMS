@@ -59,8 +59,7 @@ public class UserRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser( //
-        @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報")
-        @RequestBody final UserRequest userRequest //
+        @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserRequest userRequest //
     ) {
         this.userService.createUser(userRequest);
     }
@@ -68,7 +67,7 @@ public class UserRestController {
     /**
      * ユーザ更新API
      *
-     * @param userId ユーザID
+     * @param userId      ユーザID
      *
      * @param userRequest ユーザ更新リクエスト
      */
@@ -86,10 +85,8 @@ public class UserRestController {
     @PutMapping(value = "/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser( //
-        @ApiParam(name = "user_id", required = true, value = "ユーザID")
-        @PathVariable("user_id") final int userId, //
-        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報")
-        @RequestBody final UserRequest userRequest //
+        @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId, //
+        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final UserRequest userRequest //
     ) {
         // FIXME
     }
@@ -113,8 +110,7 @@ public class UserRestController {
     @DeleteMapping(value = "/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser( //
-        @ApiParam(name = "user_id", required = true, value = "ユーザID")
-        @PathVariable("user_id") final int userId //
+        @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId //
     ) {
         // FIXME
     }

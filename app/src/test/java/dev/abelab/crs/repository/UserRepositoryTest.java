@@ -51,8 +51,7 @@ class UserRepositoryTest extends AbstractRepositoryTest {
 			}
 		};
 
-		assertThat(this.userRepository.selectById(this.userSample.getId()))
-			.isEqualTo(this.userSample);
+		assertThat(this.userRepository.selectById(this.userSample.getId())).isEqualTo(this.userSample);
 	}
 
 	@Test
