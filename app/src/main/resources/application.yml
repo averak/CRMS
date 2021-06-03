@@ -27,3 +27,9 @@ crs:
       type: XMLMAPPER
     map:
       package: db.mapper
+
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true
+  mapperLocations:
+    - classpath:/db/mapper/*Mapper.xml
