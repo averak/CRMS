@@ -143,5 +143,4 @@ public abstract class AbstractRestControllerTest {
 		return ConvertUtil.convertJsonToObject(result.getResponse().getContentAsString(), clazz);
 	}
 
-
 }
