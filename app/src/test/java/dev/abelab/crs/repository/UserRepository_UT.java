@@ -12,6 +12,7 @@ import mockit.Injectable;
 import mockit.Tested;
 
 import dev.abelab.crs.db.entity.User;
+import dev.abelab.crs.db.entity.UserSample;
 import dev.abelab.crs.db.mapper.UserMapper;
 import dev.abelab.crs.enums.UserRoleEnum;
 
@@ -26,48 +27,42 @@ class UserRepository_UT extends AbstractRepository_UT {
 	@Tested
 	UserRepository userRepository;
 
-	private final User userSample = User.builder() //
-		.id(SAMPLE_INT) //
-		.firstName(SAMPLE_STR) //
-		.lastName(SAMPLE_STR) //
-		.password(SAMPLE_STR) //
-		.roleId(UserRoleEnum.MEMBER.getId()) //
-		.build();
+	private final User user = UserSample.builder().build();
 
 	@Test
 	void 正_ユーザを保存する() {
 		new Expectations(this.userRepository) {
 			{
-				userRepository.insert(userSample);
-				result = userSample.getId();
+				userRepository.insert(user);
+				result = user.getId();
 			}
 		};
 
-		assertThat(this.userRepository.insert(this.userSample)).isEqualTo(this.userSample.getId());
+		assertThat(this.userRepository.insert(this.user)).isEqualTo(this.user.getId());
 	}
 
 	@Test
 	void 正_ユーザが存在する() {
 		new Expectations(this.userRepository) {
 			{
-				userRepository.selectById(userSample.getId());
-				result = userSample;
+				userRepository.selectById(user.getId());
+				result = user;
 			}
 		};
 
-		assertThat(this.userRepository.selectById(this.userSample.getId())).isEqualTo(this.userSample);
+		assertThat(this.userRepository.selectById(this.user.getId())).isEqualTo(this.user);
 	}
 
 	@Test
 	void 正_ユーザが存在しない() {
 		new Expectations(this.userRepository) {
 			{
-				userRepository.selectById(userSample.getId());
+				userRepository.selectById(user.getId());
 				result = null;
 			}
 		};
 
-		assertThat(this.userRepository.selectById(this.userSample.getId())).isNull();
+		assertThat(this.userRepository.selectById(this.user.getId())).isNull();
 	}
 
 }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.http.HttpStatus;
 
-import dev.abelab.crs.db.entity.User;
+import dev.abelab.crs.db.entity.UserSample;
 import dev.abelab.crs.db.mapper.UserMapper;
 import dev.abelab.crs.api.request.UserRequest;
 import dev.abelab.crs.api.response.UserResponse;
@@ -38,24 +38,8 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザ一覧を取得() throws Exception {
-			final var user1 = User.builder() //
-				.id(1) //
-				.firstName(SAMPLE_STR) //
-				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
-				.roleId(1) //
-				.createdAt(new Date()) //
-				.updatedAt(new Date()) //
-				.build();
-			final var user2 = User.builder() //
-				.id(2) //
-				.firstName(SAMPLE_STR) //
-				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
-				.roleId(1) //
-				.createdAt(new Date()) //
-				.updatedAt(new Date()) //
-				.build();
+			final var user1 = UserSample.builder().id(1).build();
+			final var user2 = UserSample.builder().id(2).build();
 			userMapper.insert(user1);
 			userMapper.insert(user2);
 
