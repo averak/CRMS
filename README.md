@@ -35,6 +35,17 @@ This app is a clubroom reservation system.
    - Windows: `$ ./gradlew.bat build`
 3. When build successful, you can find .jar file in `app/build/libs`
 
+### How to run test
+
+```sh
+# run only unit test
+$ ./gradlew unitTest
+# run only integration test
+$ ./gradlew integrationTest
+# run all test
+$ ./gradlew test
+```
+
 ### API docs
 
 This project support Swagger UI.
