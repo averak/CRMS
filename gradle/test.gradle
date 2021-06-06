@@ -1,8 +1,35 @@
 test {
     useJUnitPlatform()
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    systemProperty "junit.jupiter.conditions.deactivate", "*"
     testLogging {
-        showStandardStreams true
         exceptionFormat "full"
+        showStandardStreams true
+    }
+}
+
+// test only @IntegrationTest
+task integrationTest(type: Test) {
+    useJUnitPlatform {
+        includeTags "IntegrationTest"
+    }
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    systemProperty "junit.jupiter.conditions.deactivate", "*"
+    testLogging {
+        exceptionFormat "full"
+        showStandardStreams true
+    }
+}
+
+// test only @UnitTest
+task unitTest(type: Test) {
+    useJUnitPlatform {
+        includeTags "UnitTest"
+    }
+    jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    systemProperty "junit.jupiter.conditions.deactivate", "*"
+    testLogging {
+        exceptionFormat "full"
+        showStandardStreams true
     }
 }

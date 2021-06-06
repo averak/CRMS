@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Tag;
 /**
  * Integration Test Interface
  */
-@Tag("integrationTest")
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Tag("IntegrationTest")
 @Inherited
 public @interface IntegrationTest {
 }

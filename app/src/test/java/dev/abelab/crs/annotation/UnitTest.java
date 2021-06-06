@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Tag;
 /**
  * Unit Test Interface
  */
-@Tag("unitTest")
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Tag("UnitTest")
 @Inherited
 public @interface UnitTest {
 }
