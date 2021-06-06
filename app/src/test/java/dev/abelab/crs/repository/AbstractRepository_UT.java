@@ -1,12 +1,15 @@
 package dev.abelab.crs.repository;
 
+import org.springframework.stereotype.Repository;
+
 import dev.abelab.crs.annotation.UnitTest;
 
 /**
- * Abstract Repository Test
+ * Abstract Repository Unit Test
  */
 @UnitTest
-public abstract class AbstractRepositoryTest {
+@Repository
+public abstract class AbstractRepository_UT {
 
 	static final int SAMPLE_INT = 1;
 	static final String SAMPLE_STR = "SAMPLE";

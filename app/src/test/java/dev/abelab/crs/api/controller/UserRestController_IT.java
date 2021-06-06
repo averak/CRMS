@@ -17,7 +17,10 @@ import dev.abelab.crs.api.request.UserRequest;
 import dev.abelab.crs.api.response.UserResponse;
 import dev.abelab.crs.api.response.UsersResponse;
 
-public class UserRestControllerTest extends AbstractRestControllerTest {
+/**
+ * UserRestController Integration Test
+ */
+public class UserRestController_IT extends AbstractRestController_IT {
 
 	// API PATH
 	static final String BASE_PATH = "/api/users";

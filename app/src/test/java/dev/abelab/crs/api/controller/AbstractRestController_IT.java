@@ -20,11 +20,11 @@ import dev.abelab.crs.util.ConvertUtil;
 
 
 /**
- * Abstract Rest Controller Test
+ * Abstract Rest Controller Integration Test
  */
 @SpringBootTest
 @IntegrationTest
-public abstract class AbstractRestControllerTest {
+public abstract class AbstractRestController_IT {
 
 	static final int SAMPLE_INT = 1;
 	static final String SAMPLE_STR = "SAMPLE";

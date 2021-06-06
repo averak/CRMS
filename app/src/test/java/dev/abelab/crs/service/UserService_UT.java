@@ -5,9 +5,9 @@ import mockit.Tested;
 import dev.abelab.crs.repository.UserRepository;
 
 /**
- * UserService Test
+ * UserService Unit Test
  */
-class UserServiceTest extends AbstractServiceTest {
+class UserService_UT extends AbstractService_UT {
 
     @Injectable
     UserRepository userRepository;

@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 import org.junit.jupiter.api.Tag;
 
 /**
- * Intagration test interface
+ * Integration Test Interface
  */
 @Tag("integrationTest")
 @Inherited

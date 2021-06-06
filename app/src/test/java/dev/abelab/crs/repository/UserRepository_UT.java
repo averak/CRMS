@@ -5,6 +5,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import mockit.Expectations;
 import mockit.Injectable;
@@ -14,7 +15,10 @@ import dev.abelab.crs.db.entity.User;
 import dev.abelab.crs.db.mapper.UserMapper;
 import dev.abelab.crs.enums.UserRoleEnum;
 
-class UserRepositoryTest extends AbstractRepositoryTest {
+/**
+ * UserRepository Unit Test
+ */
+class UserRepository_UT extends AbstractRepository_UT {
 
 	@Injectable
 	UserMapper userMapper;
