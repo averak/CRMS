@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.MultiValueMap;
 
+import dev.abelab.crs.annotation.IntegrationTest;
 import dev.abelab.crs.util.ConvertUtil;
 
 
@@ -17,6 +18,7 @@ import dev.abelab.crs.util.ConvertUtil;
  * Abstract Rest Controller Test
  */
 @SpringBootTest
+@IntegrationTest
 public abstract class AbstractRestControllerTest {
 
 	static final int SAMPLE_INT = 1;
