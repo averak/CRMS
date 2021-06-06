@@ -1,6 +1,9 @@
 package dev.abelab.crs.api.controller;
 
 import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,7 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
 
 import dev.abelab.crs.annotation.IntegrationTest;
 import dev.abelab.crs.util.ConvertUtil;
@@ -28,6 +33,19 @@ public abstract class AbstractRestControllerTest {
 	 * The Mock MVC
 	 */
 	MockMvc mockMvc;
+
+	/**
+	 * The Web Application Context.
+	 */
+	@Autowired
+	WebApplicationContext webApplicationContext;
+
+	@BeforeEach
+	void setup() {
+		mockMvc = MockMvcBuilders //
+			.webAppContextSetup(webApplicationContext) //
+			.build();
+	}
 
 	/**
 	 * GET request
