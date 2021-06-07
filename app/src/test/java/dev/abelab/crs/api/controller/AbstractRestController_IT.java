@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.flywaydb.core.Flyway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,10 +41,21 @@ public abstract class AbstractRestController_IT {
 	@Autowired
 	WebApplicationContext webApplicationContext;
 
+	/**
+	 * DB Migration
+	 */
+	@Autowired
+	Flyway flyway;
+
 	@BeforeEach
 	void setup() {
-		mockMvc = MockMvcBuilders //
-			.webAppContextSetup(webApplicationContext) //
+		// init DB
+		this.flyway.clean();
+		this.flyway.migrate();
+
+		// set Mock MVC
+		this.mockMvc = MockMvcBuilders //
+			.webAppContextSetup(this.webApplicationContext) //
 			.build();
 	}
 
