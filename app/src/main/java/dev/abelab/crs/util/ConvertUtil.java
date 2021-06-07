@@ -39,5 +39,4 @@ public class ConvertUtil {
         return gson.fromJson(json, clazz);
     }
 
-
 }
