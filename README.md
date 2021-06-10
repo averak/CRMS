@@ -1,7 +1,8 @@
 # CRMS - Clubroom Reservation Management System
 
-![build](https://github.com/averak/crms/workflows/build/badge.svg)
-![test](https://github.com/averak/crms/workflows/test/badge.svg)
+![build](https://github.com/averak/CRMS/workflows/build/badge.svg)
+![test](https://github.com/averak/CRMS/workflows/test/badge.svg)
+![deploy](https://github.com/averak/CRMS/workflows/deploy/badge.svg)
 ![Version 1.0](https://img.shields.io/badge/version-1.0-yellow.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 

@@ -1,0 +1,18 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: deploy
+      env:
+        TOKEN: ${{secrets.TOKEN}}
+      run: |
+        curl -X POST -H 'Content-Type: application/json' 'https://api.abelab.dev/auto-deploy/' -d '{"app": "CRMS", "token": "'"$TOKEN"'"}'
