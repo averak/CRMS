@@ -24,4 +24,16 @@ public enum UserRoleEnum {
 
     String name;
 
+    /**
+     * find by id
+     *
+     * @param id id
+     *
+     * @return user role
+     */
+    public static UserRoleEnum findById(final int id) {
+        return Arrays.stream(values()).filter(e -> e.getId() == id) //
+            .findFirst().orElseThrow(() -> new RuntimeException());
+    }
+
 }
