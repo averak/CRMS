@@ -27,6 +27,9 @@
 		<table tableName="user_role">
 			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
 		</table>
+		<table tableName="reservation">
+			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
+		</table>
 
 	</context>
 </generatorConfiguration>
