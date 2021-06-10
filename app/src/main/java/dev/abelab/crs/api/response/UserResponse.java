@@ -24,6 +24,11 @@ public class UserResponse {
     String lastName;
 
     /**
+     * メールアドレス
+     */
+    String email;
+
+    /**
      * ロールID
      */
     Integer roleId;

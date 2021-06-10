@@ -2,8 +2,6 @@ package dev.abelab.crs.db.entity;
 
 import java.util.Date;
 
-import lombok.*;
-
 /**
  * User Sample Builder
  */
@@ -18,6 +16,7 @@ public class UserSample extends AbstractSample {
         private Integer id = SAMPLE_INT;
         private String firstName = SAMPLE_STR;
         private String lastName = SAMPLE_STR;
+        private String email = SAMPLE_STR;
         private String password = SAMPLE_STR;
         private Integer roleId = SAMPLE_INT;
         private Date createdAt = SAMPLE_DATE;
@@ -35,6 +34,11 @@ public class UserSample extends AbstractSample {
 
         public UserSampleBuilder lastName(String lastName) {
             this.firstName = lastName;
+            return this;
+        }
+
+        public UserSampleBuilder email(String email) {
+            this.email = email;
             return this;
         }
 
@@ -59,7 +63,7 @@ public class UserSample extends AbstractSample {
         }
 
         public User build() {
-            return new User(id, firstName, lastName, password, roleId, createdAt, updatedAt);
+            return new User(id, firstName, lastName, email, password, roleId, createdAt, updatedAt);
         }
 
     }

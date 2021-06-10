@@ -1,10 +1,5 @@
 package dev.abelab.crs.api.request;
 
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import lombok.*;
 
 /**
@@ -25,6 +20,11 @@ public class UserRequest {
      * ラストネーム
      */
     String lastName;
+
+    /**
+     * メールアドレス
+     */
+    String email;
 
     /**
      * パスワード

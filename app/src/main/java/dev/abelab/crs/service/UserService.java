@@ -1,6 +1,5 @@
 package dev.abelab.crs.service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class UserService {
     public UsersResponse getUsers() {
         final var users = userRepository.findAll();
         final var userResponses = users.stream().map(user -> {
-            return new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getRoleId());
+            return new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRoleId());
         }).collect(Collectors.toList());
 
         return new UsersResponse(userResponses);
@@ -45,6 +44,7 @@ public class UserService {
         final var user = User.builder() //
             .firstName(userRequest.getFirstName()) //
             .lastName(userRequest.getLastName()) //
+            .email(userRequest.getEmail()) //
             .password(userRequest.getPassword()) //
             .roleId(userRequest.getRoleId()) //
             .build();
