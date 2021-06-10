@@ -1,10 +1,7 @@
 package dev.abelab.crs.repository;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import mockit.Expectations;
@@ -14,7 +11,6 @@ import mockit.Tested;
 import dev.abelab.crs.db.entity.User;
 import dev.abelab.crs.db.entity.UserSample;
 import dev.abelab.crs.db.mapper.UserMapper;
-import dev.abelab.crs.enums.UserRoleEnum;
 
 /**
  * UserRepository Unit Test

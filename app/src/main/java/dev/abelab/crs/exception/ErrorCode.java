@@ -23,7 +23,12 @@ public enum ErrorCode {
 
     NOT_FOUND_USER(1101, "exception.not_found.user"),
 
-    NOT_FOUND_ROLE(1101, "exception.not_found.role");
+    NOT_FOUND_ROLE(1101, "exception.not_found.role"),
+
+    /**
+     * Conflict; 1200~1299
+     */
+    CONFLICT_EMAIL(1200, "exception.conflict.email");
 
     private final int code;
 

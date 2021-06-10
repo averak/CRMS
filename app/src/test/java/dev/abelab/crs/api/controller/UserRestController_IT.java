@@ -38,8 +38,8 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザ一覧を取得() throws Exception {
-			final var user1 = UserSample.builder().id(1).build();
-			final var user2 = UserSample.builder().id(2).build();
+			final var user1 = UserSample.builder().id(1).email("email1").build();
+			final var user2 = UserSample.builder().id(2).email("email2").build();
 			userRepository.insert(user1);
 			userRepository.insert(user2);
 
@@ -83,7 +83,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// verify
 			final var createdUser = userRepository.selectByEmail(requestBody.getEmail());
-            assertThat(createdUser.isPresent()).isTrue();
+            assertThat(createdUser.getRoleId()).isEqualTo(requestBody.getRoleId());
 		}
 
 	}

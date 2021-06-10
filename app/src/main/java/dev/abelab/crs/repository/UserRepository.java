@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import dev.abelab.crs.db.entity.User;
 import dev.abelab.crs.db.entity.UserExample;
 import dev.abelab.crs.db.mapper.UserMapper;
+import dev.abelab.crs.exception.ErrorCode;
+import dev.abelab.crs.exception.ConflictException;
+import dev.abelab.crs.exception.NotFoundException;
 
 @RequiredArgsConstructor
 @Repository
@@ -24,6 +27,9 @@ public class UserRepository {
      * @return ユーザID
      */
     public int insert(User user) {
+        if (this.existsByEmail(user.getEmail())) {
+            throw new ConflictException(ErrorCode.CONFLICT_EMAIL);
+        }
         return this.userMapper.insertSelective(user);
     }
 
@@ -34,8 +40,9 @@ public class UserRepository {
      *
      * @return ユーザ
      */
-    public Optional<User> selectById(int id) {
-        return Optional.ofNullable(this.userMapper.selectByPrimaryKey(id));
+    public User selectById(int id) {
+        return Optional.ofNullable(this.userMapper.selectByPrimaryKey(id)) //
+            .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER));
     }
 
     /**
@@ -45,10 +52,11 @@ public class UserRepository {
      *
      * @return ユーザ
      */
-    public Optional<User> selectByEmail(String email) {
+    public User selectByEmail(String email) {
         final var example = new UserExample();
         example.createCriteria().andEmailEqualTo(email);
-        return this.userMapper.selectByExample(example).stream().findFirst();
+        return this.userMapper.selectByExample(example).stream().findFirst() //
+            .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER));
     }
 
     /**
@@ -60,6 +68,22 @@ public class UserRepository {
         final var example = new UserExample();
         example.setOrderByClause("updated_at desc");
         return userMapper.selectByExample(example);
+    }
+
+    /**
+     * emailの存在確認
+     *
+     * @param email email
+     *
+     * @return is email exists?
+     */
+    public boolean existsByEmail(String email) {
+        try {
+            this.selectByEmail(email);
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 
 }
