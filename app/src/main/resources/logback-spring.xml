@@ -1,0 +1,3 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+</configuration>
