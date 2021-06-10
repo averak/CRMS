@@ -1,6 +1,7 @@
 package dev.abelab.crs.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -33,8 +34,21 @@ public class UserRepository {
      *
      * @return ユーザ
      */
-    public User selectById(int id) {
-        return this.userMapper.selectByPrimaryKey(id);
+    public Optional<User> selectById(int id) {
+        return Optional.ofNullable(this.userMapper.selectByPrimaryKey(id));
+    }
+
+    /**
+     * メールアドレスからユーザを検索
+     *
+     * @param email メールアドレス
+     *
+     * @return ユーザ
+     */
+    public Optional<User> selectByEmail(String email) {
+        final var example = new UserExample();
+        example.createCriteria().andEmailEqualTo(email);
+        return this.userMapper.selectByExample(example).stream().findFirst();
     }
 
     /**
