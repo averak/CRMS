@@ -43,15 +43,11 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			userMapper.insert(user1);
 			userMapper.insert(user2);
 
-			/*
-			 * test
-			 */
+			// send request
 			final var request = getRequest(GET_USERS_PATH);
 			final var response = execute(request, HttpStatus.OK, UsersResponse.class);
 
-			/*
-			 * verify
-			 */
+			// verify
 			assertThat(response.getUsers()) //
 				.extracting(UserResponse::getId) //
 				.containsExactly(user1.getId(), user2.getId());
@@ -72,6 +68,24 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_ユーザを作成() throws Exception {
+			final var user = UserSample.builder().id(1).build();
+			userMapper.insert(user);
+
+			// send request
+			final var request = getRequest(GET_USERS_PATH);
+			final var response = execute(request, HttpStatus.OK, UsersResponse.class);
+
+			// verify
+			// 作成されているか確認
+			assertThat(response.getUsers()) //
+				.extracting(UserResponse::getId) //
+				.containsExactly(user.getId());
+
+			// ロールを確認
+			assertThat(response.getUsers()) //
+				.extracting("roleId") //
+				.containsExactly(user.getRoleId());
+
 		}
 
 	}
