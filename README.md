@@ -1,11 +1,11 @@
-# CRS - Clubroom Reservation System
+# CRMS - Clubroom Reservation Management System
 
-![build](https://github.com/averak/crs/workflows/build/badge.svg)
-![test](https://github.com/averak/crs/workflows/test/badge.svg)
+![build](https://github.com/averak/crms/workflows/build/badge.svg)
+![test](https://github.com/averak/crms/workflows/test/badge.svg)
 ![Version 1.0](https://img.shields.io/badge/version-1.0-yellow.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-This app is a clubroom reservation system.
+This app is a clubroom reservation management system.
 
 ## Develop
 
@@ -16,12 +16,12 @@ This app is a clubroom reservation system.
 
 ### How to run
 
-`$ java -jar crs-<version>.jar`
+`$ java -jar crms-<version>.jar`
 
 ### How to run on dev environment
 
 1. Clone this repository
-2. Run `$ cd crs`
+2. Run `$ cd crms`
 3. Run `$ docker-compose up -d`
 4. Run application
    - macOS or Linux: `$ ./gradlew bootRun`
@@ -29,7 +29,7 @@ This app is a clubroom reservation system.
 
 ### How to build
 
-1. Run `$ cd crs`.
+1. Run `$ cd crms`.
 2. Run build
    - macOS or Linux: `$ ./gradlew build`
    - Windows: `$ ./gradlew.bat build`

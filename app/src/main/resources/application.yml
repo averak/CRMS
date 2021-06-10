@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/crs?useSSL=false&allowPublicKeyRetrieval=true
-    username: crs
-    password: crs
+    url: jdbc:mysql://localhost:3306/crms?useSSL=false&allowPublicKeyRetrieval=true
+    username: crms
+    password: crms
     driver: com.mysql.cj.jdbc.Driver
 
   flyway:
@@ -15,8 +15,8 @@ spring:
     driver: ${spring.datasource.driver}
     locations: classpath:db/migration
 
-crs:
-  package: dev.abelab.crs
+crms:
+  package: dev.abelab.crms
   mybatis:
     config:
       file: generatorConfig.xml

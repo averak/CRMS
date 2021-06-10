@@ -77,7 +77,7 @@ dependencies {
 }
 
 bootJar{
-    archiveBaseName = "crs"
+    archiveBaseName = "crms"
 }
 
 ext {
@@ -99,7 +99,7 @@ ext {
     DATASOURCE_PASSWORD = APPLICATION_PROPERTY.spring.datasource.password
 
     // mybatis
-    MYBATIS_PROPERTY = APPLICATION_PROPERTY.crs.mybatis
+    MYBATIS_PROPERTY = APPLICATION_PROPERTY.crms.mybatis
 }
 
 apply from: "${GRADLE_ROOT_PATH}/flyway.gradle"

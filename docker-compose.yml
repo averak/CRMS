@@ -4,10 +4,10 @@ services:
     build: ./mysql
     restart: always
     environment:
-      MYSQL_DATABASE: "crs"
-      MYSQL_USER: "crs"
-      MYSQL_PASSWORD: "crs"
-      MYSQL_ROOT_PASSWORD: "crs"
+      MYSQL_DATABASE: "crms"
+      MYSQL_USER: "crms"
+      MYSQL_PASSWORD: "crms"
+      MYSQL_ROOT_PASSWORD: "crms"
       TZ: "Asia/Tokyo"
     ports:
       - "3306:3306"
