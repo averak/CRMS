@@ -1,10 +1,12 @@
 package dev.abelab.crs.enums;
 
 import java.util.Arrays;
+
 import lombok.*;
+import dev.abelab.crs.exception.NotFoundException;
 
 /**
- * ユーザロール
+ * The enum user role
  */
 @Getter
 @AllArgsConstructor
@@ -20,9 +22,9 @@ public enum UserRoleEnum {
      */
     MEMBER(2, "利用者");
 
-    Integer id;
+    private final int id;
 
-    String name;
+    private final String name;
 
     /**
      * find by id
@@ -33,7 +35,7 @@ public enum UserRoleEnum {
      */
     public static UserRoleEnum findById(final int id) {
         return Arrays.stream(values()).filter(e -> e.getId() == id) //
-            .findFirst().orElseThrow(() -> new RuntimeException());
+            .findFirst().orElseThrow(() -> new NotFoundException());
     }
 
 }
