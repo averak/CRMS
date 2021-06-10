@@ -9,9 +9,11 @@ public class NotFoundException extends BaseException {
 
     /**
      * create not found exception
+     *
+     * @param ErrorCode error code
      */
-    public NotFoundException() {
-        super(NOT_FOUND);
+    public NotFoundException(final ErrorCode errorCode) {
+        super(NOT_FOUND, errorCode);
     }
 
 }

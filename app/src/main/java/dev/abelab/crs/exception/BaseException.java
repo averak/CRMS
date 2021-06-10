@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 /**
  * Base exception
- * */
+ */
 public class BaseException extends RuntimeException {
 
     /**
@@ -13,21 +13,20 @@ public class BaseException extends RuntimeException {
     private HttpStatus httpStatus;
 
     /**
-     * create base exception by message
-     *
-     * @param message
+     * error code
      */
-    public BaseException(final String message) {
-        super(message);
-    }
+    private ErrorCode errorCode;
 
     /**
-     * create base exception by http status
+     * create base exception
      *
-     * @param message
+     * @param HttpStatus http status
+     *
+     * @param ErrorCode  error code
      */
-    public BaseException(HttpStatus httpStatus) {
+    public BaseException(final HttpStatus httpStatus, final ErrorCode errroCode) {
         this.httpStatus = httpStatus;
+        this.errorCode = errroCode;
     }
 
     /**
@@ -35,6 +34,13 @@ public class BaseException extends RuntimeException {
      */
     public HttpStatus getHttpStatus() {
         return this.httpStatus;
+    }
+
+    /**
+     * getter of error code
+     */
+    public ErrorCode getErrorCode() {
+        return this.errorCode;
     }
 
 }

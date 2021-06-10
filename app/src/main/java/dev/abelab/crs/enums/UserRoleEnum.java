@@ -3,6 +3,7 @@ package dev.abelab.crs.enums;
 import java.util.Arrays;
 
 import lombok.*;
+import dev.abelab.crs.exception.ErrorCode;
 import dev.abelab.crs.exception.NotFoundException;
 
 /**
@@ -35,7 +36,7 @@ public enum UserRoleEnum {
      */
     public static UserRoleEnum findById(final int id) {
         return Arrays.stream(values()).filter(e -> e.getId() == id) //
-            .findFirst().orElseThrow(() -> new NotFoundException());
+            .findFirst().orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
     }
 
 }
