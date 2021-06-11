@@ -70,6 +70,7 @@ dependencies {
 
     // file type
     implementation "org.yaml:snakeyaml:1.28"
+    implementation "net.rakugakibox.util:yaml-resource-bundle:1.2"
     implementation "com.google.code.gson:gson:2.8.7"
 
     // logging

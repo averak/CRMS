@@ -4,7 +4,6 @@ spring:
     username: crms
     password: crms
     driver: com.mysql.cj.jdbc.Driver
-
   flyway:
     baselineOnMigrate: true
     validateOnMigrate: false
@@ -14,6 +13,9 @@ spring:
     password: ${spring.datasource.password}
     driver: ${spring.datasource.driver}
     locations: classpath:db/migration
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
 
 crms:
   package: dev.abelab.crms
