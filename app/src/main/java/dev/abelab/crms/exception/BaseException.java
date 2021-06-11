@@ -18,15 +18,21 @@ public class BaseException extends RuntimeException {
     private ErrorCode errorCode;
 
     /**
+     * args
+     */
+    private String[] args;
+
+    /**
      * create base exception
      *
      * @param HttpStatus http status
      *
      * @param ErrorCode  error code
      */
-    public BaseException(final HttpStatus httpStatus, final ErrorCode errroCode) {
+    public BaseException(final HttpStatus httpStatus, final ErrorCode errroCode, final String... args) {
         this.httpStatus = httpStatus;
         this.errorCode = errroCode;
+        this.args = args;
     }
 
     /**
@@ -41,6 +47,13 @@ public class BaseException extends RuntimeException {
      */
     public ErrorCode getErrorCode() {
         return this.errorCode;
+    }
+
+    /**
+     * getter of args
+     */
+    public String[] getArgs() {
+        return this.args;
     }
 
 }

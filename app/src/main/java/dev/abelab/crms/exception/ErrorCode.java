@@ -32,7 +32,7 @@ public enum ErrorCode {
 
     private final int code;
 
-    private final String message;
+    private final String messageKey;
 
     /**
      * find by code

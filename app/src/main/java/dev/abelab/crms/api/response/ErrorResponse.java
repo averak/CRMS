@@ -4,6 +4,7 @@ import lombok.*;
 
 @Value
 @Builder
+@AllArgsConstructor
 public class ErrorResponse {
 
     /**
