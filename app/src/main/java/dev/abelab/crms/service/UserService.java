@@ -10,11 +10,14 @@ import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.api.request.UserRequest;
+import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.repository.UserRepository;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
+    private final UserLogic userLogic;
 
     private final UserRepository userRepository;
 
@@ -25,6 +28,10 @@ public class UserService {
      */
     @Transactional
     public UsersResponse getUsers() {
+        // FIXME: 権限チェック
+        // this.userLogic.checkAdmin(userId);
+
+        // ユーザの取得
         final var users = userRepository.findAll();
         final var userResponses = users.stream().map(user -> {
             return new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRoleId());

@@ -26,9 +26,14 @@ public enum ErrorCode {
     NOT_FOUND_ROLE(1101, "exception.not_found.role"),
 
     /**
-     * Conflict; 1200~1299
+     * Conflict: 1200~1299
      */
-    CONFLICT_EMAIL(1200, "exception.conflict.email");
+    CONFLICT_EMAIL(1200, "exception.conflict.email"),
+
+    /**
+     * Forbidden: 1300~1399
+     */
+    USER_HAS_NO_PERMISSION(1300, "exception.forbidden.user_has_no_permission");
 
     private final int code;
 
