@@ -15,6 +15,8 @@ import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.api.request.UserRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
+import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.ConflictException;
 
 /**
  * UserRestController Integration Test
@@ -25,6 +27,13 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String BASE_PATH = "/api/users";
 	static final String GET_USERS_PATH = BASE_PATH;
 	static final String CREATE_USER_PATH = BASE_PATH;
+	static final UserRequest CREATE_USER_REQUEST = UserRequest.builder() //
+		.firstName(SAMPLE_STR) //
+		.lastName(SAMPLE_STR) //
+		.password(SAMPLE_STR) //
+		.email(SAMPLE_STR) //
+		.roleId(UserRoleEnum.MEMBER.getId()) //
+		.build();
 
 	@Autowired
 	UserRepository userRepository;
@@ -68,22 +77,27 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_ユーザを作成() throws Exception {
-			// create request body
-			final var requestBody = UserRequest.builder() //
-				.firstName(SAMPLE_STR) //
-				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
-				.email(SAMPLE_STR) //
-				.roleId(UserRoleEnum.MEMBER.getId()) //
-				.build();
-
 			// send request
-			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_REQUEST);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
-			final var createdUser = userRepository.selectByEmail(requestBody.getEmail());
-            assertThat(createdUser.getRoleId()).isEqualTo(requestBody.getRoleId());
+			final var createdUser = userRepository.selectByEmail(CREATE_USER_REQUEST.getEmail());
+			assertThat(createdUser.getFirstName()).isEqualTo(CREATE_USER_REQUEST.getFirstName());
+			assertThat(createdUser.getLastName()).isEqualTo(CREATE_USER_REQUEST.getLastName());
+			assertThat(createdUser.getPassword()).isEqualTo(CREATE_USER_REQUEST.getPassword());
+			assertThat(createdUser.getEmail()).isEqualTo(CREATE_USER_REQUEST.getEmail());
+			assertThat(createdUser.getRoleId()).isEqualTo(CREATE_USER_REQUEST.getRoleId());
+		}
+
+		@Test
+		void 異_メールアドレスが既に存在する() throws Exception {
+			// send request
+			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_REQUEST);
+			execute(request, HttpStatus.CREATED);
+
+			// verify
+			execute(request, new ConflictException(ErrorCode.CONFLICT_EMAIL));
 		}
 
 	}
