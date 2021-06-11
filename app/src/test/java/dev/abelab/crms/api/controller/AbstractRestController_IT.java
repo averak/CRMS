@@ -2,6 +2,8 @@ package dev.abelab.crms.api.controller;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +20,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import dev.abelab.crms.annotation.IntegrationTest;
 import dev.abelab.crms.util.ConvertUtil;
-
+import dev.abelab.crms.exception.BaseException;
+import dev.abelab.crms.api.response.ErrorResponse;
 
 /**
  * Abstract Rest Controller Integration Test
@@ -150,7 +153,13 @@ public abstract class AbstractRestController_IT {
 	 */
 	public MvcResult execute(final MockHttpServletRequestBuilder request, final HttpStatus status) throws Exception {
 		final var result = mockMvc.perform(request).andReturn();
-		assertThat(result.getResponse().getStatus()).isEqualTo(status.value());
+
+		try {
+			assertThat(result.getResponse().getStatus()).isEqualTo(status.value());
+		} catch (final AssertionError e) {
+			Optional.ofNullable(result.getResolvedException()).ifPresent(Throwable::printStackTrace);
+			throw e;
+		}
 
 		return result;
 	}
@@ -170,9 +179,41 @@ public abstract class AbstractRestController_IT {
 	 */
 	public <T> T execute(final MockHttpServletRequestBuilder request, final HttpStatus status, final Class<T> clazz) throws Exception {
 		final var result = mockMvc.perform(request).andReturn();
-		assertThat(result.getResponse().getStatus()).isEqualTo(status.value());
+
+		try {
+			assertThat(result.getResponse().getStatus()).isEqualTo(status.value());
+		} catch (final AssertionError e) {
+			Optional.ofNullable(result.getResolvedException()).ifPresent(Throwable::printStackTrace);
+			throw e;
+		}
 
 		return ConvertUtil.convertJsonToObject(result.getResponse().getContentAsString(), clazz);
+	}
+
+	/**
+	 * Execute request / verify exception
+	 *
+	 * @param request HTTP request builder
+	 *
+	 * @param exception expected exception
+	 *
+	 * @return error response
+	 *
+	 * @throws Exception exception
+	 */
+	public ErrorResponse execute(final MockHttpServletRequestBuilder request, final BaseException exception) throws Exception {
+		final var result = mockMvc.perform(request).andReturn();
+        final var response = ConvertUtil.convertJsonToObject(result.getResponse().getContentAsString(), ErrorResponse.class);
+
+		try {
+            assertThat(result.getResponse().getStatus()).isEqualTo(exception.getHttpStatus().value());
+            assertThat(response.getCode()).isEqualTo(exception.getErrorCode().getCode());
+		} catch (final AssertionError e) {
+			Optional.ofNullable(result.getResolvedException()).ifPresent(Throwable::printStackTrace);
+			throw e;
+		}
+
+		return response;
 	}
 
 }
