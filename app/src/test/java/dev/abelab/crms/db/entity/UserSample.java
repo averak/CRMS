@@ -19,6 +19,7 @@ public class UserSample extends AbstractSample {
         private String email = SAMPLE_STR;
         private String password = SAMPLE_STR;
         private Integer roleId = SAMPLE_INT;
+        private Boolean deleted = SAMPLE_BOOL;
         private Date createdAt = SAMPLE_DATE;
         private Date updatedAt = SAMPLE_DATE;
 
@@ -52,6 +53,11 @@ public class UserSample extends AbstractSample {
             return this;
         }
 
+        public UserSampleBuilder deleted(boolean deleted) {
+            this.deleted = deleted;
+            return this;
+        }
+
         public UserSampleBuilder createdAt(Date createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -63,7 +69,7 @@ public class UserSample extends AbstractSample {
         }
 
         public User build() {
-            return new User(id, firstName, lastName, email, password, roleId, createdAt, updatedAt);
+            return new User(id, firstName, lastName, email, password, roleId, deleted, createdAt, updatedAt);
         }
 
     }

@@ -60,6 +60,7 @@ public class UserService {
             .email(userRequest.getEmail()) //
             .password(userRequest.getPassword()) //
             .roleId(userRequest.getRoleId()) //
+            .deleted(false) //
             .build();
 
         this.userRepository.insert(user);
