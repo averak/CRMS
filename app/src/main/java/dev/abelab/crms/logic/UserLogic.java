@@ -18,8 +18,6 @@ public class UserLogic {
      * 管理者チェック
      *
      * @param userId ユーザID
-     *
-     * @return 管理者かどうか
      */
     public void checkAdmin(final int userId) {
         final var user = this.userRepository.selectById(userId);

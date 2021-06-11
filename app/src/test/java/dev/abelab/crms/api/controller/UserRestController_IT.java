@@ -17,6 +17,7 @@ import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.ConflictException;
+import dev.abelab.crms.exception.NotFoundException;
 
 /**
  * UserRestController Integration Test
@@ -98,6 +99,22 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// verify
 			execute(request, new ConflictException(ErrorCode.CONFLICT_EMAIL));
+		}
+
+		@Test
+		void 異_無効なロールを付与() throws Exception {
+			// setup
+			final var requestBody = UserRequest.builder() //
+				.firstName(SAMPLE_STR) //
+				.lastName(SAMPLE_STR) //
+				.password(SAMPLE_STR) //
+				.email(SAMPLE_STR) //
+				.roleId(0) //
+				.build();
+
+			// verify
+			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
 		}
 
 	}

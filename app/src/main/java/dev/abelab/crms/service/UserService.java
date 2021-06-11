@@ -11,6 +11,7 @@ import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.api.request.UserRequest;
 import dev.abelab.crms.logic.UserLogic;
+import dev.abelab.crms.logic.UserRoleLogic;
 import dev.abelab.crms.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -18,6 +19,8 @@ import dev.abelab.crms.repository.UserRepository;
 public class UserService {
 
     private final UserLogic userLogic;
+
+    private final UserRoleLogic userRoleLogic;
 
     private final UserRepository userRepository;
 
@@ -47,6 +50,9 @@ public class UserService {
      */
     @Transactional
     public void createUser(UserRequest userRequest) {
+        // 有効なロールかチェック
+        this.userRoleLogic.checkForValidRoleId(userRequest.getRoleId());
+
         // ユーザの作成
         final var user = User.builder() //
             .firstName(userRequest.getFirstName()) //
