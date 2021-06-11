@@ -1,0 +1,9 @@
+exception:
+  internal_server_error:
+    unexpected_error: "Unexpected error has occured."
+  not_found:
+    error_code: "Error Code does not exists."
+    user: "User does not exists."
+    role: "Role does not exists."
+  conflict:
+    email: "Email already exists."
