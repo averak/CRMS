@@ -1,11 +1,12 @@
 package dev.abelab.crms.api.response;
 
-import lombok.Value;
+import lombok.*;
 
 /**
  * ユーザ情報レスポンス
  */
 @Value
+@Builder
 public class UserResponse {
 
     /**
