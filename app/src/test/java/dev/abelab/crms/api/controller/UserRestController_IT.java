@@ -28,7 +28,9 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String BASE_PATH = "/api/users";
 	static final String GET_USERS_PATH = BASE_PATH;
 	static final String CREATE_USER_PATH = BASE_PATH;
-	static final UserRequest CREATE_USER_REQUEST = UserRequest.builder() //
+
+	// API Request Body
+	static final UserRequest CREATE_USER_BODY = UserRequest.builder() //
 		.firstName(SAMPLE_STR) //
 		.lastName(SAMPLE_STR) //
 		.password(SAMPLE_STR) //
@@ -65,6 +67,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 異_管理者以外はユーザ一覧を取得不可() throws Exception {
+			// FIXME
 		}
 
 	}
@@ -79,22 +82,22 @@ public class UserRestController_IT extends AbstractRestController_IT {
 		@Test
 		void 正_ユーザを作成() throws Exception {
 			// send request
-			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_REQUEST);
+			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_BODY);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
-			final var createdUser = userRepository.selectByEmail(CREATE_USER_REQUEST.getEmail());
-			assertThat(createdUser.getFirstName()).isEqualTo(CREATE_USER_REQUEST.getFirstName());
-			assertThat(createdUser.getLastName()).isEqualTo(CREATE_USER_REQUEST.getLastName());
-			assertThat(createdUser.getPassword()).isEqualTo(CREATE_USER_REQUEST.getPassword());
-			assertThat(createdUser.getEmail()).isEqualTo(CREATE_USER_REQUEST.getEmail());
-			assertThat(createdUser.getRoleId()).isEqualTo(CREATE_USER_REQUEST.getRoleId());
+			final var createdUser = userRepository.selectByEmail(CREATE_USER_BODY.getEmail());
+			assertThat(createdUser.getFirstName()).isEqualTo(CREATE_USER_BODY.getFirstName());
+			assertThat(createdUser.getLastName()).isEqualTo(CREATE_USER_BODY.getLastName());
+			assertThat(createdUser.getPassword()).isEqualTo(CREATE_USER_BODY.getPassword());
+			assertThat(createdUser.getEmail()).isEqualTo(CREATE_USER_BODY.getEmail());
+			assertThat(createdUser.getRoleId()).isEqualTo(CREATE_USER_BODY.getRoleId());
 		}
 
 		@Test
 		void 異_メールアドレスが既に存在する() throws Exception {
 			// send request
-			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_REQUEST);
+			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_BODY);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
