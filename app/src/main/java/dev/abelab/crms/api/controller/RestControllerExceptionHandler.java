@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.api.response.ErrorResponse;
@@ -19,7 +18,6 @@ import dev.abelab.crms.api.response.ErrorResponse;
 /**
  * Rest controller exception handler
  */
-@Slf4j
 @Controller
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -46,7 +44,6 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
         final var message = messageSource.getMessage(errorCode.getMessageKey(), null, Locale.ENGLISH);
         final var errorResponse = ErrorResponse.builder().message(message).code(errorCode.getCode()).build();
 
-        log.error(exception.getMessage(), exception);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -62,12 +59,6 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
         final var message = this.getErrorMessage(exception);
         final var errorCode = exception.getErrorCode();
         final var errorResponse = ErrorResponse.builder().message(message).code(errorCode.getCode()).build();
-
-        if (exception.getHttpStatus().is4xxClientError()) {
-            log.warn(String.format("%d: %s", errorCode.getCode(), message));
-        } else if (exception.getHttpStatus().is5xxServerError()) {
-            log.error(String.format("%d: %s", errorCode.getCode(), message));
-        }
 
         return new ResponseEntity<>(errorResponse, exception.getHttpStatus());
     }
