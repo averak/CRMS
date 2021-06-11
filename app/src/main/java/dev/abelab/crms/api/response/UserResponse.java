@@ -35,4 +35,9 @@ public class UserResponse {
      */
     Integer roleId;
 
+    /**
+     * 削除済みか
+     */
+    Boolean deleted;
+
 }

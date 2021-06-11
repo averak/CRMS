@@ -37,7 +37,14 @@ public class UserService {
         // ユーザの取得
         final var users = userRepository.findAll();
         final var userResponses = users.stream().map(user -> {
-            return new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRoleId());
+            return UserResponse.builder() //
+                .id(user.getId()) //
+                .firstName(user.getFirstName()) //
+                .lastName(user.getLastName()) //
+                .email(user.getEmail()) //
+                .roleId(user.getRoleId()) //
+                .deleted(user.getDeleted()) //
+                .build();
         }).collect(Collectors.toList());
 
         return new UsersResponse(userResponses);
