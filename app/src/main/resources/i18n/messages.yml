@@ -9,3 +9,7 @@ exception:
     email: "Email already exists."
   forbidden:
     user_has_no_permission: "User has no permission."
+  bad_request:
+    validation_error: "Validation error has occured."
+  unauthorized:
+    user_not_logged_in: "User has no logged in."

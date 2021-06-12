@@ -33,7 +33,17 @@ public enum ErrorCode {
     /**
      * Forbidden: 1300~1399
      */
-    USER_HAS_NO_PERMISSION(1300, "exception.forbidden.user_has_no_permission");
+    USER_HAS_NO_PERMISSION(1300, "exception.forbidden.user_has_no_permission"),
+
+    /**
+     * Bad Request: 1400~1499
+     */
+    VALIDATION_ERROR(1400, "exception.bad_request.validation_error"),
+
+    /**
+     * Unauthorized: 1500~1599
+     */
+    USER_NOT_LOGGED_IN(1500, "exception.unauthorized.user_not_logged_in");
 
     private final int code;
 

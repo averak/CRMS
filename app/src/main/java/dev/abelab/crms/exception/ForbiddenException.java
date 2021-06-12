@@ -1,6 +1,6 @@
 package dev.abelab.crms.exception;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 /**
  * Forbidden exception
@@ -8,7 +8,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;;
 public class ForbiddenException extends BaseException {
 
     /**
-     * create not found exception
+     * create forbidden exception
      *
      * @param ErrorCode error code
      */
