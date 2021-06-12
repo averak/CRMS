@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import dev.abelab.crms.api.request.UserRequest;
+import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.service.UserService;
 
@@ -59,9 +59,9 @@ public class UserRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser( //
-        @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserRequest userRequest //
+        @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserCreateRequest requestBody //
     ) {
-        this.userService.createUser(userRequest);
+        this.userService.createUser(requestBody);
     }
 
     /**
@@ -86,7 +86,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.OK)
     public void updateUser( //
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId, //
-        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final UserRequest userRequest //
+        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final UserCreateRequest requestBody //
     ) {
         // FIXME
     }

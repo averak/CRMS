@@ -1,5 +1,6 @@
 package dev.abelab.crms.api.controller;
 
+import static java.lang.String.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
@@ -12,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.enums.UserRoleEnum;
-import dev.abelab.crms.api.request.UserRequest;
+import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
@@ -28,9 +29,10 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String BASE_PATH = "/api/users";
 	static final String GET_USERS_PATH = BASE_PATH;
 	static final String CREATE_USER_PATH = BASE_PATH;
+	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 
 	// API Request Body
-	static final UserRequest CREATE_USER_BODY = UserRequest.builder() //
+	static final UserCreateRequest CREATE_USER_BODY = UserCreateRequest.builder() //
 		.firstName(SAMPLE_STR) //
 		.lastName(SAMPLE_STR) //
 		.password(SAMPLE_STR) //
@@ -50,6 +52,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザ一覧を取得() throws Exception {
+			// setup
 			final var user1 = UserSample.builder().id(1).email("email1").build();
 			final var user2 = UserSample.builder().id(2).email("email2").build();
 			userRepository.insert(user1);
@@ -80,7 +83,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	class CreateUserTest {
 
 		@Test
-		void 正_ユーザを作成() throws Exception {
+		void 正_管理者がユーザを作成() throws Exception {
 			// send request
 			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_BODY);
 			execute(request, HttpStatus.CREATED);
@@ -96,6 +99,11 @@ public class UserRestController_IT extends AbstractRestController_IT {
 		}
 
 		@Test
+		void 異_管理者以外はユーザを作成不可() throws Exception {
+			// FIXME
+		}
+
+		@Test
 		void 異_メールアドレスが既に存在する() throws Exception {
 			// send request
 			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_BODY);
@@ -108,7 +116,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 		@Test
 		void 異_無効なロールを付与() throws Exception {
 			// setup
-			final var requestBody = UserRequest.builder() //
+			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
 				.lastName(SAMPLE_STR) //
 				.password(SAMPLE_STR) //

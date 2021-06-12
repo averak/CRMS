@@ -9,7 +9,7 @@ import lombok.*;
 import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
-import dev.abelab.crms.api.request.UserRequest;
+import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
 import dev.abelab.crms.repository.UserRepository;
@@ -56,7 +56,7 @@ public class UserService {
      * @param userRequest ユーザ作成リクエスト
      */
     @Transactional
-    public void createUser(UserRequest userRequest) {
+    public void createUser(UserCreateRequest userRequest) {
         // 有効なロールかチェック
         this.userRoleLogic.checkForValidRoleId(userRequest.getRoleId());
 
