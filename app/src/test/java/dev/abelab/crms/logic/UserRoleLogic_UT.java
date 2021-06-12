@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.ArgumentMatchers.anyInt;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
@@ -59,7 +58,8 @@ public class UserRoleLogic_UT extends AbstractLogic_UT {
 
         Stream<Arguments> 正_無効なロールを付与() {
             return Stream.of( // ロールID
-                arguments(0));
+                arguments(0), //
+                arguments(UserRoleEnum.values().length + 1));
         }
 
     }
