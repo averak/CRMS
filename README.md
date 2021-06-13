@@ -15,36 +15,41 @@ This app is a clubroom reservation management system.
 - Java OpenJDK 11
 - docker-compose
 
-### How to run
+### Usage
 
-`$ java -jar crms-<version>.jar`
+If you want to run on Windows, you can use `gradlew.bat` instead of of `gradlew`.
 
-### How to run on dev environment
-
-1. Clone this repository
-2. Run `$ cd crms`
-3. Run `$ docker-compose up -d`
-4. Run application
-   - macOS or Linux: `$ ./gradlew bootRun`
-   - Windows: `$ ./gradlew.bat bootRun`
-
-### How to build
-
-1. Run `$ cd crms`.
-2. Run build
-   - macOS or Linux: `$ ./gradlew build`
-   - Windows: `$ ./gradlew.bat build`
-3. When build successful, you can find .jar file in `app/build/libs`
-
-### How to run test
+#### How to bulid
 
 ```sh
-# run only unit test
-$ ./gradlew unitTest
-# run only integration test
-$ ./gradlew integrationTest
-# run all test
+$ ./gradlew build
+```
+
+When build successful, you can find .jar file in `app/build/libs`
+
+#### How to run
+
+Default port is `8080`. If you want to change port, run with `-Dserver.port=XXXX`.
+
+```sh
+# 1. run .jar file
+$ java -jar crms-<version>.jar
+
+# 2. run on dev environment
+$ ./gradlew bootRun
+```
+
+#### How to test
+
+```sh
+# 1 all tests
 $ ./gradlew test
+
+# 2. only unit tests
+$ ./gradlew unitTest
+
+# 3. only integration tests
+$ ./gradlew integrationTest
 ```
 
 ### API docs
