@@ -10,6 +10,7 @@ import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.api.request.UserCreateRequest;
+import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
 import dev.abelab.crms.repository.UserRepository;
@@ -49,27 +50,47 @@ public class UserService {
     /**
      * ユーザを作成
      *
-     * @param userRequest ユーザ作成リクエスト
+     * @param requestBody ユーザ作成リクエスト
      */
     @Transactional
-    public void createUser(UserCreateRequest userRequest) {
+    public void createUser(UserCreateRequest requestBody) {
         // 有効なロールかチェック
-        this.userRoleLogic.checkForValidRoleId(userRequest.getRoleId());
+        this.userRoleLogic.checkForValidRoleId(requestBody.getRoleId());
 
         // ユーザの作成
         final var user = User.builder() //
-            .firstName(userRequest.getFirstName()) //
-            .lastName(userRequest.getLastName()) //
-            .email(userRequest.getEmail()) //
-            .password(userRequest.getPassword()) //
-            .roleId(userRequest.getRoleId()) //
+            .firstName(requestBody.getFirstName()) //
+            .lastName(requestBody.getLastName()) //
+            .email(requestBody.getEmail()) //
+            .password(requestBody.getPassword()) //
+            .roleId(requestBody.getRoleId()) //
             .build();
 
         this.userRepository.insert(user);
     }
 
     /**
+     * ユーザを更新
+     *
+     * @param userId ユーザID
+     *
+     * @param requestBody ユーザ更新リクエスト
+     */
+    @Transactional
+    public void updateUser(int userId, UserUpdateRequest requestBody) {
+        final var user = this.userRepository.selectById(userId);
+        user.setFirstName(requestBody.getFirstName());
+        user.setLastName(requestBody.getLastName());
+        user.setEmail(requestBody.getEmail());
+        user.setPassword(requestBody.getPassword());
+        user.setRoleId(requestBody.getRoleId());
+        this.userRepository.update(user);
+    }
+
+    /**
      * ユーザを削除
+     *
+     * @param userId ユーザID
      */
     @Transactional
     public void deleteUser(int userId) {

@@ -3,13 +3,13 @@ package dev.abelab.crms.api.request;
 import lombok.*;
 
 /**
- * ユーザ作成リクエスト
+ * ユーザ更新リクエスト
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserCreateRequest {
+public class UserUpdateRequest {
 
     /**
      * ファーストネーム
