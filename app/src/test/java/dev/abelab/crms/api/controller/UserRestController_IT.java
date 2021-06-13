@@ -131,4 +131,52 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 	}
 
+	/**
+	 * ユーザ更新APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class UpdateUserTest {
+
+		@Test
+		void 正_管理者がユーザを更新() {
+			// FIXME
+		}
+
+		@Test
+		void 異_管理者以外はユーザを更新不可() {
+			// FIXME
+		}
+
+		@Test
+		void 異_更新対象ユーザが存在しない() {
+			// FIXME
+		}
+
+	}
+
+	/**
+	 * ユーザ削除APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class DeleteUserTest {
+
+		@Test
+		void 正_管理者がユーザを削除() {
+			// FIXME
+		}
+
+		@Test
+		void 異_管理者以外はユーザを削除不可() {
+			// FIXME
+		}
+
+		@Test
+		void 異_削除対象ユーザが存在しない() {
+			// FIXME
+		}
+
+	}
+
 }
