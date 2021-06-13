@@ -2,6 +2,7 @@ package dev.abelab.crms.api.controller;
 
 import static java.lang.String.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
 
@@ -30,6 +32,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String GET_USERS_PATH = BASE_PATH;
 	static final String CREATE_USER_PATH = BASE_PATH;
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
+	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 
 	// API Request Body
 	static final UserCreateRequest CREATE_USER_BODY = UserCreateRequest.builder() //
@@ -138,17 +141,17 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	class UpdateUserTest {
 
 		@Test
-		void 正_管理者がユーザを更新() {
+		void 正_管理者がユーザを更新() throws Exception {
 			// FIXME
 		}
 
 		@Test
-		void 異_管理者以外はユーザを更新不可() {
+		void 異_管理者以外はユーザを更新不可() throws Exception {
 			// FIXME
 		}
 
 		@Test
-		void 異_更新対象ユーザが存在しない() {
+		void 異_更新対象ユーザが存在しない() throws Exception {
 			// FIXME
 		}
 
@@ -162,17 +165,26 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	class DeleteUserTest {
 
 		@Test
-		void 正_管理者がユーザを削除() {
+		void 正_管理者がユーザを削除() throws Exception {
+			final var user = UserSample.builder().id(2).email("email2").build();
+			userRepository.insert(user);
+
+			// send request
+			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var exception = assertThrows(BaseException.class, () -> userRepository.selectById(user.getId()));
+			assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_USER);
+		}
+
+		@Test
+		void 異_管理者以外はユーザを削除不可() throws Exception {
 			// FIXME
 		}
 
 		@Test
-		void 異_管理者以外はユーザを削除不可() {
-			// FIXME
-		}
-
-		@Test
-		void 異_削除対象ユーザが存在しない() {
+		void 異_削除対象ユーザが存在しない() throws Exception {
 			// FIXME
 		}
 
