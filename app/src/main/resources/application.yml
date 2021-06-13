@@ -17,6 +17,9 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
 
+server:
+  port: 8080
+
 crms:
   package: dev.abelab.crms
   mybatis:
