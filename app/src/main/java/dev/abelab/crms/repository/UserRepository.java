@@ -49,7 +49,11 @@ public class UserRepository {
      * @param userId ユーザID
      */
     public void deleteById(int userId) {
-        this.userMapper.deleteByPrimaryKey(userId);
+        if (this.existsById(userId)) {
+            this.userMapper.deleteByPrimaryKey(userId);
+        } else {
+            throw new NotFoundException(ErrorCode.NOT_FOUND_USER);
+        }
     }
 
     /**
@@ -87,6 +91,22 @@ public class UserRepository {
         final var example = new UserExample();
         example.setOrderByClause("updated_at desc");
         return userMapper.selectByExample(example);
+    }
+
+    /**
+     * ユーザIDの存在確認
+     *
+     * @param userId ユーザID
+     *
+     * @return is userId exists?
+     */
+    public boolean existsById(int userId) {
+        try {
+            this.selectById(userId);
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 
     /**

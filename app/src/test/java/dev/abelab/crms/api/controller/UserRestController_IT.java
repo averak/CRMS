@@ -185,7 +185,9 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 異_削除対象ユーザが存在しない() throws Exception {
-			// FIXME
+			// verify
+			final var request = deleteRequest(format(DELETE_USER_PATH, SAMPLE_INT));
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
 
 	}
