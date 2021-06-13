@@ -51,7 +51,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	 */
 	@Nested
 	@TestInstance(PER_CLASS)
-	class GetUsersTest {
+	class GetUsersTest extends AbstractRestControllerInitialization_IT {
 
 		@Test
 		void 正_管理者がユーザ一覧を取得() throws Exception {
@@ -83,7 +83,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	 */
 	@Nested
 	@TestInstance(PER_CLASS)
-	class CreateUserTest {
+	class CreateUserTest extends AbstractRestControllerInitialization_IT {
 
 		@Test
 		void 正_管理者がユーザを作成() throws Exception {
@@ -138,7 +138,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	 */
 	@Nested
 	@TestInstance(PER_CLASS)
-	class UpdateUserTest {
+	class UpdateUserTest extends AbstractRestControllerInitialization_IT {
 
 		@Test
 		void 正_管理者がユーザを更新() throws Exception {
@@ -162,7 +162,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	 */
 	@Nested
 	@TestInstance(PER_CLASS)
-	class DeleteUserTest {
+	class DeleteUserTest extends AbstractRestControllerInitialization_IT {
 
 		@Test
 		void 正_管理者がユーザを削除() throws Exception {

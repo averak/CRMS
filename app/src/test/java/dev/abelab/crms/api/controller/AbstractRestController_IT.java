@@ -4,17 +4,23 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.flywaydb.core.Flyway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -27,6 +33,7 @@ import dev.abelab.crms.api.response.ErrorResponse;
  * Abstract Rest Controller Integration Test
  */
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 @IntegrationTest
 public abstract class AbstractRestController_IT {
 
@@ -45,22 +52,10 @@ public abstract class AbstractRestController_IT {
 	WebApplicationContext webApplicationContext;
 
 	/**
-	 * DB Migration
+	 * Transaction Manager
 	 */
 	@Autowired
-	Flyway flyway;
-
-	@BeforeEach
-	void setup() {
-		// init DB
-		this.flyway.clean();
-		this.flyway.migrate();
-
-		// set Mock MVC
-		this.mockMvc = MockMvcBuilders //
-			.webAppContextSetup(this.webApplicationContext) //
-			.build();
-	}
+	private PlatformTransactionManager transactionManager;
 
 	/**
 	 * GET request
@@ -193,7 +188,7 @@ public abstract class AbstractRestController_IT {
 	/**
 	 * Execute request / verify exception
 	 *
-	 * @param request HTTP request builder
+	 * @param request   HTTP request builder
 	 *
 	 * @param exception expected exception
 	 *
@@ -203,17 +198,45 @@ public abstract class AbstractRestController_IT {
 	 */
 	public ErrorResponse execute(final MockHttpServletRequestBuilder request, final BaseException exception) throws Exception {
 		final var result = mockMvc.perform(request).andReturn();
-        final var response = ConvertUtil.convertJsonToObject(result.getResponse().getContentAsString(), ErrorResponse.class);
+		final var response = ConvertUtil.convertJsonToObject(result.getResponse().getContentAsString(), ErrorResponse.class);
 
 		try {
-            assertThat(result.getResponse().getStatus()).isEqualTo(exception.getHttpStatus().value());
-            assertThat(response.getCode()).isEqualTo(exception.getErrorCode().getCode());
+			assertThat(result.getResponse().getStatus()).isEqualTo(exception.getHttpStatus().value());
+			assertThat(response.getCode()).isEqualTo(exception.getErrorCode().getCode());
 		} catch (final AssertionError e) {
 			Optional.ofNullable(result.getResolvedException()).ifPresent(Throwable::printStackTrace);
 			throw e;
 		}
 
 		return response;
+	}
+
+	@BeforeEach
+	void setup() {
+		this.mockMvc = MockMvcBuilders //
+			.webAppContextSetup(this.webApplicationContext) //
+			.build();
+	}
+
+	/**
+	 * Abstract rest controller initialization IT
+	 */
+	public abstract class AbstractRestControllerInitialization_IT {
+
+		private TransactionDefinition def;
+		private TransactionStatus status;
+
+		@BeforeEach
+		public void before() {
+			this.def = new DefaultTransactionDefinition();
+			status = transactionManager.getTransaction(this.def);
+		}
+
+		@AfterEach
+		public void after() {
+			transactionManager.rollback(this.status);
+		}
+
 	}
 
 }
