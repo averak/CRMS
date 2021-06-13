@@ -31,9 +31,6 @@ public class UserService {
      */
     @Transactional
     public UsersResponse getUsers() {
-        // FIXME: 権限チェック
-        // this.userLogic.checkAdmin(userId);
-
         // ユーザの取得
         final var users = userRepository.findAll();
         final var userResponses = users.stream().map(user -> {
@@ -69,6 +66,14 @@ public class UserService {
             .build();
 
         this.userRepository.insert(user);
+    }
+
+    /**
+     * ユーザを削除
+     */
+    @Transactional
+    public void deleteUser(int userId) {
+        this.userRepository.deleteById(userId);
     }
 
 }

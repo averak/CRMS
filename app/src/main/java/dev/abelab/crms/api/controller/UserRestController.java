@@ -112,7 +112,7 @@ public class UserRestController {
     public void deleteUser( //
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId //
     ) {
-        // FIXME
+        this.userService.deleteUser(userId);
     }
 
 }

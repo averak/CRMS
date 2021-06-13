@@ -44,6 +44,15 @@ public class UserRepository {
     }
 
     /**
+     * ユーザを削除
+     *
+     * @param userId ユーザID
+     */
+    public void deleteById(int userId) {
+        this.userMapper.deleteByPrimaryKey(userId);
+    }
+
+    /**
      * IDからユーザを検索
      *
      * @param id ユーザID
