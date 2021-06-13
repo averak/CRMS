@@ -43,7 +43,6 @@ public class UserService {
                 .lastName(user.getLastName()) //
                 .email(user.getEmail()) //
                 .roleId(user.getRoleId()) //
-                .deleted(user.getDeleted()) //
                 .build();
         }).collect(Collectors.toList());
 
@@ -67,7 +66,6 @@ public class UserService {
             .email(userRequest.getEmail()) //
             .password(userRequest.getPassword()) //
             .roleId(userRequest.getRoleId()) //
-            .deleted(false) //
             .build();
 
         this.userRepository.insert(user);

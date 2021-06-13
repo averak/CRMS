@@ -95,7 +95,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			assertThat(createdUser.getPassword()).isEqualTo(CREATE_USER_BODY.getPassword());
 			assertThat(createdUser.getEmail()).isEqualTo(CREATE_USER_BODY.getEmail());
 			assertThat(createdUser.getRoleId()).isEqualTo(CREATE_USER_BODY.getRoleId());
-			assertThat(createdUser.getDeleted()).isEqualTo(false);
 		}
 
 		@Test
