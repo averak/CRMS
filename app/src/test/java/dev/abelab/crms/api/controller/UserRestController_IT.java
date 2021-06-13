@@ -15,6 +15,7 @@ import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.api.request.UserCreateRequest;
+import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
@@ -34,15 +35,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 
-	// API Request Body
-	static final UserCreateRequest CREATE_USER_BODY = UserCreateRequest.builder() //
-		.firstName(SAMPLE_STR) //
-		.lastName(SAMPLE_STR) //
-		.password(SAMPLE_STR) //
-		.email(SAMPLE_STR) //
-		.roleId(UserRoleEnum.MEMBER.getId()) //
-		.build();
-
 	@Autowired
 	UserRepository userRepository;
 
@@ -61,7 +53,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			userRepository.insert(user1);
 			userRepository.insert(user2);
 
-			// send request
+			// test
 			final var request = getRequest(GET_USERS_PATH);
 			final var response = execute(request, HttpStatus.OK, UsersResponse.class);
 
@@ -87,17 +79,26 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザを作成() throws Exception {
-			// send request
-			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_BODY);
+			// request body
+			final var requestBody = UserCreateRequest.builder() //
+				.firstName(SAMPLE_STR) //
+				.lastName(SAMPLE_STR) //
+				.password(SAMPLE_STR) //
+				.email(SAMPLE_STR) //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_USER_PATH, requestBody);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
-			final var createdUser = userRepository.selectByEmail(CREATE_USER_BODY.getEmail());
-			assertThat(createdUser.getFirstName()).isEqualTo(CREATE_USER_BODY.getFirstName());
-			assertThat(createdUser.getLastName()).isEqualTo(CREATE_USER_BODY.getLastName());
-			assertThat(createdUser.getPassword()).isEqualTo(CREATE_USER_BODY.getPassword());
-			assertThat(createdUser.getEmail()).isEqualTo(CREATE_USER_BODY.getEmail());
-			assertThat(createdUser.getRoleId()).isEqualTo(CREATE_USER_BODY.getRoleId());
+			final var createdUser = userRepository.selectByEmail(requestBody.getEmail());
+			assertThat(createdUser.getFirstName()).isEqualTo(requestBody.getFirstName());
+			assertThat(createdUser.getLastName()).isEqualTo(requestBody.getLastName());
+			assertThat(createdUser.getPassword()).isEqualTo(requestBody.getPassword());
+			assertThat(createdUser.getEmail()).isEqualTo(requestBody.getEmail());
+			assertThat(createdUser.getRoleId()).isEqualTo(requestBody.getRoleId());
 		}
 
 		@Test
@@ -107,8 +108,17 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 異_メールアドレスが既に存在する() throws Exception {
-			// send request
-			final var request = postRequest(CREATE_USER_PATH, CREATE_USER_BODY);
+			// request body
+			final var requestBody = UserCreateRequest.builder() //
+				.firstName(SAMPLE_STR) //
+				.lastName(SAMPLE_STR) //
+				.password(SAMPLE_STR) //
+				.email(SAMPLE_STR) //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_USER_PATH, requestBody);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
@@ -126,7 +136,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.roleId(0) //
 				.build();
 
-			// verify
+			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
 		}
@@ -141,18 +151,47 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	class UpdateUserTest extends AbstractRestControllerInitialization_IT {
 
 		@Test
-		void 正_管理者がユーザを更新() throws Exception {
-			// FIXME
-		}
+		void 正_ユーザを更新() throws Exception {
+			// setup
+			final var user = UserSample.builder().build();
+			userRepository.insert(user);
 
-		@Test
-		void 異_管理者以外はユーザを更新不可() throws Exception {
-			// FIXME
+			// request body
+			final var requestBody = UserUpdateRequest.builder() //
+				.firstName(SAMPLE_STR + "XXX") //
+				.lastName(SAMPLE_STR + "XXX") //
+				.password(SAMPLE_STR + "XXX") //
+				.email(SAMPLE_STR + "XXX") //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.build();
+
+			// test
+			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var updatedUser = userRepository.selectByEmail(requestBody.getEmail());
+			assertThat(updatedUser.getFirstName()).isEqualTo(requestBody.getFirstName());
+			assertThat(updatedUser.getLastName()).isEqualTo(requestBody.getLastName());
+			assertThat(updatedUser.getPassword()).isEqualTo(requestBody.getPassword());
+			assertThat(updatedUser.getEmail()).isEqualTo(requestBody.getEmail());
+			assertThat(updatedUser.getRoleId()).isEqualTo(requestBody.getRoleId());
 		}
 
 		@Test
 		void 異_更新対象ユーザが存在しない() throws Exception {
-			// FIXME
+			// request body
+			final var requestBody = UserUpdateRequest.builder() //
+				.firstName(SAMPLE_STR + "XXX") //
+				.lastName(SAMPLE_STR + "XXX") //
+				.password(SAMPLE_STR + "XXX") //
+				.email(SAMPLE_STR + "XXX") //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.build();
+
+			// test
+			final var request = putRequest(format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
 
 	}
@@ -166,10 +205,11 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザを削除() throws Exception {
-			final var user = UserSample.builder().id(2).email("email2").build();
+			// setup
+			final var user = UserSample.builder().build();
 			userRepository.insert(user);
 
-			// send request
+			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
 			execute(request, HttpStatus.OK);
 
@@ -185,7 +225,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 異_削除対象ユーザが存在しない() throws Exception {
-			// verify
+			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, SAMPLE_INT));
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
