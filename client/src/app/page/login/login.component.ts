@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 
 import { UserLoginRequest } from 'src/app/model/UserLoginRequest';
 
@@ -21,6 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.user);
+		const message = `Hello ${this.user.email}`
+		alert(message);
   }
 }
