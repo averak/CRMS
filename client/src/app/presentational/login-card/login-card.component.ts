@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-
 import { UserLoginRequest } from 'src/app/model/UserLoginRequest';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'app-login-card',
+  templateUrl: './login-card.component.html',
+  styleUrls: ['./login-card.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginCardComponent implements OnInit {
   user!: UserLoginRequest;
   hide = true;
+
   constructor() {}
 
   ngOnInit(): void {
@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const message = `Hello ${this.user.email}`;
     console.log(this.user);
   }
 }
