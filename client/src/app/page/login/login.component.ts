@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-		const message = `Hello ${this.user.email}`
-		alert(message);
+    const message = `Hello ${this.user.email}`;
+    alert(message);
   }
 }
