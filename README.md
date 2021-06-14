@@ -58,3 +58,7 @@ This project support Swagger UI.
 
 1. Run application
 2. Access to [Swagger UI](http://localhost:8080/swagger-ui/)
+
+## Wiki
+
+You can find more details on [wiki](https://github.com/averak/CRMS/wiki).
