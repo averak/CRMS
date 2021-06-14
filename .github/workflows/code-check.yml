@@ -1,4 +1,4 @@
-name: test
+name: code check
 
 on:
   push:
@@ -9,16 +9,11 @@ on:
       - master
 
 jobs:
-  test:
+  code-check:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: "11"
 
       - uses: actions/setup-node@v2
         with:
@@ -36,13 +31,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Run back-end test
-        run: |
-          docker-compose up -d
-          ./gradlew test
-
-      - name: Run front-end test
+      - name: Code check
         run: |
           cd client
           yarn
-          yarn run test:ci
+          yarn run check
