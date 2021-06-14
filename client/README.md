@@ -1,27 +1,53 @@
-# Client
+# [CRMS Client](https://averak.github.io/CRMS/)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
+![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)
+![Version 1.0](https://img.shields.io/badge/version-1.0-yellow.svg)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](../LICENSE)
 
-## Development server
+This app is front-end of clubroom reservation management system.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Develop
 
-## Code scaffolding
+### Requirements
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Node.js 14
+- yarn
 
-## Build
+### Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+If you don't have installed node, check [wiki](https://github.com/averak/CRMS/wiki).
 
-## Running unit tests
+And then, you need to install the dependencies as follows.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```sh
+$ yarn
+```
 
-## Running end-to-end tests
+### How to build
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```sh
+$ yarn build
+```
 
-## Further help
+### How to run dev-server
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```sh
+$ yarn start
+```
+
+Now, you can access to [localhost:4200](http://localhost:4200/).
+
+### How to check code
+
+You need to do this before committing.
+
+```sh
+# lint & type check
+$ yarn run check
+
+# code format
+$ yarn run format
+
+# test
+$ yarn run test
+```

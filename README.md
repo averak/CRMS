@@ -13,7 +13,6 @@ This app is a clubroom reservation management system.
 
 ### Requirements
 
-- Angular
 - Java OpenJDK 11
 - docker-compose
 
