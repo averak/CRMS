@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// angular material
+// UI modules
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
@@ -14,8 +14,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+// components
+import { FooterComponent } from './footer/footer.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [FooterComponent],
   imports: [],
   exports: [
     BrowserAnimationsModule,
@@ -30,6 +33,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSlideToggleModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+
+    // components
+    FooterComponent,
   ],
 })
 export class SharedModule {}
