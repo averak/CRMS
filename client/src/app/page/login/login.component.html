@@ -1,26 +1,18 @@
 <mat-card class="login-card">
   <mat-card-header>
-    <mat-card-title class="login-title">Login</mat-card-title>
+    <mat-card-title class="login-title">部室予約管理システム</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content fxLayoutAlign="center">
     <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
       <mat-form-field class="full-width-input">
-        <input matInput placeholder="Email" id="email" [(ngModel)]="user.email" name="email" #email="ngModel" required />
-        <mat-error> Please provide a valid email address </mat-error>
+        <input matInput placeholder="Email" [(ngModel)]="user.email" name="email" required />
+        <mat-error> メールアドレスを入力してください </mat-error>
       </mat-form-field>
 
       <mat-form-field class="full-width-input">
-        <input
-          [type]="hide ? 'password' : 'text'"
-          matInput
-          placeholder="Password"
-          [(ngModel)]="user.password"
-          name="password"
-          #password="ngModel"
-          required
-        />
+        <input [type]="hide ? 'password' : 'text'" matInput placeholder="Password" [(ngModel)]="user.password" name="password" required />
         <mat-icon matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}</mat-icon>
-        <mat-error> Please provide a valid password </mat-error>
+        <mat-error> パスワードを入力してください </mat-error>
       </mat-form-field>
 
       <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
