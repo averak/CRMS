@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // components
@@ -19,10 +20,10 @@ import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [FooterComponent],
-  imports: [],
-  exports: [
-    BrowserAnimationsModule,
+  imports: [
     FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
     MatInputModule,
     MatCardModule,
     MatMenuModule,
@@ -32,6 +33,23 @@ import { FooterComponent } from './footer/footer.component';
     MatDividerModule,
     MatSlideToggleModule,
     MatSelectModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+  ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatDividerModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatSnackBarModule,
     MatProgressSpinnerModule,
 
     // components

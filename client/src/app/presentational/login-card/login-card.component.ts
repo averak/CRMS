@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserLoginRequest } from 'src/app/model/UserLoginRequest';
+
+import { AlertService } from 'src/app/service/alert.service';
+import { UserLoginRequest } from 'src/app/model/user-login-request';
 
 @Component({
   selector: 'app-login-card',
@@ -10,7 +12,7 @@ export class LoginCardComponent implements OnInit {
   user!: UserLoginRequest;
   hide = true;
 
-  constructor() {}
+  constructor(private alertService: AlertService) {}
 
   ngOnInit(): void {
     this.user = {
@@ -20,6 +22,6 @@ export class LoginCardComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.user);
+    this.alertService.openSnackBar('ログインに失敗しました');
   }
 }

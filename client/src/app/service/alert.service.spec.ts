@@ -1,0 +1,19 @@
+import { TestBed } from '@angular/core/testing';
+
+// shared module
+import { SharedModule } from 'src/app/shared/shared.module';
+
+import { AlertService } from './alert.service';
+
+describe('AlertService', () => {
+  let service: AlertService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ imports: [SharedModule] });
+    service = TestBed.inject(AlertService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});
