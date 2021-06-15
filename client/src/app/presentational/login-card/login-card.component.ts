@@ -22,6 +22,6 @@ export class LoginCardComponent implements OnInit {
   }
 
   onSubmit() {
-    this.alertService.openSnackBar('ログインに失敗しました');
+    this.alertService.openErrorSnackBar('ログインに失敗しました');
   }
 }
