@@ -1,0 +1,20 @@
+.sidenav-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.side-menu {
+  background-color: #293642;
+  width: 230px;
+}
+
+.mat-list-item {
+  color: #d0d0d0;
+}
+
+.column-text {
+  margin-left: 5%;
+}

@@ -11,6 +11,8 @@ import { LoginComponent } from './page/login/login.component';
 import { LoginFormComponent } from './container/login-form/login-form.component';
 import { LoginCardComponent } from './presentational/login-card/login-card.component';
 import { ErrorPageComponent } from './page/error-page/error-page.component';
+import { ReservationsComponent } from './page/reservations/reservations.component';
+import { SidenavComponent } from './container/sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { ErrorPageComponent } from './page/error-page/error-page.component';
     LoginFormComponent,
     LoginCardComponent,
     ErrorPageComponent,
+    ReservationsComponent,
+    SidenavComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [],

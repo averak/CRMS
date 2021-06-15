@@ -13,6 +13,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // components
@@ -35,6 +37,8 @@ import { SnackBarComponent } from './snack-bar/snack-bar.component';
     MatSlideToggleModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatSidenavModule,
+    MatListModule,
     MatProgressSpinnerModule,
   ],
   exports: [
@@ -51,6 +55,8 @@ import { SnackBarComponent } from './snack-bar/snack-bar.component';
     MatSlideToggleModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatSidenavModule,
+    MatListModule,
     MatProgressSpinnerModule,
 
     // components
