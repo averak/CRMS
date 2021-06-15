@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { SnackBarComponent } from 'src/app/shared/snack-bar/snack-bar.component';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
   constructor(private snackBar: MatSnackBar) {}
 
-  openSuccessSnackBar(message: string, duration: number = 5000): void {
-    this.snackBar.open(message, 'close', { duration });
-  }
-
-  openErrorSnackBar(message: string, duration: number = -1): void {
-    this.snackBar.open(message, 'close', { duration });
+  openSnackBar(message: string, type: 'SUCCESS' | 'INFO' | 'ERROR' | 'WARN' = 'INFO'): void {
+    const duration = type == 'SUCCESS' || type == 'INFO' ? 5000 : -1;
+    this.snackBar.openFromComponent(SnackBarComponent, {
+      duration: duration,
+      data: { message: message, level: type },
+    });
   }
 }

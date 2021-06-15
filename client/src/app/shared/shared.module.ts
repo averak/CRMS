@@ -17,9 +17,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // components
 import { FooterComponent } from './footer/footer.component';
+import { SnackBarComponent } from './snack-bar/snack-bar.component';
 
 @NgModule({
-  declarations: [FooterComponent],
+  declarations: [FooterComponent, SnackBarComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -54,6 +55,7 @@ import { FooterComponent } from './footer/footer.component';
 
     // components
     FooterComponent,
+    SnackBarComponent,
   ],
 })
 export class SharedModule {}

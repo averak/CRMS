@@ -1,0 +1,13 @@
+<div class="snack-container" fxLayout="row" fxLayoutAlign="center">
+  <span class="snack-bar-status-badge">
+    <mat-icon>{{ getIcon }}</mat-icon>
+  </span>
+
+  <span class="snack-bar-text">{{ data.message }}</span>
+
+  <span class="snack-bar-close-button">
+    <button mat-icon-button (click)="dismiss()">
+      <mat-icon color="warn">close</mat-icon>
+    </button>
+  </span>
+</div>
