@@ -12,36 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: back-end deploy
         env:
           TOKEN: ${{secrets.TOKEN}}
         run: |
           curl -X POST -H 'Content-Type: application/json' 'https://api.abelab.dev/auto-deploy/' -d '{"app": "CRMS", "token": "'"$TOKEN"'"}'
-
-      - name: front-end build
-        run: |
-          cd client
-          yarn
-          yarn run build --base-href https://averak.github.io/CRMS/
-
-      - name: front-end deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./client/dist
