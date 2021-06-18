@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  newsMessage: string = '';
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.newsMessage = '現在のBCPレベルは3です';
+  }
 }

@@ -29,10 +29,10 @@ app-user-menu {
   padding: 0px 10px 0px 0px;
 }
 
-marquee {
+app-header-news {
   display: flex;
   margin-left: 10px;
   align-items: center;
-  width: 20%;
+  width: 15%;
   color: red;
 }
