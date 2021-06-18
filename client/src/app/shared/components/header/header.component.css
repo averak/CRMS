@@ -1,17 +1,19 @@
 header {
   display: flex;
+  height: 46px;
   box-shadow: 0 0 0 1px #e0e0e0;
 }
 
-.title-box {
+.title {
   display: flex;
+  width: 230px;
   background-color: #06a98a;
 }
 
 span {
   display: flex;
   align-items: center;
-  padding: 8px 60px 8px 16px;
+  margin-left: 20px;
   font-size: 20px;
   font-weight: bold;
   color: #ffffff;
@@ -23,4 +25,11 @@ app-user-menu {
   align-items: center;
   margin-left: auto;
   padding: 0px 10px 0px 0px;
+}
+
+marquee {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  color: red;
 }

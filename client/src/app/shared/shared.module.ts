@@ -25,12 +25,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 
 @NgModule({
-  declarations: [
-    FooterComponent,
-    SnackBarComponent,
-    HeaderComponent,
-    UserMenuComponent,
-  ],
+  declarations: [FooterComponent, SnackBarComponent, HeaderComponent, UserMenuComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -73,7 +68,7 @@ import { UserMenuComponent } from './components/user-menu/user-menu.component';
     HeaderComponent,
     FooterComponent,
     SnackBarComponent,
-		UserMenuComponent,
+    UserMenuComponent,
   ],
 })
 export class SharedModule {}
