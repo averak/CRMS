@@ -13,6 +13,7 @@ import { LoginCardComponent } from './components/presentational/login-card/login
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
+import { TitleBoxComponent } from './components/container/title-box/title-box.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SidenavComponent } from './components/container/sidenav/sidenav.compone
     ErrorPageComponent,
     ReservationsComponent,
     SidenavComponent,
+    TitleBoxComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [],

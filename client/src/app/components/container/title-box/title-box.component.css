@@ -1,0 +1,10 @@
+.title-box {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+h2 {
+  color: #525252;
+  font-weight: medium;
+  margin-left: 30px;
+}
