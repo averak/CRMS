@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-header-news',
@@ -6,9 +6,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./header-news.component.css'],
 })
 export class HeaderNewsComponent implements OnInit {
-  @Input() message: string = '';
+  message: string = '';
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.message = '現在のBCPレベルは3です。感染対策を徹底してください。';
+  }
 }

@@ -3,21 +3,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 // shared module
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { UserMenuComponent } from './user-menu.component';
+import { HeaderUserMenuComponent } from './header-user-menu.component';
 
-describe('UserMenuComponent', () => {
-  let component: UserMenuComponent;
-  let fixture: ComponentFixture<UserMenuComponent>;
+describe('HeaderUserMenuComponent', () => {
+  let component: HeaderUserMenuComponent;
+  let fixture: ComponentFixture<HeaderUserMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserMenuComponent],
+      declarations: [HeaderUserMenuComponent],
       imports: [SharedModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserMenuComponent);
+    fixture = TestBed.createComponent(HeaderUserMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

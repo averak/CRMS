@@ -22,16 +22,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
-import { UserMenuComponent } from './components/user-menu/user-menu.component';
-import { HeaderNewsComponent } from './components/header-news/header-news.component';
+import { HeaderNewsComponent } from './components/header/header-news/header-news.component';
+import { HeaderUserMenuComponent } from './components/header/header-user-menu/header-user-menu.component';
 
 @NgModule({
   declarations: [
     FooterComponent,
     SnackBarComponent,
     HeaderComponent,
-    UserMenuComponent,
     HeaderNewsComponent,
+    HeaderUserMenuComponent,
   ],
   imports: [
     FormsModule,
@@ -75,7 +75,6 @@ import { HeaderNewsComponent } from './components/header-news/header-news.compon
     HeaderComponent,
     FooterComponent,
     SnackBarComponent,
-    UserMenuComponent,
   ],
 })
 export class SharedModule {}

@@ -21,18 +21,18 @@ span {
   background-color: #06a98a;
 }
 
-app-user-menu {
-  display: flex;
-  flex: none;
-  align-items: center;
-  margin-left: auto;
-  padding: 0px 10px 0px 0px;
-}
-
 app-header-news {
   display: flex;
   margin-left: 10px;
   align-items: center;
   width: 15%;
   color: red;
+}
+
+app-header-user-menu {
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin-left: auto;
+  padding: 0px 10px 0px 0px;
 }
