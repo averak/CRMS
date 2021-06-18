@@ -1,13 +1,17 @@
-<div class="snack-container" fxLayout="row" fxLayoutAlign="center">
-  <span class="snack-bar-status-badge">
-    <mat-icon>{{ getIcon }}</mat-icon>
-  </span>
-
-  <span class="snack-bar-text">{{ data.message }}</span>
+<div
+  class="snack-bar"
+  [class.success-snack-bar]="data.level === 'SUCCESS'"
+  [class.info-snack-bar]="data.level === 'INFO'"
+  [class.warn-snack-bar]="data.level === 'WARN'"
+  [class.error-snack-bar]="data.level === 'ERROR'"
+  fxLayout="row"
+  fxLayoutAlign="none center"
+>
+  <span>{{ data.message }}</span>
 
   <span class="snack-bar-close-button">
     <button mat-icon-button (click)="dismiss()">
-      <mat-icon color="warn">close</mat-icon>
+      <mat-icon class="snack-bar-close-icon">close</mat-icon>
     </button>
   </span>
 </div>

@@ -1,11 +1,7 @@
-.snack-container {
+.snack-bar {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.mat-icon {
-  vertical-align: middle;
+  min-height: 50px;
+  padding: 6px 4px 6px 20px;
 }
 
 span {
@@ -14,10 +10,30 @@ span {
   margin-bottom: auto;
 }
 
-.snack-bar-text {
-  margin-left: 1%;
-}
-
 .snack-bar-close-button {
   margin-left: auto;
+}
+
+.snack-bar-close-icon {
+  color: #df646f;
+}
+
+.success-snack-bar {
+  color: #189b66;
+  background-color: #ddffdd;
+}
+
+.info-snack-bar {
+  color: #508ddd;
+  background-color: #edf8fb;
+}
+
+.warn-snack-bar {
+  color: #8c8c8c;
+  background-color: #fffceb;
+}
+
+.error-snack-bar {
+  color: #df646f;
+  background-color: #fef4f6;
 }

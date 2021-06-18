@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
+import { AlertModel } from 'src/app/model/alert-model';
+
 interface SnackBarData {
   message: string;
   level: 'SUCCESS' | 'INFO' | 'ERROR' | 'WARN';
@@ -14,25 +16,12 @@ interface SnackBarData {
 export class SnackBarComponent implements OnInit {
   constructor(
     public snackBarRef: MatSnackBarRef<SnackBarComponent>,
-    @Inject(MAT_SNACK_BAR_DATA) public data: SnackBarData
+    @Inject(MAT_SNACK_BAR_DATA) public data: AlertModel
   ) {}
 
   ngOnInit(): void {}
 
   dismiss() {
     this.snackBarRef.dismiss();
-  }
-
-  get getIcon(): string {
-    switch (this.data.level) {
-      case 'SUCCESS':
-        return 'check_circle';
-      case 'INFO':
-        return 'info';
-      case 'ERROR':
-        return 'error';
-      case 'WARN':
-        return 'warning';
-    }
   }
 }

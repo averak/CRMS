@@ -9,8 +9,9 @@ import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar
 export class AlertService {
   constructor(private snackBar: MatSnackBar) {}
 
-  openSnackBar(message: string, type: 'SUCCESS' | 'INFO' | 'ERROR' | 'WARN' = 'INFO'): void {
+  openSnackBar(message: string, type: 'SUCCESS' | 'INFO' | 'WARN' | 'ERROR'): void {
     const duration = type == 'SUCCESS' || type == 'INFO' ? 5000 : -1;
+
     this.snackBar.openFromComponent(SnackBarComponent, {
       duration: duration,
       data: { message: message, level: type },
