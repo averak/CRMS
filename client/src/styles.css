@@ -4,6 +4,7 @@ body {
   margin: 0;
   background-color: #fafafa;
   font-family: sans-serif;
+  overflow: hidden;
 }
 
 .mat-snack-bar-container {

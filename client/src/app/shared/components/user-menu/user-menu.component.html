@@ -1,0 +1,22 @@
+<div class="user-menu">
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>account_circle</mat-icon>
+    <span class="user-name-text">{{ userName }}</span>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <div>
+        <mat-icon>manage_accounts</mat-icon>
+        <span>プロフィール</span>
+      </div>
+    </button>
+    <button mat-menu-item>
+      <div>
+        <mat-icon>logout</mat-icon>
+        <span>ログアウト</span>
+      </div>
+    </button>
+  </mat-menu>
+</div>

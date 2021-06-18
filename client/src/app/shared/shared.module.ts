@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,11 +19,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // components
+import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { UserMenuComponent } from './components/user-menu/user-menu.component';
 
 @NgModule({
-  declarations: [FooterComponent, SnackBarComponent],
+  declarations: [
+    FooterComponent,
+    SnackBarComponent,
+    HeaderComponent,
+    UserMenuComponent,
+  ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -31,6 +39,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     MatCardModule,
     MatMenuModule,
     MatIconModule,
+    MatToolbarModule,
     MatButtonModule,
     MatTableModule,
     MatDividerModule,
@@ -49,6 +58,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     MatCardModule,
     MatMenuModule,
     MatIconModule,
+    MatToolbarModule,
     MatButtonModule,
     MatTableModule,
     MatDividerModule,
@@ -60,8 +70,10 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     MatProgressSpinnerModule,
 
     // components
+    HeaderComponent,
     FooterComponent,
     SnackBarComponent,
+		UserMenuComponent,
   ],
 })
 export class SharedModule {}

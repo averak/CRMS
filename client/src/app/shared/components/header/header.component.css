@@ -1,0 +1,26 @@
+header {
+  display: flex;
+  box-shadow: 0 0 0 1px #e0e0e0;
+}
+
+.title-box {
+  display: flex;
+  background-color: #06a98a;
+}
+
+span {
+  display: flex;
+  align-items: center;
+  padding: 8px 60px 8px 16px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #06a98a;
+}
+
+app-user-menu {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 0px 10px 0px 0px;
+}
