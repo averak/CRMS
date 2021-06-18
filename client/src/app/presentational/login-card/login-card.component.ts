@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AlertService } from 'src/app/service/alert.service';
-import { UserLoginRequest } from 'src/app/model/user-login-request';
+import { UserLoginRequest } from 'src/app/request/user-login-request';
 
 @Component({
   selector: 'app-login-card',
