@@ -6,6 +6,7 @@ header {
 
 .title {
   display: flex;
+  flex: none;
   width: 230px;
   background-color: #06a98a;
 }
@@ -22,6 +23,7 @@ span {
 
 app-user-menu {
   display: flex;
+  flex: none;
   align-items: center;
   margin-left: auto;
   padding: 0px 10px 0px 0px;
@@ -31,6 +33,6 @@ marquee {
   display: flex;
   margin-left: 10px;
   align-items: center;
-  width: 150px;
+  width: 20%;
   color: red;
 }
