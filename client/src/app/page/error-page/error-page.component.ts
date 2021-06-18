@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ErrorMessageService } from 'src/app/service/error-message.service';
+import { ErrorMessageService } from 'src/app/shared/services/error-message.service';
 
 @Component({
   selector: 'app-error-page',

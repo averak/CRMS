@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AlertService } from 'src/app/service/alert.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
 import { UserLoginRequest } from 'src/app/request/user-login-request';
 
 @Component({
