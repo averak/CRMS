@@ -18,8 +18,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // components
-import { FooterComponent } from './footer/footer.component';
-import { SnackBarComponent } from './snack-bar/snack-bar.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 
 @NgModule({
   declarations: [FooterComponent, SnackBarComponent],
