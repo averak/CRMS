@@ -3,9 +3,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 // shared module
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
-import { LoginComponent } from './page/login/login.component';
+import { LoginComponent } from './components/page/login/login.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

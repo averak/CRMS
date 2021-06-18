@@ -7,12 +7,12 @@ import { SharedModule } from './shared/shared.module';
 // components
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './page/login/login.component';
-import { LoginFormComponent } from './container/login-form/login-form.component';
-import { LoginCardComponent } from './presentational/login-card/login-card.component';
-import { ErrorPageComponent } from './page/error-page/error-page.component';
-import { ReservationsComponent } from './page/reservations/reservations.component';
-import { SidenavComponent } from './container/sidenav/sidenav.component';
+import { LoginComponent } from './components/page/login/login.component';
+import { LoginFormComponent } from './components/container/login-form/login-form.component';
+import { LoginCardComponent } from './components/presentational/login-card/login-card.component';
+import { ErrorPageComponent } from './components/page/error-page/error-page.component';
+import { ReservationsComponent } from './components/page/reservations/reservations.component';
+import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 
 @NgModule({
   declarations: [

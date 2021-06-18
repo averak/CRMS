@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // page components
-import { LoginComponent } from 'src/app/page/login/login.component';
-import { ReservationsComponent } from 'src/app/page/reservations/reservations.component';
-import { ErrorPageComponent } from 'src/app/page/error-page/error-page.component';
+import { LoginComponent } from './components/page/login/login.component';
+import { ReservationsComponent } from './components/page/reservations/reservations.component';
+import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
