@@ -44,7 +44,7 @@ public class UserRestController {
     /**
      * ユーザ作成API
      *
-     * @param userRequest ユーザ作成リクエスト
+     * @param requestBody ユーザ作成リクエスト
      */
     @ApiOperation(value = "ユーザの作成", //
         notes = "ユーザを作成する。" //
@@ -70,7 +70,7 @@ public class UserRestController {
      *
      * @param userId      ユーザID
      *
-     * @param userRequest ユーザ更新リクエスト
+     * @param requestBody ユーザ更新リクエスト
      */
     @ApiOperation(value = "ユーザの更新", //
         notes = "ユーザを更新する。" //

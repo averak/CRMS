@@ -43,7 +43,9 @@ public enum ErrorCode {
     /**
      * Unauthorized: 1500~1599
      */
-    USER_NOT_LOGGED_IN(1500, "exception.unauthorized.user_not_logged_in");
+    USER_NOT_LOGGED_IN(1500, "exception.unauthorized.user_not_logged_in"),
+
+    WRONG_PASSWORD(1501, "exception.unauthorized.wrong_password");
 
     private final int code;
 

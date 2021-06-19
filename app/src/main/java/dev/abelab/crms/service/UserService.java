@@ -7,13 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.User;
+import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
-import dev.abelab.crms.repository.UserRepository;
 
 @RequiredArgsConstructor
 @Service
