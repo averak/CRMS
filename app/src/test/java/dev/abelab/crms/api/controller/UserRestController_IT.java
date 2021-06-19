@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -37,6 +38,9 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	/**
 	 * ユーザ一覧取得APIのテスト
@@ -96,9 +100,10 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var createdUser = userRepository.selectByEmail(requestBody.getEmail());
 			assertThat(createdUser.getFirstName()).isEqualTo(requestBody.getFirstName());
 			assertThat(createdUser.getLastName()).isEqualTo(requestBody.getLastName());
-			assertThat(createdUser.getPassword()).isEqualTo(requestBody.getPassword());
 			assertThat(createdUser.getEmail()).isEqualTo(requestBody.getEmail());
 			assertThat(createdUser.getRoleId()).isEqualTo(requestBody.getRoleId());
+			// パスワードのハッシュ値
+			assertThat(passwordEncoder.matches(requestBody.getPassword(), createdUser.getPassword())).isTrue();
 		}
 
 		@Test
@@ -173,9 +178,10 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var updatedUser = userRepository.selectByEmail(requestBody.getEmail());
 			assertThat(updatedUser.getFirstName()).isEqualTo(requestBody.getFirstName());
 			assertThat(updatedUser.getLastName()).isEqualTo(requestBody.getLastName());
-			assertThat(updatedUser.getPassword()).isEqualTo(requestBody.getPassword());
 			assertThat(updatedUser.getEmail()).isEqualTo(requestBody.getEmail());
 			assertThat(updatedUser.getRoleId()).isEqualTo(requestBody.getRoleId());
+			// パスワードのハッシュ値
+			assertThat(passwordEncoder.matches(requestBody.getPassword(), updatedUser.getPassword())).isTrue();
 		}
 
 		@Test

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.*;
 import dev.abelab.crms.repository.UserRepository;
@@ -19,6 +20,8 @@ public class AuthService {
 
     private final HttpSession httpSession;
 
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * ログイン処理
      *
@@ -30,11 +33,12 @@ public class AuthService {
         final var user = this.userRepository.selectByEmail(requestBody.getEmail());
 
         // パスワードチェック
-        if (user.getPassword() != requestBody.getPassword()) {
+        if (this.passwordEncoder.matches(requestBody.getPassword(), user.getPassword())) {
+            // FIXME: セッション管理
+        } else {
             throw new UnauthorizedException(ErrorCode.WRONG_PASSWORD);
         }
 
-        // FIXME: セッション管理
     }
 
     /**
