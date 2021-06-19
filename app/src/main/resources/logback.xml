@@ -1,5 +1,0 @@
-<configuration>
-    <springProfile name="local">
-        <include resource="org/springframework/boot/logging/logback/default.xml" />
-    </springProfile>
-</configuration>

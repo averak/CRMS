@@ -1,6 +1,6 @@
 version: "3"
 services:
-  mysql:
+  db-local:
     build: ./mysql
     restart: always
     environment:
@@ -13,4 +13,18 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
-      - ./mysql/log/:/var/log/mysql
+      - ./mysql/log/local:/var/log/mysql
+  db-test:
+    build: ./mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: "crms"
+      MYSQL_USER: "crms"
+      MYSQL_PASSWORD: "crms"
+      MYSQL_ROOT_PASSWORD: "crms"
+      TZ: "Asia/Tokyo"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/log/local:/var/log/mysql
