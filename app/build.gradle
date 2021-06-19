@@ -46,6 +46,12 @@ dependencies {
     implementation "org.springframework.security:spring-security-web"
     implementation "org.springframework.security:spring-security-config"
 
+    // JWT
+    implementation "io.jsonwebtoken:jjwt:0.9.1"
+
+    // JAXB API
+    implementation "javax.xml.bind:jaxb-api:2.3.1"
+
     // flyway
     implementation "org.flywaydb:flyway-core"
 

@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import dev.abelab.crms.api.request.LoginRequest;
+import dev.abelab.crms.api.response.LoginResponse;
 import dev.abelab.crms.service.AuthService;
 
 @Api(tags = "Auth")
@@ -21,7 +22,9 @@ public class AuthRestController {
     /**
      * ログイン処理API
      *
-     * @param requestBody ログインリクエスト
+     * @param requestBody ログイン情報
+     *
+     * @return JWT
      */
     @ApiOperation(value = "ログイン", //
         notes = "ユーザのログイン処理を行う。" //
@@ -32,10 +35,10 @@ public class AuthRestController {
             @ApiResponse(code = 404, message = "ユーザが存在しない"), //
     })
     @PostMapping(value = "/login")
-    public void login( //
+    public LoginResponse login( //
         @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody //
     ) {
-        this.authService.login(requestBody);
+        return this.authService.login(requestBody);
     }
 
     /**
