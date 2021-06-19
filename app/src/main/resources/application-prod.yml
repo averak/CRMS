@@ -5,4 +5,4 @@ spring:
     password: crms
     driver: com.mysql.cj.jdbc.Driver
 
-springfox.documentation.swagger.v2.host: api.abelab.dev/crms
+springfox.documentation.swagger.v2.host: https://api.abelab.dev/crms

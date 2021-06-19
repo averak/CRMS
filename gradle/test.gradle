@@ -1,6 +1,7 @@
 test {
     useJUnitPlatform()
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    systemProperty "spring.profiles.active", "test"
     systemProperty "junit.jupiter.conditions.deactivate", "*"
     testLogging {
         exceptionFormat "full"
@@ -14,6 +15,7 @@ task integrationTest(type: Test) {
         includeTags "IntegrationTest"
     }
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    systemProperty "spring.profiles.active", "test"
     systemProperty "junit.jupiter.conditions.deactivate", "*"
     testLogging {
         exceptionFormat "full"
@@ -27,6 +29,7 @@ task unitTest(type: Test) {
         includeTags "UnitTest"
     }
     jvmArgs "-javaagent:${classpath.find { it.name.contains("jmockit") }.absolutePath}"
+    systemProperty "spring.profiles.active", "test"
     systemProperty "junit.jupiter.conditions.deactivate", "*"
     testLogging {
         exceptionFormat "full"

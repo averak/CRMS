@@ -39,7 +39,7 @@ jobs:
       - name: Run back-end test
         run: |
           docker-compose up -d
-          ./gradlew test
+          ./gradlew -Dspring.profiles.active=test test
 
       - name: Run front-end test
         run: |
