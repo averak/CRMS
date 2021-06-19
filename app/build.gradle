@@ -87,6 +87,11 @@ bootJar{
     archiveBaseName = "crms"
 }
 
+bootRun {
+    systemProperty "spring.profiles.active", "local"
+    systemProperties System.properties
+}
+
 ext {
     // path config
     PROJECT_ROOT_PATH = projectDir.absolutePath.replaceAll("\\\\", "/")
@@ -95,18 +100,25 @@ ext {
     PROPERTY_ROOT_PATH = "${rootProject.rootDir.path}/${RESOURCES_ROOT_PATH}"
     GRADLE_ROOT_PATH = "../gradle"
 
+    // run environment
+    ENVIRONMENT =  System.getProperty("spring.profiles.active") ?: "local"
+
+    // application property file
+    BASE_PROPERTY_FILE = "application.yml"
+    EXTENSION_PROPERTY_FILE = "application-${ENVIRONMENT}.yml"
+
     // application property
-    APPLICATION_PROPERTY_FILE = "application.yml"
-    APPLICATION_PROPERTY = new org.yaml.snakeyaml.Yaml().load(new File("${PROPERTY_ROOT_PATH}/${APPLICATION_PROPERTY_FILE}").newInputStream())
+    BASE_PROPERTY = new org.yaml.snakeyaml.Yaml().load(new File("${PROPERTY_ROOT_PATH}/${BASE_PROPERTY_FILE}").newInputStream())
+    EXTENSION_PROPERTY = new org.yaml.snakeyaml.Yaml().load(new File("${PROPERTY_ROOT_PATH}/${EXTENSION_PROPERTY_FILE}").newInputStream())
 
     // datasource
-    DATASOURCE_DRIVER = APPLICATION_PROPERTY.spring.datasource.driver
-    DATASOURCE_URL = APPLICATION_PROPERTY.spring.datasource.url
-    DATASOURCE_USERNAME = APPLICATION_PROPERTY.spring.datasource.username
-    DATASOURCE_PASSWORD = APPLICATION_PROPERTY.spring.datasource.password
+    DATASOURCE_URL = EXTENSION_PROPERTY.spring.datasource.url
+    DATASOURCE_USERNAME = EXTENSION_PROPERTY.spring.datasource.username
+    DATASOURCE_PASSWORD = EXTENSION_PROPERTY.spring.datasource.password
+    DATASOURCE_DRIVER = EXTENSION_PROPERTY.spring.datasource.driver
 
     // mybatis
-    MYBATIS_PROPERTY = APPLICATION_PROPERTY.crms.mybatis
+    MYBATIS_PROPERTY = BASE_PROPERTY.crms.mybatis
 }
 
 apply from: "${GRADLE_ROOT_PATH}/flyway.gradle"
