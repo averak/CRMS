@@ -13,6 +13,8 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.repository.UserRepository;
@@ -23,6 +25,9 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
     @Injectable
     UserRepository userRepository;
+
+    @Injectable
+    PasswordEncoder passwordEncoder;
 
     @Tested
     UserLogic userLogic;

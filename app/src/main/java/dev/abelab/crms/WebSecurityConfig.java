@@ -8,14 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import dev.abelab.crms.repository.UserRepository;
-import dev.abelab.crms.exception.NotFoundException;
-import dev.abelab.crms.exception.ErrorCode;
 
 @Configuration
 @EnableWebSecurity
@@ -47,11 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// アクセス許可
 		http.authorizeRequests().antMatchers("/api/**").permitAll() //
 			.anyRequest().authenticated();
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// auth.userDetailsService(email -> this.userRepository.selectByEmail(email));
 	}
 
 }

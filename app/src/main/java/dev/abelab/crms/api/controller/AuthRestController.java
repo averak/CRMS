@@ -1,5 +1,6 @@
 package dev.abelab.crms.api.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -7,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import dev.abelab.crms.api.request.LoginRequest;
-import dev.abelab.crms.api.response.LoginResponse;
 import dev.abelab.crms.service.AuthService;
 
 @Api(tags = "Auth")
@@ -35,24 +35,11 @@ public class AuthRestController {
             @ApiResponse(code = 404, message = "ユーザが存在しない"), //
     })
     @PostMapping(value = "/login")
-    public LoginResponse login( //
-        @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody //
+    public void login( //
+        @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody, //
+        HttpServletResponse response //
     ) {
-        return this.authService.login(requestBody);
-    }
-
-    /**
-     * ログアウト処理API
-     */
-    @ApiOperation(value = "ログアウト", //
-        notes = "ユーザのログアウト処理を行う。" //
-    )
-    @ApiResponses(value = { //
-            @ApiResponse(code = 200, message = "ログアウト成功"), //
-    })
-    @PostMapping("/logout")
-    public void logout() {
-        this.authService.logout();
+        this.authService.login(requestBody, response);
     }
 
 }

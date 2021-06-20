@@ -4,7 +4,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.User;
@@ -25,8 +24,6 @@ public class UserService {
     private final UserRoleLogic userRoleLogic;
 
     private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * ユーザ一覧を取得
@@ -65,7 +62,7 @@ public class UserService {
             .firstName(requestBody.getFirstName()) //
             .lastName(requestBody.getLastName()) //
             .email(requestBody.getEmail()) //
-            .password(passwordEncoder.encode(requestBody.getPassword())) //
+            .password(this.userLogic.encodePassword(requestBody.getPassword())) //
             .roleId(requestBody.getRoleId()) //
             .build();
 
@@ -85,7 +82,7 @@ public class UserService {
         user.setFirstName(requestBody.getFirstName());
         user.setLastName(requestBody.getLastName());
         user.setEmail(requestBody.getEmail());
-        user.setPassword(passwordEncoder.encode(requestBody.getPassword()));
+        user.setPassword(this.userLogic.encodePassword(requestBody.getPassword()));
         user.setRoleId(requestBody.getRoleId());
         this.userRepository.update(user);
     }

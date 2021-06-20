@@ -27,7 +27,6 @@ public class AuthUtil {
         final var claims = Jwts.claims();
         claims.put(Claims.ISSUER, JWT_ISSUER);
         claims.put("id", user.getId());
-        claims.put("email", user.getEmail());
 
         return Jwts.builder() //
             .setClaims(claims) //
