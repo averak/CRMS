@@ -3,11 +3,8 @@ package dev.abelab.crms.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-/**
- * Type Convert Util
- */
 @RequiredArgsConstructor
 public class ConvertUtil {
 

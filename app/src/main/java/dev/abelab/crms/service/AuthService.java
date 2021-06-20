@@ -1,19 +1,14 @@
 package dev.abelab.crms.service;
 
-import static java.lang.String.format;
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import lombok.*;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.api.request.LoginRequest;
 import dev.abelab.crms.api.response.LoginResponse;
+import dev.abelab.crms.util.AuthUtil;
 import dev.abelab.crms.exception.UnauthorizedException;
 import dev.abelab.crms.exception.ErrorCode;
 
@@ -24,10 +19,6 @@ public class AuthService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-
-    private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
-
-    private final String jwtIssuer = "crms.abelab.dev";
 
     /**
      * ログイン処理
@@ -45,13 +36,7 @@ public class AuthService {
         }
 
         // JWTを発行
-        final var jwt = Jwts.builder() //
-            .setSubject(format("%s,%s", user.getId(), user.getEmail())) //
-            .setIssuer(this.jwtIssuer) //
-            .setIssuedAt(new Date()) //
-            .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
-            .signWith(SignatureAlgorithm.HS512, this.jwtSecret.getBytes()) //
-            .compact();
+        final var jwt = AuthUtil.generateJwt(user);
 
         return LoginResponse.builder().jwt(jwt).build();
     }
