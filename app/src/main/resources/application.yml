@@ -32,12 +32,18 @@ crms:
       type: XMLMAPPER
     map:
       package: db.mapper
+  protocol: http
+  hostname: localhost
 
 mybatis:
   configuration:
     mapUnderscoreToCamelCase: true
   mapperLocations:
     - classpath:/db/mapper/*Mapper.xml
+
+jwt:
+  secret: zdtlD3JK56m6wTTgsNFhqzjq
+  issuer: crms.abelab.dev
 
 logging:
   level:
