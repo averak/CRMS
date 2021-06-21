@@ -129,4 +129,27 @@ public class UserService {
         this.userRepository.deleteById(userId);
     }
 
+    /**
+     * ログインユーザ詳細を取得
+     *
+     * @param jwt JWT
+     *
+     * @return ユーザ詳細レスポンス
+     */
+    @Transactional
+    public UserResponse getLoginUser(final String jwt) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(jwt);
+
+        // ユーザの取得
+        final var user = userRepository.selectById(loginUser.getId());
+        return UserResponse.builder() //
+            .id(user.getId()) //
+            .firstName(user.getFirstName()) //
+            .lastName(user.getLastName()) //
+            .email(user.getEmail()) //
+            .roleId(user.getRoleId()) //
+            .build();
+    }
+
 }

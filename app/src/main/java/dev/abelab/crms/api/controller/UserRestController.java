@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.api.response.UsersResponse;
+import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.service.UserService;
 
 @Api(tags = "User")
@@ -23,6 +24,8 @@ public class UserRestController {
 
     /**
      * ユーザ一覧取得API
+     *
+     * @param jwt JWT
      *
      * @return ユーザ一覧レスポンス
      */
@@ -45,6 +48,8 @@ public class UserRestController {
 
     /**
      * ユーザ作成API
+     *
+     * @param jwt         JWT
      *
      * @param requestBody ユーザ作成リクエスト
      */
@@ -70,6 +75,8 @@ public class UserRestController {
 
     /**
      * ユーザ更新API
+     *
+     * @param jwt         JWT
      *
      * @param userId      ユーザID
      *
@@ -99,6 +106,8 @@ public class UserRestController {
     /**
      * ユーザ削除API
      *
+     * @param jwt    JWT
+     *
      * @param userId ユーザID
      */
     @ApiOperation(value = "ユーザの削除", //
@@ -119,6 +128,30 @@ public class UserRestController {
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId //
     ) {
         this.userService.deleteUser(userId, jwt);
+    }
+
+    /**
+     * ログインユーザ詳細取得API
+     *
+     * @param jwt JWT
+     *
+     * @return ユーザ詳細レスポンス
+     */
+    @ApiOperation(value = "ログインユーザ詳細の取得", //
+        notes = "ログインユーザ詳細を取得する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "取得成功", response = UserResponse.class), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 404, message = "ユーザが存在しない") //
+        })
+    @GetMapping(value = "/me")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse getLoginUser( //
+        @RequestHeader(name = "Authorization", required = true) final String jwt //
+    ) {
+        return this.userService.getLoginUser(jwt);
     }
 
 }
