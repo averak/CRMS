@@ -24,6 +24,12 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import dev.abelab.crms.db.entity.User;
+import dev.abelab.crms.db.entity.UserSample;
+import dev.abelab.crms.logic.UserLogic;
+import dev.abelab.crms.repository.UserRepository;
+import dev.abelab.crms.api.request.LoginRequest;
+import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.annotation.IntegrationTest;
 import dev.abelab.crms.util.ConvertUtil;
 import dev.abelab.crms.exception.BaseException;
@@ -39,6 +45,8 @@ public abstract class AbstractRestController_IT {
 
 	static final int SAMPLE_INT = 1;
 	static final String SAMPLE_STR = "SAMPLE";
+	static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
+	static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
 
 	/**
 	 * The Mock MVC
@@ -56,6 +64,12 @@ public abstract class AbstractRestController_IT {
 	 */
 	@Autowired
 	private PlatformTransactionManager transactionManager;
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	UserLogic userLogic;
 
 	/**
 	 * GET request
@@ -209,6 +223,45 @@ public abstract class AbstractRestController_IT {
 		}
 
 		return response;
+	}
+
+	/**
+	 * ログインユーザを作成
+	 *
+	 * @param userRole ユーザロール
+	 *
+	 * @return loginUser
+	 */
+	public User createLoginUser(UserRoleEnum userRole) {
+		final var loginUser = UserSample.builder() //
+			.roleId(userRole.getId()) //
+			.email(LOGIN_USER_EMAIL) //
+			.password(this.userLogic.encodePassword(LOGIN_USER_PASSWORD)) //
+			.build();
+		this.userRepository.insert(loginUser);
+
+		return loginUser;
+	}
+
+	/**
+	 * ユーザのJWTを取得
+	 *
+	 * @param user ユーザ
+	 *
+	 * @return JWT
+	 */
+	public String getLoginUserJwt(User user) throws Exception {
+		// login request body
+		final var requestBody = LoginRequest.builder() //
+			.email(LOGIN_USER_EMAIL) //
+			.password(LOGIN_USER_PASSWORD) //
+			.build();
+
+		// login
+		final var request = postRequest("/api/login", requestBody);
+		final var result = mockMvc.perform(request).andReturn();
+
+		return result.getResponse().getHeader("Authorization");
 	}
 
 	@BeforeEach

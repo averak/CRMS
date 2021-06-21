@@ -74,4 +74,5 @@ public class UserLogic {
             throw new UnauthorizedException(ErrorCode.WRONG_PASSWORD);
         }
     }
+
 }

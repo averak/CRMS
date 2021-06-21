@@ -23,6 +23,7 @@ import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
+import dev.abelab.crms.exception.ForbiddenException;
 
 /**
  * UserRestController Integration Test
@@ -51,6 +52,10 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザ一覧を取得() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// setup
 			final var user1 = UserSample.builder().id(1).email("email1").build();
 			final var user2 = UserSample.builder().id(2).email("email2").build();
@@ -59,17 +64,31 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = getRequest(GET_USERS_PATH);
+			request.header("Authorization", jwt);
 			final var response = execute(request, HttpStatus.OK, UsersResponse.class);
 
 			// verify
 			assertThat(response.getUsers()) //
 				.extracting(UserResponse::getId) //
-				.containsExactly(user1.getId(), user2.getId());
+				.containsExactly(loginUser.getId(), user1.getId(), user2.getId());
 		}
 
 		@Test
 		void 異_管理者以外はユーザ一覧を取得不可() throws Exception {
-			// FIXME
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var user1 = UserSample.builder().id(1).email("email1").build();
+			final var user2 = UserSample.builder().id(2).email("email2").build();
+			userRepository.insert(user1);
+			userRepository.insert(user2);
+
+			// test
+			final var request = getRequest(GET_USERS_PATH);
+			request.header("Authorization", jwt);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
 
 	}
@@ -83,6 +102,10 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザを作成() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// request body
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
@@ -94,6 +117,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
@@ -102,17 +126,15 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			assertThat(createdUser.getLastName()).isEqualTo(requestBody.getLastName());
 			assertThat(createdUser.getEmail()).isEqualTo(requestBody.getEmail());
 			assertThat(createdUser.getRoleId()).isEqualTo(requestBody.getRoleId());
-			// パスワードのハッシュ値
 			assertThat(passwordEncoder.matches(requestBody.getPassword(), createdUser.getPassword())).isTrue();
 		}
 
 		@Test
 		void 異_管理者以外はユーザを作成不可() throws Exception {
-			// FIXME
-		}
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
 
-		@Test
-		void 異_メールアドレスが既に存在する() throws Exception {
 			// request body
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
@@ -124,6 +146,28 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+		}
+
+		@Test
+		void 異_メールアドレスが既に存在する() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = UserCreateRequest.builder() //
+				.firstName(SAMPLE_STR) //
+				.lastName(SAMPLE_STR) //
+				.password(SAMPLE_STR) //
+				.email(SAMPLE_STR) //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
@@ -132,6 +176,10 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 異_無効なロールを付与() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// setup
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
@@ -143,6 +191,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
 		}
 
@@ -156,7 +205,11 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	class UpdateUserTest extends AbstractRestControllerInitialization_IT {
 
 		@Test
-		void 正_ユーザを更新() throws Exception {
+		void 正_管理者がユーザを更新() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// setup
 			final var user = UserSample.builder().build();
 			userRepository.insert(user);
@@ -172,6 +225,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
+			request.header("Authorization", jwt);
 			execute(request, HttpStatus.OK);
 
 			// verify
@@ -180,12 +234,40 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			assertThat(updatedUser.getLastName()).isEqualTo(requestBody.getLastName());
 			assertThat(updatedUser.getEmail()).isEqualTo(requestBody.getEmail());
 			assertThat(updatedUser.getRoleId()).isEqualTo(requestBody.getRoleId());
-			// パスワードのハッシュ値
 			assertThat(passwordEncoder.matches(requestBody.getPassword(), updatedUser.getPassword())).isTrue();
 		}
 
 		@Test
+		void 正_管理者以外はユーザを更新不可() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var user = UserSample.builder().build();
+			userRepository.insert(user);
+
+			// request body
+			final var requestBody = UserUpdateRequest.builder() //
+				.firstName(SAMPLE_STR + "XXX") //
+				.lastName(SAMPLE_STR + "XXX") //
+				.password(SAMPLE_STR + "XXX") //
+				.email(SAMPLE_STR + "XXX") //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.build();
+
+			// test
+			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+		}
+
+		@Test
 		void 異_更新対象ユーザが存在しない() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// request body
 			final var requestBody = UserUpdateRequest.builder() //
 				.firstName(SAMPLE_STR + "XXX") //
@@ -197,6 +279,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
+			request.header("Authorization", jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
 
@@ -211,12 +294,17 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_管理者がユーザを削除() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// setup
 			final var user = UserSample.builder().build();
 			userRepository.insert(user);
 
 			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
+			request.header("Authorization", jwt);
 			execute(request, HttpStatus.OK);
 
 			// verify
@@ -226,13 +314,32 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 異_管理者以外はユーザを削除不可() throws Exception {
-			// FIXME
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var user = UserSample.builder().build();
+			userRepository.insert(user);
+
+			// test
+			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
+			request.header("Authorization", jwt);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+
+			// verify
+			assertDoesNotThrow(() -> userRepository.selectById(user.getId()));
 		}
 
 		@Test
 		void 異_削除対象ユーザが存在しない() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
 			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, SAMPLE_INT));
+			request.header("Authorization", jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
 
