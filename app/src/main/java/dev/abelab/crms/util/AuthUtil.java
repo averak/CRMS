@@ -38,7 +38,7 @@ public class AuthUtil {
     }
 
     /**
-     * JWTが有効か検証
+     * JWTの有効性を検証
      *
      * @param jwt JWT
      */

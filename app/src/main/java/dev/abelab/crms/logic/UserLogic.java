@@ -4,7 +4,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.*;
+import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.repository.UserRepository;
+import dev.abelab.crms.util.AuthUtil;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.UnauthorizedException;
@@ -29,6 +31,21 @@ public class UserLogic {
         if (user.getRoleId() != UserRoleEnum.ADMIN.getId()) {
             throw new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION);
         }
+    }
+
+    /**
+     * ログインユーザを取得
+     *
+     * @param jwt JWT
+     *
+     * @return ユーザ
+     */
+    public User getLoginUser(final String jwt) {
+        // JWTの有効性を検証
+        AuthUtil.verifyJwt(jwt);
+
+        final int userId = AuthUtil.getUserIdFromJwt(jwt);
+        return this.userRepository.selectById(userId);
     }
 
     /**
