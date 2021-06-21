@@ -37,7 +37,7 @@ public class AuthRestController {
     @PostMapping(value = "/login")
     public void login( //
         @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody, //
-        HttpServletResponse response //
+        final HttpServletResponse response //
     ) {
         this.authService.login(requestBody, response);
     }

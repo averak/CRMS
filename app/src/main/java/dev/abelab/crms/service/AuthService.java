@@ -33,7 +33,7 @@ public class AuthService {
 
         // JWTを発行
         final var jwt = AuthUtil.generateJwt(user);
-        response.setHeader("AUTHORIZATION", jwt);
+        response.setHeader("Authorization", jwt);
     }
 
 }

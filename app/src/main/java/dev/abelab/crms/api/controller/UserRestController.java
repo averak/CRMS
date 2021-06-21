@@ -37,8 +37,10 @@ public class UserRestController {
         })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public UsersResponse getUsers() {
-        return this.userService.getUsers();
+    public UsersResponse getUsers( //
+        @RequestHeader(name = "Authorization", required = true) final String jwt //
+    ) {
+        return this.userService.getUsers(jwt);
     }
 
     /**
@@ -60,9 +62,10 @@ public class UserRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser( //
+        @RequestHeader(name = "Authorization", required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserCreateRequest requestBody //
     ) {
-        this.userService.createUser(requestBody);
+        this.userService.createUser(requestBody, jwt);
     }
 
     /**
@@ -86,10 +89,11 @@ public class UserRestController {
     @PutMapping(value = "/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser( //
+        @RequestHeader(name = "Authorization", required = true) final String jwt, //
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId, //
         @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final UserUpdateRequest requestBody //
     ) {
-        this.userService.updateUser(userId, requestBody);
+        this.userService.updateUser(userId, requestBody, jwt);
     }
 
     /**
@@ -111,9 +115,10 @@ public class UserRestController {
     @DeleteMapping(value = "/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser( //
+        @RequestHeader(name = "Authorization", required = true) final String jwt, //
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId //
     ) {
-        this.userService.deleteUser(userId);
+        this.userService.deleteUser(userId, jwt);
     }
 
 }
