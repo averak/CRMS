@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 // UI modules
 import { MatInputModule } from '@angular/material/input';
@@ -37,6 +38,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatInputModule,
     MatCardModule,
     MatMenuModule,

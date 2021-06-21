@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { UserLoginRequest } from 'src/app/request/user-login-request';
 
@@ -9,19 +11,28 @@ import { UserLoginRequest } from 'src/app/request/user-login-request';
   styleUrls: ['./login-card.component.css'],
 })
 export class LoginCardComponent implements OnInit {
-  user!: UserLoginRequest;
+  userLoginRequest!: UserLoginRequest;
   hide = true;
 
-  constructor(private alertService: AlertService) {}
+  constructor(private authService: AuthService, private alertService: AlertService) {}
 
   ngOnInit(): void {
-    this.user = {
+    this.userLoginRequest = {
       email: '',
       password: '',
     };
   }
 
   onSubmit() {
-    this.alertService.openSnackBar('ログインに失敗しました', 'ERROR');
+    this.authService.login(this.userLoginRequest).subscribe(
+      (resp) => {
+        localStorage.setItem(environment.LOCAL_STORAGE_AUTH_KEY, resp.headers.get('Authorization'));
+        this.alertService.openSnackBar('ログインに成功しました', 'SUCCESS');
+      },
+      (error) => {
+        localStorage.removeItem(environment.LOCAL_STORAGE_AUTH_KEY);
+        this.alertService.openSnackBar(error, 'ERROR');
+      }
+    );
   }
 }
