@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.repository.UserRepository;
+import dev.abelab.crms.property.JwtProperty;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.ForbiddenException;
 
@@ -25,6 +26,9 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
     @Injectable
     UserRepository userRepository;
+
+    @Injectable
+    JwtProperty jwtProperty;
 
     @Injectable
     PasswordEncoder passwordEncoder;

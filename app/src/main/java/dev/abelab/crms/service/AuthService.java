@@ -8,7 +8,6 @@ import lombok.*;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.api.request.LoginRequest;
 import dev.abelab.crms.logic.UserLogic;
-import dev.abelab.crms.util.AuthUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +31,7 @@ public class AuthService {
         this.userLogic.verifyPassword(user.getId(), requestBody.getPassword());
 
         // JWTを発行
-        final var jwt = AuthUtil.generateJwt(user);
+        final var jwt = this.userLogic.generateJwt(user);
         response.setHeader("Authorization", jwt);
     }
 

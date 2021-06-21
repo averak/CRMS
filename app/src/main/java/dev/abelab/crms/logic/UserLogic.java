@@ -1,12 +1,15 @@
 package dev.abelab.crms.logic;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Component;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import io.jsonwebtoken.*;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.repository.UserRepository;
-import dev.abelab.crms.util.AuthUtil;
+import dev.abelab.crms.property.JwtProperty;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.UnauthorizedException;
@@ -17,6 +20,8 @@ import dev.abelab.crms.exception.ForbiddenException;
 public class UserLogic {
 
     private final UserRepository userRepository;
+
+    private final JwtProperty jwtProperty;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -34,6 +39,27 @@ public class UserLogic {
     }
 
     /**
+     * JWTを発行
+     *
+     * @param user ユーザ
+     *
+     * @return JWT
+     */
+    public String generateJwt(final User user) {
+        final var claims = Jwts.claims();
+        claims.put(Claims.ISSUER, this.jwtProperty.getIssuer());
+        claims.put("id", user.getId());
+
+        return Jwts.builder() //
+            .setClaims(claims) //
+            .setIssuer(this.jwtProperty.getIssuer()) //
+            .setIssuedAt(new Date()) //
+            .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
+            .signWith(SignatureAlgorithm.HS512, this.jwtProperty.getSecret().getBytes()) //
+            .compact();
+    }
+
+    /**
      * ログインユーザを取得
      *
      * @param jwt JWT
@@ -42,10 +68,29 @@ public class UserLogic {
      */
     public User getLoginUser(final String jwt) {
         // JWTの有効性を検証
-        AuthUtil.verifyJwt(jwt);
+        try {
+            Jwts.parser().setSigningKey(this.jwtProperty.getSecret().getBytes()).parseClaimsJws(jwt).getBody();
+        } catch (SignatureException e) {
+            throw new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN);
+        } catch (MalformedJwtException e) {
+            throw new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN);
+        } catch (UnsupportedJwtException ex) {
+            throw new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN);
+        } catch (IllegalArgumentException ex) {
+            throw new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new UnauthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN);
+        }
 
-        final int userId = AuthUtil.getUserIdFromJwt(jwt);
-        return this.userRepository.selectById(userId);
+        final var claim = Jwts.parser().setSigningKey(this.jwtProperty.getSecret().getBytes()).parseClaimsJws(jwt).getBody();
+        final var userId = claim.get("id");
+
+        // 無効なJWT
+        if (userId == null) {
+            throw new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN);
+        }
+
+        return this.userRepository.selectById((int) userId);
     }
 
     /**
