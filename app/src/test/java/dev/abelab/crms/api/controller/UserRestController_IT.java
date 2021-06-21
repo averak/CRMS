@@ -4,12 +4,18 @@ import static java.lang.String.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
+import static org.junit.jupiter.params.provider.Arguments.*;
+
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 
 import dev.abelab.crms.db.entity.UserSample;
@@ -36,6 +42,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String CREATE_USER_PATH = BASE_PATH;
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
+	static final String LOGIN_USER_PATH = BASE_PATH + "/me";
 
 	@Autowired
 	UserRepository userRepository;
@@ -122,10 +129,13 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// verify
 			final var createdUser = userRepository.selectByEmail(requestBody.getEmail());
-			assertThat(createdUser.getFirstName()).isEqualTo(requestBody.getFirstName());
-			assertThat(createdUser.getLastName()).isEqualTo(requestBody.getLastName());
-			assertThat(createdUser.getEmail()).isEqualTo(requestBody.getEmail());
-			assertThat(createdUser.getRoleId()).isEqualTo(requestBody.getRoleId());
+			assertThat(createdUser) //
+				.extracting("firstName", "lastName", "email", "roleId") //
+				.containsExactly( //
+					requestBody.getFirstName(), //
+					requestBody.getLastName(), //
+					requestBody.getEmail(), //
+					requestBody.getRoleId());
 			assertThat(passwordEncoder.matches(requestBody.getPassword(), createdUser.getPassword())).isTrue();
 		}
 
@@ -230,10 +240,13 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// verify
 			final var updatedUser = userRepository.selectByEmail(requestBody.getEmail());
-			assertThat(updatedUser.getFirstName()).isEqualTo(requestBody.getFirstName());
-			assertThat(updatedUser.getLastName()).isEqualTo(requestBody.getLastName());
-			assertThat(updatedUser.getEmail()).isEqualTo(requestBody.getEmail());
-			assertThat(updatedUser.getRoleId()).isEqualTo(requestBody.getRoleId());
+			assertThat(updatedUser) //
+				.extracting("firstName", "lastName", "email", "roleId") //
+				.containsExactly( //
+					requestBody.getFirstName(), //
+					requestBody.getLastName(), //
+					requestBody.getEmail(), //
+					requestBody.getRoleId());
 			assertThat(passwordEncoder.matches(requestBody.getPassword(), updatedUser.getPassword())).isTrue();
 		}
 
@@ -341,6 +354,45 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var request = deleteRequest(format(DELETE_USER_PATH, SAMPLE_INT));
 			request.header("Authorization", jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
+		}
+
+	}
+
+	/**
+	 * ログインユーザ詳細取得APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class GetLoginUserTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_ログインユーザの詳細を取得(UserRoleEnum userRole) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(userRole);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// test
+			final var request = getRequest(LOGIN_USER_PATH);
+			request.header("Authorization", jwt);
+			final var response = execute(request, HttpStatus.OK, UserResponse.class);
+
+			assertThat(response) //
+				.extracting("id", "firstName", "lastName", "email", "roleId") //
+				.containsExactly( //
+					loginUser.getId(), //
+					loginUser.getFirstName(), //
+					loginUser.getLastName(), //
+					loginUser.getEmail(), //
+					loginUser.getRoleId());
+		}
+
+		Stream<Arguments> 正_ログインユーザの詳細を取得() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// 一般ユーザ
+				arguments(UserRoleEnum.MEMBER));
 		}
 
 	}

@@ -1,6 +1,5 @@
 package dev.abelab.crms.api.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
