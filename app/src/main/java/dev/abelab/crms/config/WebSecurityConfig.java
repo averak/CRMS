@@ -1,4 +1,4 @@
-package dev.abelab.crms;
+package dev.abelab.crms.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
 
 		// アクセス許可
-		http.authorizeRequests().antMatchers("/api/**").permitAll() //
+		http.authorizeRequests() // .
+			.antMatchers("/api/**").permitAll() //
 			.anyRequest().authenticated();
 	}
 
