@@ -4,12 +4,10 @@ import java.util.Date;
 
 import io.jsonwebtoken.*;
 
-import lombok.*;
 import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.UnauthorizedException;
 
-@RequiredArgsConstructor
 public class AuthUtil {
 
     private static final String JWT_SECRET = "zdtlD3JK56m6wTTgsNFhqzjqP";
