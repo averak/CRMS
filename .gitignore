@@ -91,3 +91,6 @@ local.properties
 target/
 
 bin/
+
+### Application property ###
+app/src/main/resources/application-prod.yml
