@@ -20,4 +20,34 @@ public class CrmsProperty {
      */
     String hostname;
 
+    /**
+     * Admin
+     */
+    Admin admin;
+
+    @Data
+    public static class Admin {
+
+        /**
+         * Admin first name
+         */
+        String firstName;
+
+        /**
+         * Admin last name
+         */
+        String lastName;
+
+        /**
+         * Admin email
+         */
+        String email;
+
+        /**
+         * Admin password
+         */
+        String password;
+
+    }
+
 }

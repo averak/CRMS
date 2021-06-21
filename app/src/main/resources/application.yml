@@ -33,7 +33,12 @@ crms:
     map:
       package: db.mapper
   protocol: http
-  hostname: localhost
+  hostname: localhost:${server.port}
+  admin:
+    first-name: 阿部
+    last-name: 健太朗
+    email: admin@abelab.dev
+    password: FK2$XGYwrWfyNNxS
 
 mybatis:
   configuration:

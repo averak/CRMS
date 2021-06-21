@@ -15,9 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import dev.abelab.crms.property.CrmsProperty;
 
-/**
- * Setting Swagger-UI
- */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
