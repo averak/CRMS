@@ -1,6 +1,6 @@
 package dev.abelab.crms.config;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
@@ -11,6 +11,7 @@ import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.enums.UserRoleEnum;
 
+@Profile("prod | local")
 @Configuration
 public class DatasourceConfig {
 
