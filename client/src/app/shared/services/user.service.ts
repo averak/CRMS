@@ -16,7 +16,7 @@ export class UserService {
     return this.httpBaseService.getRequest<UserModel>(`${environment.API_PREFIX}/api/users/me`);
   }
 
-	checkAdmin(user: UserModel): boolean {
-		return user.roleId == UserRoleEnum.ADMIN;
-	}
+  checkAdmin(user: UserModel): boolean {
+    return user.roleId == UserRoleEnum.ADMIN;
+  }
 }
