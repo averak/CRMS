@@ -1,6 +1,7 @@
 package dev.abelab.crms.api.controller;
 
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +36,7 @@ public class AuthRestController {
             @ApiResponse(code = 404, message = "ユーザが存在しない"), //
     })
     @PostMapping(value = "/login")
+    @ResponseStatus(HttpStatus.OK)
     public void login( //
         @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody, //
         final HttpServletResponse response //

@@ -12,6 +12,7 @@ import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
+import dev.abelab.crms.api.request.LoginUserUpdateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
 
@@ -150,6 +151,29 @@ public class UserService {
             .email(user.getEmail()) //
             .roleId(user.getRoleId()) //
             .build();
+    }
+
+    /**
+     * ログインユーザを更新
+     *
+     * @param jwt JWT
+     *
+     * @return ユーザ詳細レスポンス
+     */
+    @Transactional
+    public void updateLoginUser(final LoginUserUpdateRequest requestBody, final String jwt) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(jwt);
+
+        // パスワードチェック
+        this.userLogic.verifyPassword(loginUser.getId(), requestBody.getCurrentPassword());
+
+        // ログインユーザの更新
+        loginUser.setFirstName(requestBody.getFirstName());
+        loginUser.setLastName(requestBody.getLastName());
+        loginUser.setEmail(requestBody.getEmail());
+        loginUser.setPassword(this.userLogic.encodePassword(requestBody.getNewPassword()));
+        this.userRepository.update(loginUser);
     }
 
 }
