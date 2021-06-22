@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -11,7 +12,11 @@ import { ErrorMessageService } from 'src/app/shared/services/error-message.servi
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private errorMessageService: ErrorMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private errorMessageService: ErrorMessageService,
+    private cookieService: CookieService
+  ) {}
 
   public login(requestBody: UserLoginRequest): Observable<any> {
     // request options
@@ -28,10 +33,10 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem(environment.LOCAL_STORAGE_AUTH_KEY);
+    this.cookieService.deleteAll();
   }
 
   public checkAuthenticated(): boolean {
-    return localStorage.getItem(environment.LOCAL_STORAGE_AUTH_KEY) != null;
+    return this.cookieService.check(environment.COOKIE_AUTH_KEY);
   }
 }
