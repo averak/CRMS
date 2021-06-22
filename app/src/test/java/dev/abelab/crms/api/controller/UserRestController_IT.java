@@ -23,6 +23,7 @@ import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
+import dev.abelab.crms.api.request.LoginUserUpdateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
@@ -30,6 +31,7 @@ import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
 import dev.abelab.crms.exception.ForbiddenException;
+import dev.abelab.crms.exception.UnauthorizedException;
 
 /**
  * UserRestController Integration Test
@@ -42,7 +44,8 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String CREATE_USER_PATH = BASE_PATH;
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
-	static final String LOGIN_USER_PATH = BASE_PATH + "/me";
+	static final String GET_LOGIN_USER_PATH = BASE_PATH + "/me";
+	static final String UPDATE_LOGIN_USER_PATH = BASE_PATH + "/me";
 
 	@Autowired
 	UserRepository userRepository;
@@ -373,7 +376,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// test
-			final var request = getRequest(LOGIN_USER_PATH);
+			final var request = getRequest(GET_LOGIN_USER_PATH);
 			request.header("Authorization", jwt);
 			final var response = execute(request, HttpStatus.OK, UserResponse.class);
 
@@ -393,6 +396,67 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				arguments(UserRoleEnum.ADMIN),
 				// 一般ユーザ
 				arguments(UserRoleEnum.MEMBER));
+		}
+
+	}
+
+	/**
+	 * ログインユーザ更新APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class UpdateLoginUserTest extends AbstractRestControllerInitialization_IT {
+
+		@Test
+		void 正_ログインユーザを更新() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = LoginUserUpdateRequest.builder() //
+				.firstName(loginUser.getFirstName() + "XXX") //
+				.lastName(loginUser.getLastName() + "XXX") //
+				.currentPassword(LOGIN_USER_PASSWORD) //
+				.newPassword(loginUser.getPassword() + "XXX") //
+				.email(loginUser.getEmail() + "XXX") //
+				.build();
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var updatedUser = userRepository.selectByEmail(requestBody.getEmail());
+			assertThat(updatedUser) //
+				.extracting("firstName", "lastName", "email") //
+				.containsExactly( //
+					requestBody.getFirstName(), //
+					requestBody.getLastName(), //
+					requestBody.getEmail());
+			assertThat(passwordEncoder.matches(requestBody.getNewPassword(), updatedUser.getPassword())).isTrue();
+		}
+
+		@Test
+		void 異_現在のパスワードが間違えている() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = LoginUserUpdateRequest.builder() //
+				.firstName(loginUser.getFirstName() + "XXX") //
+				.lastName(loginUser.getLastName() + "XXX") //
+				.currentPassword(LOGIN_USER_PASSWORD + "miss") //
+				.newPassword(loginUser.getPassword() + "XXX") //
+				.email(loginUser.getEmail() + "XXX") //
+				.build();
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new UnauthorizedException(ErrorCode.WRONG_PASSWORD));
 		}
 
 	}
