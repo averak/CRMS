@@ -9,6 +9,7 @@ interface MessageDict {
 })
 export class ErrorMessageService {
   messages: MessageDict = {
+    401: 'ユーザが認証されていません',
     403: 'その動作は許可されていません',
     404: '存在しないURLへはアクセスできません',
     500: '予期せぬエラーが発生しました',

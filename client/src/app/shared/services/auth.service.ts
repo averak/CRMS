@@ -40,4 +40,8 @@ export class AuthService {
   public checkAuthenticated(): boolean {
     return this.cookieService.check(environment.COOKIE_AUTH_KEY);
   }
+
+  public getJwt(): string {
+    return this.cookieService.get(environment.COOKIE_AUTH_KEY);
+  }
 }

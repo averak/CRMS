@@ -24,7 +24,6 @@ export class LoginFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.cookieService.get(environment.COOKIE_AUTH_KEY));
     this.userLoginRequest = {
       email: '',
       password: '',
