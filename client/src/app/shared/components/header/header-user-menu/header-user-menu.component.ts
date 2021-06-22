@@ -29,6 +29,7 @@ export class HeaderUserMenuComponent implements OnInit {
         this.userName = `${user.lastName} ${user.firstName}`;
       },
       (error) => {
+        this.router.navigate(['/error'], { queryParams: { status_code: error.status } });
         this.alertService.openSnackBar(error, 'ERROR');
       }
     );

@@ -7,6 +7,8 @@ import { DashboardComponent } from './components/page/dashboard/dashboard.compon
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
 import { AdminComponent } from './components/page/admin/admin.component';
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
+import { SidenavComponent } from './components/container/sidenav/sidenav.component';
+import { HeaderComponent } from './shared/components/header/header.component';
 
 // guards
 import { AuthGuard } from './shared/guards/auth.guard';
@@ -14,16 +16,33 @@ import { LoginedGuard } from './shared/guards/logined.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginedGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'reservations', component: ReservationsComponent, canActivate: [AuthGuard] },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  {
+    path: '',
+    component: HeaderComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: SidenavComponent,
+        children: [
+          { path: 'dashboard', component: DashboardComponent },
+          { path: 'reservations', component: ReservationsComponent },
+          { path: 'admin', component: AdminComponent },
+        ],
+      },
+    ],
+  },
   { path: 'error', component: ErrorPageComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', component: LoginComponent },
   { path: '**', redirectTo: '/error?status_code=404', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
