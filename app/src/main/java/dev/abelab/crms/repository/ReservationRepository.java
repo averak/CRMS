@@ -50,9 +50,20 @@ public class ReservationRepository {
      *
      * @return 予約
      */
-    public Reservation  selectById(final int reservationId) {
+    public Reservation selectById(final int reservationId) {
         return Optional.ofNullable(this.reservationMapper.selectByPrimaryKey(reservationId)) //
             .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
+    }
+
+    /**
+     * 予約一覧を取得
+     *
+     * @return 予約一覧
+     */
+    public List<Reservation> findAll() {
+        final var example = new ReservationExample();
+        example.setOrderByClause("updated_at desc");
+        return this.reservationMapper.selectByExample(example);
     }
 
 }

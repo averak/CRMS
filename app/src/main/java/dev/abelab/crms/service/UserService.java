@@ -15,6 +15,7 @@ import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.api.request.LoginUserUpdateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
+import dev.abelab.crms.util.UserUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -42,15 +43,9 @@ public class UserService {
         this.userLogic.checkAdmin(loginUser.getId());
 
         // ユーザの取得
-        final var users = userRepository.findAll();
+        final var users = this.userRepository.findAll();
         final var userResponses = users.stream().map(user -> {
-            return UserResponse.builder() //
-                .id(user.getId()) //
-                .firstName(user.getFirstName()) //
-                .lastName(user.getLastName()) //
-                .email(user.getEmail()) //
-                .roleId(user.getRoleId()) //
-                .build();
+            return UserUtil.buildUserResponse(user);
         }).collect(Collectors.toList());
 
         return new UsersResponse(userResponses);
@@ -144,13 +139,8 @@ public class UserService {
 
         // ユーザの取得
         final var user = userRepository.selectById(loginUser.getId());
-        return UserResponse.builder() //
-            .id(user.getId()) //
-            .firstName(user.getFirstName()) //
-            .lastName(user.getLastName()) //
-            .email(user.getEmail()) //
-            .roleId(user.getRoleId()) //
-            .build();
+
+        return UserUtil.buildUserResponse(user);
     }
 
     /**

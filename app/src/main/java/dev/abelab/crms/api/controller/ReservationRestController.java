@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 import lombok.*;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.api.response.ReservationsResponse;
+import dev.abelab.crms.service.ReservationService;
 
 @Api(tags = "Reservation")
 @RequiredArgsConstructor
@@ -16,6 +17,8 @@ import dev.abelab.crms.api.response.ReservationsResponse;
 @RequestMapping(path = "/api/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class ReservationRestController {
+
+    private final ReservationService reservationService;
 
     /**
      * 予約一覧取得API
@@ -37,8 +40,7 @@ public class ReservationRestController {
     public ReservationsResponse getReservations( //
         @RequestHeader(name = "Authorization", required = true) final String jwt //
     ) {
-        // FIXME
-        return ReservationsResponse.builder().build();
+        return this.reservationService.getReservations(jwt);
     }
 
     /**
@@ -64,7 +66,7 @@ public class ReservationRestController {
         @RequestHeader(name = "Authorization", required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "新規予約情報") @RequestBody final ReservationCreateRequest requestBody //
     ) {
-        // FIXME
+        this.reservationService.createReservation(jwt, requestBody);
     }
 
     /**
@@ -90,7 +92,7 @@ public class ReservationRestController {
         @RequestHeader(name = "Authorization", required = true) final String jwt, //
         @ApiParam(name = "reservation_id", required = true, value = "予約ID") @PathVariable("reservation_id") final int reservationId //
     ) {
-        // FIXME
+        this.reservationService.deleteReservation(jwt, reservationId);
     }
 
 }

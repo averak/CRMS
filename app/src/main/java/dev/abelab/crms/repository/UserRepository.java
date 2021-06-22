@@ -90,7 +90,7 @@ public class UserRepository {
     public List<User> findAll() {
         final var example = new UserExample();
         example.setOrderByClause("updated_at desc");
-        return userMapper.selectByExample(example);
+        return this.userMapper.selectByExample(example);
     }
 
     /**
