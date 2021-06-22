@@ -27,6 +27,10 @@ export class AuthService {
     );
   }
 
+  public logout(): void {
+    localStorage.removeItem(environment.LOCAL_STORAGE_AUTH_KEY);
+  }
+
   public checkAuthenticated(): boolean {
     return localStorage.getItem(environment.LOCAL_STORAGE_AUTH_KEY) != null;
   }

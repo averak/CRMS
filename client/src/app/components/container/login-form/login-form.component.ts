@@ -34,7 +34,7 @@ export class LoginFormComponent implements OnInit {
         this.loginTransit.emit();
       },
       (error) => {
-        localStorage.removeItem(environment.LOCAL_STORAGE_AUTH_KEY);
+        this.authService.logout();
         this.alertService.openSnackBar(error, 'ERROR');
       }
     );
