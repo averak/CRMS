@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -11,6 +11,8 @@ import { UserLoginRequest } from 'src/app/request/user-login-request';
   styleUrls: ['./login-form.component.css'],
 })
 export class LoginFormComponent implements OnInit {
+  @Output() loginTransit: EventEmitter<any> = new EventEmitter<any>();
+
   userLoginRequest!: UserLoginRequest;
   hide = true;
 
@@ -27,7 +29,9 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(this.userLoginRequest).subscribe(
       (resp) => {
         localStorage.setItem(environment.LOCAL_STORAGE_AUTH_KEY, resp.headers.get('Authorization'));
+        console.log(this.loginTransit);
         this.alertService.openSnackBar('ログインに成功しました', 'SUCCESS');
+        this.loginTransit.emit();
       },
       (error) => {
         localStorage.removeItem(environment.LOCAL_STORAGE_AUTH_KEY);
