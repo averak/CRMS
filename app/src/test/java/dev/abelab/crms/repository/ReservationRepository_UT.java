@@ -53,7 +53,7 @@ class ReservationRepository_UT extends AbstractRepository_UT {
 		}
 
 		@Test
-		void 異_指定した予約時間が既に予約済み() throws Exception {
+		void 異_指定時刻の予約が既に存在している() throws Exception {
 			new Expectations(reservationRepository) {
 				{
 					reservationRepository.insert(reservation);

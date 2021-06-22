@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.*;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.api.request.LoginUserUpdateRequest;
