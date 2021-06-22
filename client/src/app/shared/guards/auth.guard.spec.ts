@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 // shared module
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -10,7 +9,7 @@ describe('AuthGuard', () => {
   let guard: AuthGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [RouterTestingModule, SharedModule] });
+    TestBed.configureTestingModule({ imports: [SharedModule] });
     guard = TestBed.inject(AuthGuard);
   });
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 // UI modules
@@ -38,6 +39,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    RouterTestingModule,
     HttpClientModule,
     MatInputModule,
     MatCardModule,
@@ -58,6 +60,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    RouterTestingModule,
     MatInputModule,
     MatCardModule,
     MatMenuModule,

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 // shared module
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -13,7 +12,7 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
-      imports: [RouterTestingModule, SharedModule],
+      imports: [SharedModule],
     }).compileComponents();
   });
 
