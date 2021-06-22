@@ -370,7 +370,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@ParameterizedTest
 		@MethodSource
-		void 正_ログインユーザの詳細を取得(UserRoleEnum userRole) throws Exception {
+		void 正_ログインユーザの詳細を取得(final UserRoleEnum userRole) throws Exception {
 			// login user
 			final var loginUser = createLoginUser(userRole);
 			final var jwt = getLoginUserJwt(loginUser);

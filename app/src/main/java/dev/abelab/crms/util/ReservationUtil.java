@@ -11,7 +11,7 @@ public class ReservationUtil {
      *
      * @param reservation 予約
      *
-     * @param user        予約ユーザ
+     * @param user        予約者
      *
      * @return 予約レスポンス
      */

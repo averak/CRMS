@@ -12,6 +12,7 @@ import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.api.response.ReservationsResponse;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.logic.UserLogic;
+import dev.abelab.crms.logic.ReservationLogic;
 import dev.abelab.crms.util.ReservationUtil;
 
 @RequiredArgsConstructor
@@ -19,6 +20,8 @@ import dev.abelab.crms.util.ReservationUtil;
 public class ReservationService {
 
     private final UserLogic userLogic;
+
+    private final ReservationLogic reservationLogic;
 
     private final UserRepository userRepository;
 
@@ -38,11 +41,9 @@ public class ReservationService {
 
         final var reservations = this.reservationRepository.findAll();
         final var reservationResponses = reservations.stream().map(reservation -> {
-            // 予約ユーザを取得
+            // 予約者を取得
             final var user = this.userRepository.selectById(reservation.getUserId());
-
             return ReservationUtil.buildReservationResponse(reservation, user);
-            // 予約ユーザを取得
         }).collect(Collectors.toList());
 
         return new ReservationsResponse(reservationResponses);
@@ -81,7 +82,8 @@ public class ReservationService {
         // ログインユーザを取得
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
-        // FIXME: 削除権限をチェック
+        // 削除権限をチェック
+        this.reservationLogic.checkPermission(reservationId, loginUser.getId());
 
         this.reservationRepository.deleteById(reservationId);
     }

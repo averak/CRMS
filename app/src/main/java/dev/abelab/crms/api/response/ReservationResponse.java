@@ -18,7 +18,7 @@ public class ReservationResponse {
     Integer id;
 
     /**
-     * 予約ユーザ
+     * 予約者
      */
     UserResponse user;
 

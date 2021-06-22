@@ -1,9 +1,8 @@
 package dev.abelab.crms.logic;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 import org.junit.jupiter.api.Nested;
@@ -56,9 +55,7 @@ public class UserLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertThatCode(() -> {
-                userLogic.checkAdmin(anyInt());
-            }).doesNotThrowAnyException();
+            assertDoesNotThrow(() -> userLogic.checkAdmin(anyInt()));
         }
 
         @Test
