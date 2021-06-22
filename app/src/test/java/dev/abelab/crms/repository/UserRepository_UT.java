@@ -41,7 +41,7 @@ class UserRepository_UT extends AbstractRepository_UT {
 	class InsertUserTest {
 
 		@Test
-		void 正_ユーザを保存する() {
+		void 正_ユーザを保存する() throws Exception {
 			new Expectations(userRepository) {
 				{
 					userRepository.insert(user);
@@ -53,7 +53,7 @@ class UserRepository_UT extends AbstractRepository_UT {
 		}
 
 		@Test
-		void 異_メールアドレスが既に登録済み() {
+		void 異_メールアドレスが既に登録済み() throws Exception {
 			new Expectations(userRepository) {
 				{
 					userRepository.insert(user);
@@ -75,7 +75,7 @@ class UserRepository_UT extends AbstractRepository_UT {
 	class SelectUserTest {
 
 		@Test
-		void 正_ユーザが存在する() {
+		void 正_ユーザが存在する() throws Exception {
 			new Expectations(userRepository) {
 				{
 					userRepository.selectById(user.getId());
@@ -87,7 +87,7 @@ class UserRepository_UT extends AbstractRepository_UT {
 		}
 
 		@Test
-		void 異_ユーザが存在しない() {
+		void 異_ユーザが存在しない() throws Exception {
 			new Expectations(userRepository) {
 				{
 					userRepository.selectById(anyInt);

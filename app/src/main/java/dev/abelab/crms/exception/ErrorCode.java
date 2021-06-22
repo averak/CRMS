@@ -25,10 +25,14 @@ public enum ErrorCode {
 
     NOT_FOUND_ROLE(1102, "exception.not_found.role"),
 
+    NOT_FOUND_RESERVATION(1103, "exception.not_found.reservation"),
+
     /**
      * Conflict: 1200~1299
      */
     CONFLICT_EMAIL(1200, "exception.conflict.email"),
+
+    CONFLICT_RESERVATION_TIME(1201, "exception.conflict.reservation"),
 
     /**
      * Forbidden: 1300~1399

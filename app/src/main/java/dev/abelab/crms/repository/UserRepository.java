@@ -26,7 +26,7 @@ public class UserRepository {
      *
      * @return ユーザID
      */
-    public int insert(User user) {
+    public int insert(final User user) {
         if (this.existsByEmail(user.getEmail())) {
             throw new ConflictException(ErrorCode.CONFLICT_EMAIL);
         }
@@ -38,7 +38,7 @@ public class UserRepository {
      *
      * @param user ユーザ
      */
-    public void update(User user) {
+    public void update(final User user) {
         user.setUpdatedAt(null);
         this.userMapper.updateByPrimaryKeySelective(user);
     }
@@ -48,7 +48,7 @@ public class UserRepository {
      *
      * @param userId ユーザID
      */
-    public void deleteById(int userId) {
+    public void deleteById(final int userId) {
         if (this.existsById(userId)) {
             this.userMapper.deleteByPrimaryKey(userId);
         } else {
@@ -59,12 +59,12 @@ public class UserRepository {
     /**
      * IDからユーザを検索
      *
-     * @param id ユーザID
+     * @param userId ユーザID
      *
      * @return ユーザ
      */
-    public User selectById(int id) {
-        return Optional.ofNullable(this.userMapper.selectByPrimaryKey(id)) //
+    public User selectById(final int userId) {
+        return Optional.ofNullable(this.userMapper.selectByPrimaryKey(userId)) //
             .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER));
     }
 
@@ -75,7 +75,7 @@ public class UserRepository {
      *
      * @return ユーザ
      */
-    public User selectByEmail(String email) {
+    public User selectByEmail(final String email) {
         final var example = new UserExample();
         example.createCriteria().andEmailEqualTo(email);
         return this.userMapper.selectByExample(example).stream().findFirst() //
@@ -100,7 +100,7 @@ public class UserRepository {
      *
      * @return is userId exists?
      */
-    public boolean existsById(int userId) {
+    public boolean existsById(final int userId) {
         try {
             this.selectById(userId);
             return true;
@@ -116,7 +116,7 @@ public class UserRepository {
      *
      * @return is email exists?
      */
-    public boolean existsByEmail(String email) {
+    public boolean existsByEmail(final String email) {
         try {
             this.selectByEmail(email);
             return true;

@@ -5,8 +5,10 @@ exception:
     error_code: "Error Code does not exists."
     user: "User does not exists."
     role: "Role does not exists."
+    reservation: "Reservation does not exists."
   conflict:
     email: "Email already exists."
+    reservation: "Reservation already exists."
   forbidden:
     user_has_no_permission: "User has no permission."
   bad_request:
