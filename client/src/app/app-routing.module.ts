@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// guards
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
+
 // page components
 import { LoginComponent } from './components/page/login/login.component';
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
@@ -8,7 +11,7 @@ import { ErrorPageComponent } from './components/page/error-page/error-page.comp
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'reservations', component: ReservationsComponent },
+  { path: 'reservations', component: ReservationsComponent, canActivate: [AuthGuard] },
   { path: 'error', component: ErrorPageComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/error?status_code=404', pathMatch: 'full' },

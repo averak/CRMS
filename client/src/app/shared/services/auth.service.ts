@@ -26,4 +26,8 @@ export class AuthService {
       })
     );
   }
+
+  public checkAuthenticated(): boolean {
+    return localStorage.getItem(environment.LOCAL_STORAGE_AUTH_KEY) != null;
+  }
 }
