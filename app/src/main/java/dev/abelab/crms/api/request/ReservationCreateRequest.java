@@ -14,11 +14,6 @@ import lombok.*;
 public class ReservationCreateRequest {
 
     /**
-     * 予約ユーザID
-     */
-    Integer userId;
-
-    /**
      * 開始時刻
      */
     Date startAt;
