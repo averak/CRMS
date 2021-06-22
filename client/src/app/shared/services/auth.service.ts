@@ -27,6 +27,7 @@ export class AuthService {
 
     return this.http.post<any>(`${environment.API_PREFIX}/api/login`, requestBody, options).pipe(
       catchError((error) => {
+        this.logout();
         throw this.errorMessageService.getErrorMessage(error.error.code);
       })
     );
