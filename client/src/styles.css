@@ -18,3 +18,16 @@ body {
   min-height: 0 !important;
   max-width: 230px !important;
 }
+
+.main-content {
+  margin-left: 230px;
+  min-height: calc(100vh - 46px);
+  min-width: calc(100vw - 230px);
+}
+
+app-footer {
+  display: flex;
+  margin-top: auto;
+  align-items: center;
+  justify-content: center;
+}

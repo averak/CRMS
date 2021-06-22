@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CookieService } from 'ngx-cookie-service';
 
 // shared module
 import { SharedModule } from './shared/shared.module';
@@ -13,6 +14,8 @@ import { ErrorPageComponent } from './components/page/error-page/error-page.comp
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { TitleBoxComponent } from './components/container/title-box/title-box.component';
+import { AdminComponent } from './components/page/admin/admin.component';
+import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +26,11 @@ import { TitleBoxComponent } from './components/container/title-box/title-box.co
     ReservationsComponent,
     SidenavComponent,
     TitleBoxComponent,
+    AdminComponent,
+    DashboardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

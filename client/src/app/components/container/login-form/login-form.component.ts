@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -16,9 +17,14 @@ export class LoginFormComponent implements OnInit {
   userLoginRequest!: UserLoginRequest;
   hide = true;
 
-  constructor(private authService: AuthService, private alertService: AlertService) {}
+  constructor(
+    private authService: AuthService,
+    private alertService: AlertService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
+    console.log(this.cookieService.get(environment.COOKIE_AUTH_KEY));
     this.userLoginRequest = {
       email: '',
       password: '',
@@ -28,8 +34,7 @@ export class LoginFormComponent implements OnInit {
   onSubmit() {
     this.authService.login(this.userLoginRequest).subscribe(
       (resp) => {
-        localStorage.setItem(environment.LOCAL_STORAGE_AUTH_KEY, resp.headers.get('Authorization'));
-        console.log(this.loginTransit);
+        this.cookieService.set(environment.COOKIE_AUTH_KEY, resp.headers.get('Authorization'));
         this.alertService.openSnackBar('ログインに成功しました', 'SUCCESS');
         this.loginTransit.emit();
       },
