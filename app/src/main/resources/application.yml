@@ -16,6 +16,9 @@ spring:
   messages:
     basename: i18n/messages
     encoding: UTF-8
+  jackson:
+    dateFormat: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Tokyo
 
 server:
   port: 8080

@@ -27,7 +27,6 @@ import dev.abelab.crms.api.request.LoginUserUpdateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
-import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
 import dev.abelab.crms.exception.ForbiddenException;
@@ -324,7 +323,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			execute(request, HttpStatus.OK);
 
 			// verify
-			final var exception = assertThrows(BaseException.class, () -> userRepository.selectById(user.getId()));
+			final var exception = assertThrows(NotFoundException.class, () -> userRepository.selectById(user.getId()));
 			assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_USER);
 		}
 

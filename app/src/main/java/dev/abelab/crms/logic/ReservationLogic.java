@@ -29,7 +29,7 @@ public class ReservationLogic {
         final var user = this.userRepository.selectById(userId);
 
         // 管理者/予約者のみ編集可能
-        if (user.getRoleId() != UserRoleEnum.ADMIN.getId() && reservation.getUserId() != user.getId()) {
+        if (user.getRoleId() != UserRoleEnum.ADMIN.getId() && !reservation.getUserId().equals(user.getId())) {
             throw new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION);
         }
     }

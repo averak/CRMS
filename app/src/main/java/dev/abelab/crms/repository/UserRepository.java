@@ -98,7 +98,7 @@ public class UserRepository {
      *
      * @param userId ユーザID
      *
-     * @return is userId exists?
+     * @return ユーザIDが存在するか
      */
     public boolean existsById(final int userId) {
         try {
@@ -114,7 +114,7 @@ public class UserRepository {
      *
      * @param email email
      *
-     * @return is email exists?
+     * @return emailが存在するか
      */
     public boolean existsByEmail(final String email) {
         try {

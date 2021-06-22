@@ -38,9 +38,11 @@ public class ReservationRepository {
      * @param reservationId 予約ID
      */
     public void deleteById(final int reservationId) {
-        // FIXME: 存在確認
-        // throw new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION);
-        this.reservationMapper.deleteByPrimaryKey(reservationId);
+        if (this.existsById(reservationId)) {
+            this.reservationMapper.deleteByPrimaryKey(reservationId);
+        } else {
+            throw new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION);
+        }
     }
 
     /**
@@ -56,6 +58,19 @@ public class ReservationRepository {
     }
 
     /**
+     * ユーザIDから予約一覧を検索
+     *
+     * @param userId ユーザID
+     *
+     * @return 予約一覧
+     */
+    public List<Reservation> selectByUserId(final int userId) {
+        final var example = new ReservationExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        return this.reservationMapper.selectByExample(example);
+    }
+
+    /**
      * 予約一覧を取得
      *
      * @return 予約一覧
@@ -64,6 +79,22 @@ public class ReservationRepository {
         final var example = new ReservationExample();
         example.setOrderByClause("updated_at desc");
         return this.reservationMapper.selectByExample(example);
+    }
+
+    /**
+     * 予約IDの存在確認
+     *
+     * @param reservationId 予約ID
+     *
+     * @return 予約IDが存在するか
+     */
+    public boolean existsById(final int reservationId) {
+        try {
+            this.selectById(reservationId);
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package dev.abelab.crms.api.controller;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -45,6 +46,7 @@ public abstract class AbstractRestController_IT {
 
 	static final int SAMPLE_INT = 1;
 	static final String SAMPLE_STR = "SAMPLE";
+	static final Date SAMPLE_DATE = new Date();
 	static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
 	static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
 
