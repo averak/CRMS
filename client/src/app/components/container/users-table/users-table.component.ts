@@ -37,16 +37,11 @@ export class UsersTableComponent implements OnInit {
 
         // 入学年度/IDでソート
         this.users.sort((a, b) => {
-          if (a.admissionYear > b.admissionYear) {
-            return 1;
-          } else {
-            if (a.id > b.id) {
-              return 1;
-            } else {
-              return -1;
-            }
-          }
+          if (a.admissionYear > b.admissionYear) return 1;
+          if (a.admissionYear < b.admissionYear) return -1;
+          return a.lastName.localeCompare(b.lastName, 'ja');
         });
+        console.log(this.users);
 
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
         this.dataSource.paginator = this.paginator;
