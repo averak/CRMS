@@ -8,6 +8,7 @@ import { ReservationsComponent } from './components/page/reservations/reservatio
 import { AdminComponent } from './components/page/admin/admin.component';
 import { AdminUsersComponent } from './components/page/admin/admin-users/admin-users.component';
 import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/admin-users-new.component';
+import { AdminUsersEditComponent } from './components/page/admin/admin-users-edit/admin-users-edit.component';
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
             children: [
               { path: 'users', component: AdminUsersComponent },
               { path: 'users/new', component: AdminUsersNewComponent },
+              { path: 'users/:userId/edit', component: AdminUsersEditComponent },
             ],
           },
         ],

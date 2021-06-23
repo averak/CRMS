@@ -1,18 +1,18 @@
 <div fxLayout="column">
-  <app-title-box [title]="'ユーザ新規作成'"></app-title-box>
+  <app-title-box [title]="'ユーザ情報編集'"></app-title-box>
 
   <mat-grid-list cols="1" rowHeight="600px">
     <mat-grid-tile>
-      <form (ngSubmit)="onSubmit()" class="user-create-form" #userCreateForm="ngForm">
+      <form (ngSubmit)="onSubmit()" class="user-create-form" #userEditForm="ngForm">
         <mat-form-field appearance="fill" class="width-50">
           <mat-label>First Name</mat-label>
-          <input matInput [(ngModel)]="userCreateRequest.firstName" name="first-name" required />
+          <input matInput [(ngModel)]="userUpdateRequest.firstName" name="first-name" required />
           <mat-error>ファーストネームを入力してください</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="width-50 ml-2">
           <mat-label>Last Name</mat-label>
-          <input matInput [(ngModel)]="userCreateRequest.lastName" name="last-name" required />
+          <input matInput [(ngModel)]="userUpdateRequest.lastName" name="last-name" required />
           <mat-error>ラストネームを入力してください</mat-error>
         </mat-form-field>
 
@@ -20,7 +20,7 @@
 
         <mat-form-field appearance="fill" class="width-100">
           <mat-label>Email</mat-label>
-          <input matInput [(ngModel)]="userCreateRequest.email" name="email" required />
+          <input matInput [(ngModel)]="userUpdateRequest.email" name="email" required />
           <mat-error>メールアドレスを入力してください</mat-error>
         </mat-form-field>
 
@@ -31,7 +31,7 @@
           <input
             matInput
             [type]="hide ? 'password' : 'text'"
-            [(ngModel)]="userCreateRequest.password"
+            [(ngModel)]="userUpdateRequest.password"
             name="password"
             required
           />
@@ -45,7 +45,7 @@
 
         <mat-form-field class="width-50">
           <mat-label>権限</mat-label>
-          <mat-select [(ngModel)]="userCreateRequest.roleId" name="roleId" required>
+          <mat-select [(ngModel)]="userUpdateRequest.roleId" name="roleId" required>
             <mat-option [value]="1">管理者</mat-option>
             <mat-option [value]="2">一般</mat-option>
           </mat-select>
@@ -54,7 +54,7 @@
 
         <mat-form-field class="width-50 ml-2">
           <mat-label>入学年度</mat-label>
-          <mat-select [(ngModel)]="userCreateRequest.admissionYear" name="admission-year" required>
+          <mat-select [(ngModel)]="userUpdateRequest.admissionYear" name="admission-year" required>
             <mat-option *ngFor="let option of admissionYears" [value]="option">{{
               option
             }}</mat-option>
@@ -63,17 +63,17 @@
         </mat-form-field>
 
         <button type="button" mat-raised-button class="width-100 back-button" (click)="onGoBack()">
-          作成せずに戻る
+          保存せずに戻る
         </button>
 
         <button
           type="submit"
           mat-raised-button
           color="primary"
-          [disabled]="userCreateForm.invalid"
+          [disabled]="userEditForm.invalid"
           class="width-100 submit-button"
         >
-          この内容で作成
+          編集内容を保存する
         </button>
       </form>
     </mat-grid-tile>

@@ -11,17 +11,22 @@ import { UserModel } from 'src/app/model/user-model';
 import { UsersModel } from 'src/app/model/users-model';
 import { UserRoleEnum } from 'src/app/enums/user-role-enum';
 import { UserCreateRequest } from 'src/app/request/user-create-request';
+import { UserUpdateRequest } from 'src/app/request/user-update-request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  users!: UserModel[];
+
   constructor(
     private http: HttpClient,
     private httpBaseService: HttpBaseService,
     private authService: AuthService,
     private errorMessageService: ErrorMessageService
-  ) {}
+  ) {
+    this.users = [];
+  }
 
   getLoginUser(): Observable<UserModel> {
     return this.httpBaseService.getRequest<UserModel>(`${environment.API_PREFIX}/api/users/me`);
@@ -29,6 +34,14 @@ export class UserService {
 
   getUsers(): Observable<UsersModel> {
     return this.httpBaseService.getRequest<UsersModel>(`${environment.API_PREFIX}/api/users`);
+  }
+
+  setUsers(users: UserModel[]): void {
+    this.users = users;
+  }
+
+  selectById(userId: number): UserModel | undefined {
+    return this.users.find((user) => user.id == userId);
   }
 
   createUser(requestBody: UserCreateRequest) {
@@ -47,6 +60,24 @@ export class UserService {
     );
   }
 
+  updateUser(userId: number, requestBody: UserUpdateRequest): Observable<any> {
+    // request options
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: this.authService.getJwt(),
+      }),
+    };
+
+    return this.http
+      .put<any>(`${environment.API_PREFIX}/api/users/${userId}`, requestBody, options)
+      .pipe(
+        catchError((error) => {
+          throw this.errorMessageService.getErrorMessage(error.error.code);
+        })
+      );
+  }
+
   deleteUser(userId: number): Observable<any> {
     // request options
     const options = {
@@ -58,7 +89,6 @@ export class UserService {
 
     return this.http.delete<any>(`${environment.API_PREFIX}/api/users/${userId}`, options).pipe(
       catchError((error) => {
-        console.log(error);
         throw this.errorMessageService.getErrorMessage(error.error.code);
       })
     );

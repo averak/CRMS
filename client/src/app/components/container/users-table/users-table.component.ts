@@ -31,6 +31,7 @@ export class UsersTableComponent implements OnInit {
     this.userService.getUsers().subscribe(
       (users: UsersModel) => {
         this.users = users.users;
+        this.userService.setUsers(this.users);
 
         // 入学年度/IDでソート
         this.users.sort((a, b) => {
@@ -54,7 +55,7 @@ export class UsersTableComponent implements OnInit {
   }
 
   onEditClick(user: UserModel): void {
-    console.log(`${user.lastName}${user.firstName}を更新します`);
+    this.router.navigate(['/admin', 'users', user.id, 'edit']);
   }
 
   onDeleteClick(user: UserModel): void {

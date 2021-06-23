@@ -12,6 +12,6 @@ export class UserCreateButtonComponent implements OnInit {
   ngOnInit(): void {}
 
   onClick(): void {
-    this.router.navigate(['/admin/users/new']);
+    this.router.navigate(['/admin', 'users', 'new']);
   }
 }

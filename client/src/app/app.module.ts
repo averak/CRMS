@@ -20,6 +20,7 @@ import { UserCreateButtonComponent } from './components/container/user-create-bu
 import { AdminComponent } from './components/page/admin/admin.component';
 import { AdminUsersComponent } from './components/page/admin/admin-users/admin-users.component';
 import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/admin-users-new.component';
+import { AdminUsersEditComponent } from './components/page/admin/admin-users-edit/admin-users-edit.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/
     AdminComponent,
     AdminUsersComponent,
     AdminUsersNewComponent,
+    AdminUsersEditComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [CookieService],
