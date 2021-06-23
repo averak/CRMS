@@ -4,4 +4,5 @@ export interface UserCreateRequest {
   email: string;
   password: string;
   roleId: number;
+  admissionYear: number;
 }

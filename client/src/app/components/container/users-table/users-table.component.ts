@@ -14,7 +14,7 @@ import { UserModel } from 'src/app/model/user-model';
 })
 export class UsersTableComponent implements OnInit {
   users: UserModel[] = [];
-  columns: string[] = ['name', 'email', 'admissionAt', 'userRole', 'buttons'];
+  columns: string[] = ['name', 'email', 'admissionYear', 'userRole', 'buttons'];
   dataSource!: MatTableDataSource<UserModel>;
 
   constructor(
