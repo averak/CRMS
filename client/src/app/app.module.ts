@@ -16,6 +16,7 @@ import { SidenavComponent } from './components/container/sidenav/sidenav.compone
 import { TitleBoxComponent } from './components/container/title-box/title-box.component';
 import { AdminComponent } from './components/page/admin/admin.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
+import { UsersTableComponent } from './components/container/users-table/users-table.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DashboardComponent } from './components/page/dashboard/dashboard.compon
     TitleBoxComponent,
     AdminComponent,
     DashboardComponent,
+    UsersTableComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [CookieService],
