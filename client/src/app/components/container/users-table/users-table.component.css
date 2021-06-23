@@ -4,3 +4,14 @@ table {
   table-layout: fixed;
   background-color: #fafafa;
 }
+
+.edit_button {
+  color: #ffffff;
+  background-color: #06a98a;
+}
+
+.delete_button {
+  margin-left: 10px;
+  color: #ffffff;
+  background-color: #777777;
+}
