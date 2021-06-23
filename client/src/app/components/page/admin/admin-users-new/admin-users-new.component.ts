@@ -37,6 +37,10 @@ export class AdminUsersNewComponent implements OnInit {
     this.admissionYears = [...Array(8)].map((_: undefined, idx: number) => idx + currentYear - 7);
   }
 
+  onGoBack(): void {
+    this.router.navigate(['/admin/users']);
+  }
+
   onSubmit(): void {
     this.userService.createUser(this.userCreateRequest).subscribe(
       () => {

@@ -60,7 +60,9 @@
           </mat-select>
         </mat-form-field>
 
-        <button mat-raised-button class="width-100 return-button">作成せずに戻る</button>
+        <button type="button" mat-raised-button class="width-100 back-button" (click)="onGoBack()">
+          作成せずに戻る
+        </button>
 
         <button
           type="submit"
