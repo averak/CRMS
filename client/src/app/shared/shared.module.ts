@@ -20,6 +20,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 // components
 import { HeaderComponent } from './components/header/header.component';
@@ -57,6 +58,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatListModule,
     MatProgressSpinnerModule,
     MatGridListModule,
+    MatPaginatorModule,
   ],
   exports: [
     FormsModule,
@@ -78,6 +80,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatListModule,
     MatProgressSpinnerModule,
     MatGridListModule,
+    MatPaginatorModule,
 
     // components
     HeaderComponent,

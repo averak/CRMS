@@ -5,6 +5,10 @@ table {
   background-color: #fafafa;
 }
 
+mat-paginator {
+  background-color: #fafafa;
+}
+
 .user-edit-button {
   color: #ffffff;
   background-color: #06a98a;

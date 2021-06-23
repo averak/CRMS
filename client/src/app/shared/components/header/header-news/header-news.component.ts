@@ -11,6 +11,6 @@ export class HeaderNewsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.message = '現在のBCPレベルは3です。感染対策を徹底してください。';
+    this.message = '現在のBCPレベルは2です。感染対策を徹底してください。';
   }
 }
