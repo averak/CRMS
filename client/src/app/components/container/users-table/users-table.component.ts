@@ -24,23 +24,46 @@ export class UsersTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
     this.userService.getUsers().subscribe(
       (users: UsersModel) => {
         this.users = users.users;
 
-        // IDでソート
+        // 入学年度/IDでソート
         this.users.sort((a, b) => {
-          if (a.id > b.id) {
+          if (a.admissionYear > b.admissionYear) {
             return 1;
           } else {
-            return -1;
+            if (a.id > b.id) {
+              return 1;
+            } else {
+              return -1;
+            }
           }
         });
 
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
       },
       (error) => {
-        this.router.navigate(['/error'], { queryParams: { status_code: error.status } });
+        this.alertService.openSnackBar(error, 'ERROR');
+      }
+    );
+  }
+
+  onEditClick(user: UserModel): void {
+    console.log(`${user.lastName}${user.firstName}を更新します`);
+  }
+
+  onDeleteClick(user: UserModel): void {
+    this.userService.deleteUser(user.id).subscribe(
+      () => {
+        this.loadUsers();
+        this.alertService.openSnackBar('ユーザを削除しました', 'SUCCESS');
+      },
+      (error) => {
         this.alertService.openSnackBar(error, 'ERROR');
       }
     );

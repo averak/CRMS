@@ -32,14 +32,33 @@ export class UserService {
   }
 
   createUser(requestBody: UserCreateRequest) {
+    // request options
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: this.authService.getJwt(),
       }),
     };
+
     return this.http.post<any>(`${environment.API_PREFIX}/api/users`, requestBody, options).pipe(
       catchError((error) => {
+        throw this.errorMessageService.getErrorMessage(error.error.code);
+      })
+    );
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    // request options
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: this.authService.getJwt(),
+      }),
+    };
+
+    return this.http.delete<any>(`${environment.API_PREFIX}/api/users/${userId}`, options).pipe(
+      catchError((error) => {
+        console.log(error);
         throw this.errorMessageService.getErrorMessage(error.error.code);
       })
     );

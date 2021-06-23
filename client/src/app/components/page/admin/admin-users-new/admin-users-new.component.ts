@@ -48,7 +48,6 @@ export class AdminUsersNewComponent implements OnInit {
         this.alertService.openSnackBar('ユーザを新規作成しました', 'SUCCESS');
       },
       (error) => {
-        this.router.navigate(['/error'], { queryParams: { status_code: error.status } });
         this.alertService.openSnackBar(error, 'ERROR');
       }
     );
