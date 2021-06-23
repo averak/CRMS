@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { UserCreateRequest } from 'src/app/request/user-create-request';
 
 @Component({
@@ -12,7 +15,11 @@ export class AdminUsersNewComponent implements OnInit {
   hide = true;
   admissionYears!: number[];
 
-  constructor() {}
+  constructor(
+    private alertService: AlertService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // init request body
@@ -31,6 +38,15 @@ export class AdminUsersNewComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.userCreateRequest);
+    this.userService.createUser(this.userCreateRequest).subscribe(
+      () => {
+        this.router.navigate(['/admin/users']);
+        this.alertService.openSnackBar('ユーザを新規作成しました', 'SUCCESS');
+      },
+      (error) => {
+        this.router.navigate(['/error'], { queryParams: { status_code: error.status } });
+        this.alertService.openSnackBar(error, 'ERROR');
+      }
+    );
   }
 }
