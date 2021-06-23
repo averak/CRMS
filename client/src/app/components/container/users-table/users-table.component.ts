@@ -27,6 +27,16 @@ export class UsersTableComponent implements OnInit {
     this.userService.getUsers().subscribe(
       (users: UsersModel) => {
         this.users = users.users;
+
+        // IDでソート
+        this.users.sort((a, b) => {
+          if (a.id > b.id) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
       },
       (error) => {
