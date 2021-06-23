@@ -1,0 +1,10 @@
+.user-create-button {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #777777;
+
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin-left: auto;
+}

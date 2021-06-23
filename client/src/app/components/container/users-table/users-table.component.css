@@ -1,16 +1,16 @@
 table {
-  padding: 50px 20px 0px 20px;
+  padding: 20px 20px 0px 20px;
   width: 100%;
   table-layout: fixed;
   background-color: #fafafa;
 }
 
-.edit_button {
+.user-edit-button {
   color: #ffffff;
   background-color: #06a98a;
 }
 
-.delete_button {
+.user-delete-button {
   margin-left: 10px;
   color: #ffffff;
   background-color: #777777;

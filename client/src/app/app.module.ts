@@ -17,6 +17,7 @@ import { TitleBoxComponent } from './components/container/title-box/title-box.co
 import { AdminComponent } from './components/page/admin/admin.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 import { UsersTableComponent } from './components/container/users-table/users-table.component';
+import { UserCreateButtonComponent } from './components/container/user-create-button/user-create-button.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { UsersTableComponent } from './components/container/users-table/users-ta
     AdminComponent,
     DashboardComponent,
     UsersTableComponent,
+    UserCreateButtonComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [CookieService],
