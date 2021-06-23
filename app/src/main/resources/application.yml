@@ -38,8 +38,8 @@ crms:
   protocol: http
   hostname: localhost:${server.port}
   admin:
-    first-name: 阿部
-    last-name: 健太朗
+    first-name: 健太朗
+    last-name: 阿部
     email: admin@abelab.dev
     password: FK2$XGYwrWfyNNxS
 
