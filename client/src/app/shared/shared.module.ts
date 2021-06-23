@@ -19,6 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 // components
 import { HeaderComponent } from './components/header/header.component';
@@ -55,6 +56,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatSidenavModule,
     MatListModule,
     MatProgressSpinnerModule,
+    MatGridListModule,
   ],
   exports: [
     FormsModule,
@@ -75,6 +77,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatSidenavModule,
     MatListModule,
     MatProgressSpinnerModule,
+    MatGridListModule,
 
     // components
     HeaderComponent,

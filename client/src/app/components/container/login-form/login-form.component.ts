@@ -25,8 +25,8 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.userLoginRequest = {
-      email: '',
-      password: '',
+      email: undefined,
+      password: undefined,
     };
   }
 
