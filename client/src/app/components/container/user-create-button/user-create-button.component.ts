@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-create-button',
@@ -6,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-create-button.component.css'],
 })
 export class UserCreateButtonComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
-  onClick(): void {}
+  onClick(): void {
+    this.router.navigate(['/admin/users/new']);
+  }
 }

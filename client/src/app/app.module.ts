@@ -14,10 +14,12 @@ import { ErrorPageComponent } from './components/page/error-page/error-page.comp
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { TitleBoxComponent } from './components/container/title-box/title-box.component';
-import { AdminComponent } from './components/page/admin/admin.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 import { UsersTableComponent } from './components/container/users-table/users-table.component';
 import { UserCreateButtonComponent } from './components/container/user-create-button/user-create-button.component';
+import { AdminComponent } from './components/page/admin/admin.component';
+import { AdminUsersComponent } from './components/page/admin/admin-users/admin-users.component';
+import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/admin-users-new.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +30,12 @@ import { UserCreateButtonComponent } from './components/container/user-create-bu
     ReservationsComponent,
     SidenavComponent,
     TitleBoxComponent,
-    AdminComponent,
     DashboardComponent,
     UsersTableComponent,
     UserCreateButtonComponent,
+    AdminComponent,
+    AdminUsersComponent,
+    AdminUsersNewComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [CookieService],

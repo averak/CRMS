@@ -6,6 +6,8 @@ import { LoginComponent } from './components/page/login/login.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
 import { AdminComponent } from './components/page/admin/admin.component';
+import { AdminUsersComponent } from './components/page/admin/admin-users/admin-users.component';
+import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/admin-users-new.component';
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -25,9 +27,19 @@ const routes: Routes = [
         path: '',
         component: SidenavComponent,
         children: [
-          { path: 'dashboard', component: DashboardComponent },
+          {
+            path: 'dashboard',
+            component: DashboardComponent,
+          },
           { path: 'reservations', component: ReservationsComponent },
-          { path: 'admin', component: AdminComponent },
+          {
+            path: 'admin',
+            component: AdminComponent,
+            children: [
+              { path: 'users', component: AdminUsersComponent },
+              { path: 'users/new', component: AdminUsersNewComponent },
+            ],
+          },
         ],
       },
     ],
