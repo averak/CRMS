@@ -38,7 +38,7 @@
           <mat-icon matSuffix (click)="hide = !hide">{{
             hide ? 'visibility' : 'visibility_off'
           }}</mat-icon>
-          <mat-error> パスワードを入力してください </mat-error>
+          <mat-error>パスワードを入力してください</mat-error>
         </mat-form-field>
 
         <br />
@@ -49,6 +49,7 @@
             <mat-option value="1">管理者</mat-option>
             <mat-option value="2">一般</mat-option>
           </mat-select>
+          <mat-error>権限を入力してください</mat-error>
         </mat-form-field>
 
         <mat-form-field class="width-50 ml-2">
@@ -58,6 +59,7 @@
               option
             }}</mat-option>
           </mat-select>
+          <mat-error>入学年度を入力してください</mat-error>
         </mat-form-field>
 
         <button type="button" mat-raised-button class="width-100 back-button" (click)="onGoBack()">
