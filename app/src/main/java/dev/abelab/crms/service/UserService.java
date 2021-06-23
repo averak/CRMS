@@ -76,6 +76,7 @@ public class UserService {
             .email(requestBody.getEmail()) //
             .password(this.userLogic.encodePassword(requestBody.getPassword())) //
             .roleId(requestBody.getRoleId()) //
+            .admissionYear(requestBody.getAdmissionYear()) //
             .build();
 
         this.userRepository.insert(user);
@@ -104,6 +105,7 @@ public class UserService {
         user.setEmail(requestBody.getEmail());
         user.setPassword(this.userLogic.encodePassword(requestBody.getPassword()));
         user.setRoleId(requestBody.getRoleId());
+        user.setAdmissionYear(requestBody.getAdmissionYear());
         this.userRepository.update(user);
     }
 

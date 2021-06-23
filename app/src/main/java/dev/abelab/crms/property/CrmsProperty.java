@@ -48,6 +48,11 @@ public class CrmsProperty {
          */
         String password;
 
+        /**
+         * Admin admission year
+         */
+        Integer admissionYear;
+
     }
 
 }

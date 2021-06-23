@@ -42,6 +42,7 @@ crms:
     last-name: 阿部
     email: admin@abelab.dev
     password: FK2$XGYwrWfyNNxS
+    admission-year: 2019
 
 mybatis:
   configuration:

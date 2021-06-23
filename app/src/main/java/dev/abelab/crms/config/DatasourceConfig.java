@@ -1,5 +1,7 @@
 package dev.abelab.crms.config;
 
+import java.util.Date;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,7 @@ public class DatasourceConfig {
             .email(this.crmsProperty.getAdmin().getEmail()) //
             .password(this.userLogic.encodePassword(this.crmsProperty.getAdmin().getPassword())) //
             .roleId(UserRoleEnum.ADMIN.getId()) //
+            .admissionYear(this.crmsProperty.getAdmin().getAdmissionYear()) //
             .build();
         this.userRepository.insert(adminUser);
     }

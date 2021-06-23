@@ -49,6 +49,7 @@ public abstract class AbstractRestController_IT {
 	static final Date SAMPLE_DATE = new Date();
 	static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
 	static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
+	static final Integer LOGIN_USER_ADMISSION_AT = SAMPLE_INT;
 
 	/**
 	 * The Mock MVC
@@ -239,6 +240,7 @@ public abstract class AbstractRestController_IT {
 			.roleId(userRole.getId()) //
 			.email(LOGIN_USER_EMAIL) //
 			.password(this.userLogic.encodePassword(LOGIN_USER_PASSWORD)) //
+			.admissionYear(LOGIN_USER_ADMISSION_AT) //
 			.build();
 		this.userRepository.insert(loginUser);
 

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
+import java.util.Date;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT) //
 				.build();
 
 			// test
@@ -132,12 +134,13 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			// verify
 			final var createdUser = userRepository.selectByEmail(requestBody.getEmail());
 			assertThat(createdUser) //
-				.extracting("firstName", "lastName", "email", "roleId") //
+				.extracting("firstName", "lastName", "email", "roleId", "admissionYear") //
 				.containsExactly( //
 					requestBody.getFirstName(), //
 					requestBody.getLastName(), //
 					requestBody.getEmail(), //
-					requestBody.getRoleId());
+					requestBody.getRoleId(), //
+					requestBody.getAdmissionYear());
 			assertThat(passwordEncoder.matches(requestBody.getPassword(), createdUser.getPassword())).isTrue();
 		}
 
@@ -154,6 +157,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT) //
 				.build();
 
 			// test
@@ -175,6 +179,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT) //
 				.build();
 
 			// test
@@ -199,6 +204,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR) //
 				.email(SAMPLE_STR) //
 				.roleId(0) //
+				.admissionYear(SAMPLE_INT) //
 				.build();
 
 			// test
@@ -233,6 +239,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR + "XXX") //
 				.email(SAMPLE_STR + "XXX") //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT + 1) //
 				.build();
 
 			// test
@@ -243,12 +250,13 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			// verify
 			final var updatedUser = userRepository.selectByEmail(requestBody.getEmail());
 			assertThat(updatedUser) //
-				.extracting("firstName", "lastName", "email", "roleId") //
+				.extracting("firstName", "lastName", "email", "roleId", "admissionYear") //
 				.containsExactly( //
 					requestBody.getFirstName(), //
 					requestBody.getLastName(), //
 					requestBody.getEmail(), //
-					requestBody.getRoleId());
+					requestBody.getRoleId(), //
+					requestBody.getAdmissionYear());
 			assertThat(passwordEncoder.matches(requestBody.getPassword(), updatedUser.getPassword())).isTrue();
 		}
 
@@ -269,6 +277,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR + "XXX") //
 				.email(SAMPLE_STR + "XXX") //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT + 1) //
 				.build();
 
 			// test
@@ -290,6 +299,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.password(SAMPLE_STR + "XXX") //
 				.email(SAMPLE_STR + "XXX") //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT + 1) //
 				.build();
 
 			// test
@@ -380,13 +390,14 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var response = execute(request, HttpStatus.OK, UserResponse.class);
 
 			assertThat(response) //
-				.extracting("id", "firstName", "lastName", "email", "roleId") //
+				.extracting("id", "firstName", "lastName", "email", "roleId", "admissionYear") //
 				.containsExactly( //
 					loginUser.getId(), //
 					loginUser.getFirstName(), //
 					loginUser.getLastName(), //
 					loginUser.getEmail(), //
-					loginUser.getRoleId());
+					loginUser.getRoleId(), //
+					loginUser.getAdmissionYear());
 		}
 
 		Stream<Arguments> 正_ログインユーザの詳細を取得() {

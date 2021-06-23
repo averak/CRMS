@@ -595,6 +595,66 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andAdmissionYearIsNull() {
+            addCriterion("admission_year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearIsNotNull() {
+            addCriterion("admission_year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearEqualTo(Integer value) {
+            addCriterion("admission_year =", value, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearNotEqualTo(Integer value) {
+            addCriterion("admission_year <>", value, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearGreaterThan(Integer value) {
+            addCriterion("admission_year >", value, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("admission_year >=", value, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearLessThan(Integer value) {
+            addCriterion("admission_year <", value, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearLessThanOrEqualTo(Integer value) {
+            addCriterion("admission_year <=", value, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearIn(List<Integer> values) {
+            addCriterion("admission_year in", values, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearNotIn(List<Integer> values) {
+            addCriterion("admission_year not in", values, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearBetween(Integer value1, Integer value2) {
+            addCriterion("admission_year between", value1, value2, "admissionYear");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdmissionYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("admission_year not between", value1, value2, "admissionYear");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatedAtIsNull() {
             addCriterion("created_at is null");
             return (Criteria) this;

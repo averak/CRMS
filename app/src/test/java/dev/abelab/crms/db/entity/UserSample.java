@@ -19,6 +19,7 @@ public class UserSample extends AbstractSample {
         private String email = SAMPLE_STR;
         private String password = SAMPLE_STR;
         private Integer roleId = SAMPLE_INT;
+        private Integer admissionYear = SAMPLE_INT;
         private Date createdAt = SAMPLE_DATE;
         private Date updatedAt = SAMPLE_DATE;
 
@@ -39,6 +40,11 @@ public class UserSample extends AbstractSample {
 
         public UserSampleBuilder email(String email) {
             this.email = email;
+            return this;
+        }
+
+        public UserSampleBuilder admissionYear(Integer admissionYear) {
+            this.admissionYear = admissionYear;
             return this;
         }
 
@@ -70,6 +76,7 @@ public class UserSample extends AbstractSample {
                 .email(this.email) //
                 .password(this.password) //
                 .roleId(this.roleId) //
+                .admissionYear(this.admissionYear) //
                 .createdAt(this.createdAt) //
                 .updatedAt(this.updatedAt) //
                 .build();

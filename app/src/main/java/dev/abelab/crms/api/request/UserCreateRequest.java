@@ -1,5 +1,7 @@
 package dev.abelab.crms.api.request;
 
+import java.util.Date;
+
 import lombok.*;
 
 /**
@@ -35,5 +37,10 @@ public class UserCreateRequest {
      * ロールID
      */
     Integer roleId;
+
+    /**
+     * 入学年度
+     */
+    Integer admissionYear;
 
 }

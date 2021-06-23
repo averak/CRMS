@@ -1,5 +1,7 @@
 package dev.abelab.crms.api.response;
 
+import java.util.Date;
+
 import lombok.*;
 
 /**
@@ -34,5 +36,10 @@ public class UserResponse {
      * ロールID
      */
     Integer roleId;
+
+    /**
+     * 入学年度
+     */
+    Integer admissionYear;
 
 }

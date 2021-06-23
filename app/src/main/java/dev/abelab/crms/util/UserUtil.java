@@ -19,6 +19,7 @@ public class UserUtil {
             .lastName(user.getLastName()) //
             .email(user.getEmail()) //
             .roleId(user.getRoleId()) //
+            .admissionYear(user.getAdmissionYear()) //
             .build();
     }
 
