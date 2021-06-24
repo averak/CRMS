@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from 'src/app/shared/services/user.service';
@@ -6,18 +6,21 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { AdmissionYearService } from 'src/app/shared/services/admission-year.service';
 import { UserModel } from 'src/app/model/user-model';
 import { UserUpdateRequest } from 'src/app/request/user-update-request';
+import { OnBeforeUnload } from 'src/app/shared/guards/before-unload.guard';
 
 @Component({
   selector: 'app-admin-users-edit',
   templateUrl: './admin-users-edit.component.html',
   styleUrls: ['./admin-users-edit.component.css'],
 })
-export class AdminUsersEditComponent implements OnInit {
+export class AdminUsersEditComponent implements OnInit, OnBeforeUnload {
   userId!: number;
   user!: UserModel;
   userUpdateRequest!: UserUpdateRequest;
   admissionYears!: number[];
   hide = true;
+
+  shouldConfirmOnBeforeunload = true;
 
   constructor(
     private userService: UserService,
@@ -52,6 +55,13 @@ export class AdminUsersEditComponent implements OnInit {
 
     // 入学年度リストを作成
     this.admissionYears = this.admissionYearService.getAdmissionYears();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnload(e: Event) {
+    if (this.shouldConfirmOnBeforeunload) {
+      e.returnValue = true;
+    }
   }
 
   onGoBack(): void {
