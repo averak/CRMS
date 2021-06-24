@@ -44,12 +44,12 @@ const routes: Routes = [
               {
                 path: 'users/new',
                 component: AdminUsersNewComponent,
-                canDeactivate: [BeforeUnloadGuard],
+                // canDeactivate: [BeforeUnloadGuard],
               },
               {
                 path: 'users/:userId/edit',
                 component: AdminUsersEditComponent,
-                canDeactivate: [BeforeUnloadGuard],
+                // canDeactivate: [BeforeUnloadGuard],
               },
             ],
           },
