@@ -9,6 +9,8 @@ import { AdminComponent } from './components/page/admin/admin.component';
 import { AdminUsersComponent } from './components/page/admin/admin-users/admin-users.component';
 import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/admin-users-new.component';
 import { AdminUsersEditComponent } from './components/page/admin/admin-users-edit/admin-users-edit.component';
+import { MypageComponent } from './components/page/mypage/mypage.component';
+import { MypageEditComponent } from './components/page/mypage/mypage-edit/mypage-edit.component';
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -50,6 +52,16 @@ const routes: Routes = [
                 path: 'users/:userId/edit',
                 component: AdminUsersEditComponent,
                 // canDeactivate: [BeforeUnloadGuard],
+              },
+            ],
+          },
+          {
+            path: 'mypage',
+            component: MypageComponent,
+            children: [
+              {
+                path: 'edit',
+                component: MypageEditComponent,
               },
             ],
           },

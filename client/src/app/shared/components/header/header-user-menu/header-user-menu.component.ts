@@ -36,7 +36,7 @@ export class HeaderUserMenuComponent implements OnInit {
   }
 
   onProfileClick(): void {
-    // FIXME: プロフィール表示ページへ遷移
+    this.router.navigate(['/mypage', 'edit']);
   }
 
   onLogoutClick(): void {

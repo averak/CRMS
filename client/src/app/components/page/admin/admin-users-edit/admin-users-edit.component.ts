@@ -71,7 +71,7 @@ export class AdminUsersEditComponent implements OnInit, OnBeforeUnload {
   onSubmit(): void {
     this.userService.updateUser(this.userId, this.userUpdateRequest).subscribe(
       () => {
-        this.router.navigate(['/admin/users']);
+        this.router.navigate(['/admin', 'users']);
         this.alertService.openSnackBar('ユーザを更新しました', 'SUCCESS');
       },
       (error) => {
