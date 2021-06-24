@@ -21,6 +21,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // components
 import { HeaderComponent } from './components/header/header.component';
@@ -59,6 +60,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatProgressSpinnerModule,
     MatGridListModule,
     MatPaginatorModule,
+    ScrollingModule,
   ],
   exports: [
     FormsModule,
@@ -81,6 +83,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatProgressSpinnerModule,
     MatGridListModule,
     MatPaginatorModule,
+    ScrollingModule,
 
     // components
     HeaderComponent,
