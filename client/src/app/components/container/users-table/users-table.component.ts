@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 
 import { UserService } from 'src/app/shared/services/user.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -17,7 +16,6 @@ export class UsersTableComponent implements OnInit {
   users: UserModel[] = [];
   columns: string[] = ['name', 'email', 'admissionYear', 'userRole', 'buttons'];
   dataSource!: MatTableDataSource<UserModel>;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private userService: UserService,
@@ -43,7 +41,6 @@ export class UsersTableComponent implements OnInit {
         });
 
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
-        this.dataSource.paginator = this.paginator;
       },
       (error) => {
         this.alertService.openSnackBar(error, 'ERROR');
