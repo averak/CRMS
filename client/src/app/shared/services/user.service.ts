@@ -18,6 +18,7 @@ import { UserUpdateRequest } from 'src/app/request/user-update-request';
 })
 export class UserService {
   users!: UserModel[];
+  loginUser!: UserModel;
 
   constructor(
     private http: HttpClient,
@@ -30,6 +31,10 @@ export class UserService {
 
   getLoginUser(): Observable<UserModel> {
     return this.httpBaseService.getRequest<UserModel>(`${environment.API_PREFIX}/api/users/me`);
+  }
+
+  setLoginUser(loginUser: UserModel): void {
+    this.loginUser = loginUser;
   }
 
   getUsers(): Observable<UsersModel> {

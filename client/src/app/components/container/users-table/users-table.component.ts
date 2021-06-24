@@ -41,7 +41,6 @@ export class UsersTableComponent implements OnInit {
           if (a.admissionYear < b.admissionYear) return -1;
           return a.lastName.localeCompare(b.lastName, 'ja');
         });
-        console.log(this.users);
 
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
         this.dataSource.paginator = this.paginator;

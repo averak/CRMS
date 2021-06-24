@@ -16,6 +16,7 @@ import { HeaderComponent } from './shared/components/header/header.component';
 // guards
 import { AuthGuard } from './shared/guards/auth.guard';
 import { LoginedGuard } from './shared/guards/logined.guard';
+import { AdminGuard } from './shared/guards/admin.guard';
 import { BeforeUnloadGuard } from './shared/guards/before-unload.guard';
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
           {
             path: 'admin',
             component: AdminComponent,
+            canActivate: [AdminGuard],
             children: [
               { path: 'users', component: AdminUsersComponent },
               {
