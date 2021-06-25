@@ -56,13 +56,21 @@ export class UsersTableComponent implements OnInit {
   }
 
   onDeleteClick(user: UserModel): void {
-    this.userService.deleteUser(user.id).subscribe(
-      () => {
-        this.loadUsers();
-        this.alertService.openSnackBar('ユーザを削除しました', 'SUCCESS');
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
+    this.alertService.confirmDialog(
+      '削除確認',
+      'この動作は取り消せませんが、本当に削除しますか？',
+      (result: boolean): void => {
+        if (result) {
+          this.userService.deleteUser(user.id).subscribe(
+            () => {
+              this.loadUsers();
+              this.alertService.openSnackBar('ユーザを削除しました', 'SUCCESS');
+            },
+            (error) => {
+              this.alertService.openSnackBar(error, 'ERROR');
+            }
+          );
+        }
       }
     );
   }

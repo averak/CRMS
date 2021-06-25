@@ -19,7 +19,7 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { LoginedGuard } from './shared/guards/logined.guard';
 import { AdminGuard } from './shared/guards/admin.guard';
-import { BeforeUnloadGuard } from './shared/guards/before-unload.guard';
+// import { BeforeUnloadGuard } from './shared/guards/before-unload.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginedGuard] },
@@ -46,12 +46,10 @@ const routes: Routes = [
               {
                 path: 'users/new',
                 component: AdminUsersNewComponent,
-                // canDeactivate: [BeforeUnloadGuard],
               },
               {
                 path: 'users/:userId/edit',
                 component: AdminUsersEditComponent,
-                // canDeactivate: [BeforeUnloadGuard],
               },
             ],
           },

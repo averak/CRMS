@@ -1,23 +1,12 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-
-import { OnBeforeUnload } from 'src/app/shared/guards/before-unload.guard';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-admin-users-edit',
   templateUrl: './admin-users-edit.component.html',
   styleUrls: ['./admin-users-edit.component.css'],
 })
-export class AdminUsersEditComponent implements OnInit, OnBeforeUnload {
-  shouldConfirmOnBeforeunload = true;
-
+export class AdminUsersEditComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnload(e: Event) {
-    if (this.shouldConfirmOnBeforeunload) {
-      e.returnValue = true;
-    }
-  }
 }

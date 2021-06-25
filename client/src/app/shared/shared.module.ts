@@ -21,22 +21,25 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // components
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { HeaderComponent } from './components/header/header.component';
 import { HeaderNewsComponent } from './components/header/header-news/header-news.component';
 import { HeaderUserMenuComponent } from './components/header/header-user-menu/header-user-menu.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
-    FooterComponent,
+    ConfirmDialogComponent,
     SnackBarComponent,
     HeaderComponent,
     HeaderNewsComponent,
     HeaderUserMenuComponent,
+    FooterComponent,
   ],
   imports: [
     FormsModule,
@@ -60,6 +63,7 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatProgressSpinnerModule,
     MatGridListModule,
     MatPaginatorModule,
+    MatDialogModule,
     ScrollingModule,
   ],
   exports: [
@@ -83,12 +87,14 @@ import { HeaderUserMenuComponent } from './components/header/header-user-menu/he
     MatProgressSpinnerModule,
     MatGridListModule,
     MatPaginatorModule,
+    MatDialogModule,
     ScrollingModule,
 
     // components
+    ConfirmDialogComponent,
+    SnackBarComponent,
     HeaderComponent,
     FooterComponent,
-    SnackBarComponent,
   ],
 })
 export class SharedModule {}
