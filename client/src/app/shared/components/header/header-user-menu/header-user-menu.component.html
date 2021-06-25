@@ -1,4 +1,4 @@
-<div class="user-menu">
+<div class="crms-fg-black2">
   <button mat-button [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
     <span class="user-name-text">{{ userName }}</span>
@@ -7,13 +7,13 @@
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="onProfileClick()">
-      <div>
+      <div class="crms-fg-black2">
         <mat-icon>manage_accounts</mat-icon>
         <span>プロフィール</span>
       </div>
     </button>
     <button mat-menu-item (click)="onLogoutClick()">
-      <div>
+      <div class="crms-fg-black2">
         <mat-icon>logout</mat-icon>
         <span>ログアウト</span>
       </div>

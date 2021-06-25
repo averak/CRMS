@@ -1,9 +1,7 @@
 footer {
   position: absolute;
-  bottom: 1px;
-  left: 0;
-  width: 100%;
   text-align: center;
+  bottom: 1px;
+  width: 100%;
   font-size: 80%;
-  color: #808080;
 }

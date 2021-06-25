@@ -10,7 +10,7 @@ export class AlertService {
   constructor(private snackBar: MatSnackBar) {}
 
   openSnackBar(message: string, type: 'SUCCESS' | 'INFO' | 'WARN' | 'ERROR'): void {
-    const duration = type == 'SUCCESS' || type == 'INFO' ? 5000 : -1;
+    const duration = type == 'ERROR' ? -1 : 5000;
 
     this.snackBar.openFromComponent(SnackBarComponent, {
       duration: duration,

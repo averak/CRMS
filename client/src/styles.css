@@ -1,9 +1,75 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
+/* foreground colors */
+.crms-fg-white1 {
+  color: #ffffff;
+}
+
+.crms-fg-white2 {
+  color: #d0d0d0;
+}
+
+.crms-fg-black1 {
+  color: #333333;
+}
+
+.crms-fg-black2 {
+  color: #434343;
+}
+
+.crms-fg-gray1 {
+  color: #808080;
+}
+
+.crms-fg-red1 {
+  color: #ff0000;
+}
+
+/* background colors */
+.crms-bg-white1 {
+  background-color: #fafafa;
+}
+
+.crms-bg-navy1 {
+  background-color: #293642;
+}
+
+.crms-bg-blue1 {
+  background-color: #17a1b8;
+}
+
+.crms-bg-blue2 {
+  background-color: #0791a8;
+}
+
+.crms-bg-gray1 {
+  background-color: #777777;
+}
+
+.crms-bg-gray2 {
+  background-color: #dcdcdc;
+}
+
+/* form settings */
+.crms-form-width-50 {
+  width: 49%;
+}
+
+.crms-form-width-100 {
+  width: 100%;
+}
+
+.crms-form-ml-2 {
+  margin-left: 2%;
+}
+
+/* other settings */
+.crms-bottom-border {
+  border-bottom: 1px solid #e0e0e0;
+}
+
 body {
   margin: 0;
-  background-color: #fafafa;
-  font-family: sans-serif;
   overflow: hidden;
 }
 
@@ -19,15 +85,8 @@ body {
   max-width: 230px !important;
 }
 
-.main-content {
+.page-main-content {
   margin-left: 230px;
   min-height: calc(100vh - 46px);
   min-width: calc(100vw - 230px);
-}
-
-app-footer {
-  display: flex;
-  margin-top: auto;
-  align-items: center;
-  justify-content: center;
 }

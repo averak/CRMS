@@ -19,21 +19,17 @@ span {
 }
 
 .success-snack-bar {
-  color: #189b66;
   background-color: #ddffdd;
 }
 
 .info-snack-bar {
-  color: #508ddd;
   background-color: #edf8fb;
 }
 
 .warn-snack-bar {
-  color: #8c8c8c;
   background-color: #fffceb;
 }
 
 .error-snack-bar {
-  color: #df646f;
   background-color: #fef4f6;
 }

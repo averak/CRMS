@@ -1,13 +1,13 @@
 <mat-grid-list cols="1" rowHeight="600px">
   <mat-grid-tile>
     <form (ngSubmit)="onSubmit()" class="user-create-form" #userEditForm="ngForm">
-      <mat-form-field appearance="fill" class="width-50">
+      <mat-form-field appearance="fill" class="crms-form-width-50">
         <mat-label>First Name</mat-label>
         <input matInput [(ngModel)]="loginUserUpdateRequest.firstName" name="first-name" required />
         <mat-error>ファーストネームを入力してください</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="width-50 ml-2">
+      <mat-form-field appearance="fill" class="crms-form-width-50 crms-form-ml-2">
         <mat-label>Last Name</mat-label>
         <input matInput [(ngModel)]="loginUserUpdateRequest.lastName" name="last-name" required />
         <mat-error>ラストネームを入力してください</mat-error>
@@ -15,7 +15,7 @@
 
       <br />
 
-      <mat-form-field appearance="fill" class="width-100">
+      <mat-form-field appearance="fill" class="crms-form-width-100">
         <mat-label>Email</mat-label>
         <input matInput [(ngModel)]="loginUserUpdateRequest.email" name="email" required />
         <mat-error>メールアドレスを入力してください</mat-error>
@@ -23,7 +23,7 @@
 
       <br />
 
-      <mat-form-field appearance="fill" class="width-100">
+      <mat-form-field appearance="fill" class="crms-form-width-100">
         <mat-label>Current Password</mat-label>
         <input
           matInput
@@ -40,7 +40,7 @@
 
       <br />
 
-      <mat-form-field appearance="fill" class="width-100">
+      <mat-form-field appearance="fill" class="crms-form-width-100">
         <mat-label>New Password</mat-label>
         <input
           matInput
@@ -57,7 +57,7 @@
 
       <br />
 
-      <mat-form-field class="width-50" (click)="onClickDisabledColumn()">
+      <mat-form-field class="crms-form-width-50" (click)="onClickDisabledColumn()">
         <mat-label>権限</mat-label>
         <mat-select [(ngModel)]="user.roleId" name="roleId" [disabled]="true">
           <mat-option [value]="1">管理者</mat-option>
@@ -66,7 +66,7 @@
         <mat-error>権限を入力してください</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="width-50" (click)="onClickDisabledColumn()">
+      <mat-form-field class="crms-form-width-50" (click)="onClickDisabledColumn()">
         <mat-label>入学年度</mat-label>
         <mat-select [(ngModel)]="user.admissionYear" name="admission-year" [disabled]="true">
           <mat-option *ngFor="let option of admissionYears" [value]="option">{{
@@ -76,7 +76,12 @@
         <mat-error>入学年度を入力してください</mat-error>
       </mat-form-field>
 
-      <button type="button" mat-raised-button class="width-100 back-button" (click)="onGoBack()">
+      <button
+        type="button"
+        mat-raised-button
+        class="crms-form-width-100 crms-fg-black1 crms-bg-gray2 back-button"
+        (click)="onGoBack()"
+      >
         保存せずに戻る
       </button>
 
@@ -85,7 +90,7 @@
         mat-raised-button
         color="primary"
         [disabled]="userEditForm.invalid"
-        class="width-100 submit-button"
+        class="crms-form-width-100 crms-fg-white1 submit-button"
       >
         編集内容を保存する
       </button>
