@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AlertService } from 'src/app/shared/services/alert.service';
 import { UserService } from 'src/app/shared/services/user.service';
-import { AdmissionYearService } from 'src/app/shared/services/admission-year.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { UserModel } from 'src/app/model/user-model';
 import { UserCreateRequest } from 'src/app/request/user-create-request';
 
 @Component({
@@ -12,42 +12,36 @@ import { UserCreateRequest } from 'src/app/request/user-create-request';
   styleUrls: ['./user-new-form.component.css'],
 })
 export class UserNewFormComponent implements OnInit {
-  userCreateRequest!: UserCreateRequest;
-  admissionYears!: number[];
+  user: UserModel = {} as UserModel;
   hide = true;
-
-  shouldConfirmOnBeforeunload = true;
 
   constructor(
     private alertService: AlertService,
     private userService: UserService,
-    private admissionYearService: AdmissionYearService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // init request body
-    this.userCreateRequest = {
-      firstName: undefined,
-      lastName: undefined,
-      email: undefined,
-      password: undefined,
-      admissionYear: undefined,
-      roleId: undefined,
-    };
+  ngOnInit(): void {}
 
-    // 入学年度リストを作成
-    this.admissionYears = this.admissionYearService.getAdmissionYears();
-  }
-
-  onGoBack(): void {
+  handleGoBack(): void {
     this.router.navigate(['/admin', 'users']);
   }
 
-  onSubmit(): void {
-    this.userService.createUser(this.userCreateRequest).subscribe(
+  handleSubmitUser(user: UserModel): void {
+    // ユーザ作成リクエストを作成
+    const requestBody: UserCreateRequest = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      roleId: user.roleId,
+      admissionYear: user.admissionYear,
+    };
+
+    // リクエスト送信
+    this.userService.createUser(requestBody).subscribe(
       () => {
-        this.router.navigate(['/admin/users']);
+        this.handleGoBack();
         this.alertService.openSnackBar('ユーザを新規作成しました', 'SUCCESS');
       },
       (error) => {

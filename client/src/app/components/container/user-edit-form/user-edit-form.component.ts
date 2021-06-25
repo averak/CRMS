@@ -43,18 +43,18 @@ export class UserEditFormComponent implements OnInit {
   handleSubmitUser(user: UserModel): void {
     // ユーザ更新リクエストを作成
     const requestBody: UserUpdateRequest = {
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
-      password: this.user.password,
-      roleId: this.user.roleId,
-      admissionYear: this.user.admissionYear,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      roleId: user.roleId,
+      admissionYear: user.admissionYear,
     };
 
     // リクエスト送信
-    this.userService.updateUser(this.user.id, requestBody).subscribe(
+    this.userService.updateUser(user.id, requestBody).subscribe(
       () => {
-        this.router.navigate(['/admin', 'users']);
+        this.handleGoBack();
         this.alertService.openSnackBar('ユーザを更新しました', 'SUCCESS');
       },
       (error) => {

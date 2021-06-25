@@ -42,18 +42,25 @@
         <br />
       </div>
 
-      <mat-form-field class="crms-form-width-50">
+      <mat-form-field class="crms-form-width-50" (click)="onClickDisabledColumn(!allowRoleIdInput)">
         <mat-label>権限</mat-label>
-        <mat-select [(ngModel)]="user.roleId" name="roleId" required>
+        <mat-select [(ngModel)]="user.roleId" name="roleId" [disabled]="!allowRoleIdInput">
           <mat-option [value]="1">管理者</mat-option>
           <mat-option [value]="2">一般</mat-option>
         </mat-select>
         <mat-error>権限を入力してください</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="crms-form-width-50 crms-form-ml-2">
+      <mat-form-field
+        class="crms-form-width-50 crms-form-ml-2"
+        (click)="onClickDisabledColumn(!allowAdmissionYearInput)"
+      >
         <mat-label>入学年度</mat-label>
-        <mat-select [(ngModel)]="user.admissionYear" name="admission-year" required>
+        <mat-select
+          [(ngModel)]="user.admissionYear"
+          name="admission-year"
+          [disabled]="!allowAdmissionYearInput"
+        >
           <mat-option *ngFor="let option of admissionYears" [value]="option">{{
             option
           }}</mat-option>
