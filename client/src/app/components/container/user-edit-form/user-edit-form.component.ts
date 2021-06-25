@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from 'src/app/shared/services/user.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { AdmissionYearService } from 'src/app/shared/services/admission-year.service';
 import { UserModel } from 'src/app/model/user-model';
 import { UserUpdateRequest } from 'src/app/request/user-update-request';
 
@@ -13,53 +12,47 @@ import { UserUpdateRequest } from 'src/app/request/user-update-request';
   styleUrls: ['./user-edit-form.component.css'],
 })
 export class UserEditFormComponent implements OnInit {
-  userId!: number;
   user!: UserModel;
-  userUpdateRequest!: UserUpdateRequest;
-  admissionYears!: number[];
   hide = true;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
-    private admissionYearService: AdmissionYearService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     // ユーザID
-    this.userId = Number(this.route.snapshot.paramMap.get('userId'));
+    const userId = Number(this.route.snapshot.paramMap.get('userId'));
 
     // 編集対象ユーザを取得
-    const user: UserModel | undefined = this.userService.selectById(this.userId);
+    const user: UserModel | undefined = this.userService.selectById(userId);
     if (user === undefined) {
       this.router.navigate(['/admin', 'users']);
       this.alertService.openSnackBar('ユーザが見つかりません', 'ERROR');
     } else {
       this.user = user;
     }
-
-    // init request body
-    this.userUpdateRequest = {
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
-      password: undefined,
-      admissionYear: this.user.admissionYear,
-      roleId: this.user.roleId,
-    };
-
-    // 入学年度リストを作成
-    this.admissionYears = this.admissionYearService.getAdmissionYears();
   }
 
-  onGoBack(): void {
+  handleGoBack(): void {
     this.router.navigate(['/admin', 'users']);
   }
 
-  onSubmit(): void {
-    this.userService.updateUser(this.userId, this.userUpdateRequest).subscribe(
+  handleSubmitUser(user: UserModel): void {
+    // ユーザ更新リクエストを作成
+    const requestBody: UserUpdateRequest = {
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      password: this.user.password,
+      roleId: this.user.roleId,
+      admissionYear: this.user.admissionYear,
+    };
+
+    // リクエスト送信
+    this.userService.updateUser(this.user.id, requestBody).subscribe(
       () => {
         this.router.navigate(['/admin', 'users']);
         this.alertService.openSnackBar('ユーザを更新しました', 'SUCCESS');

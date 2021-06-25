@@ -26,6 +26,7 @@ import { MypageEditComponent } from './components/page/mypage/mypage-edit/mypage
 import { UserEditFormComponent } from './components/container/user-edit-form/user-edit-form.component';
 import { UserNewFormComponent } from './components/container/user-new-form/user-new-form.component';
 import { MypageEditFormComponent } from './components/container/mypage-edit-form/mypage-edit-form.component';
+import { UserEditCardComponent } from './components/presentational/user-edit-card/user-edit-card.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MypageEditFormComponent } from './components/container/mypage-edit-form
     UserEditFormComponent,
     UserNewFormComponent,
     MypageEditFormComponent,
+    UserEditCardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [CookieService],
