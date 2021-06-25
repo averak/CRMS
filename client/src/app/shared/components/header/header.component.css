@@ -8,7 +8,7 @@ header {
   display: flex;
   flex: none;
   width: 230px;
-  background-color: #06a98a;
+  background-color: #0791a8;
 }
 
 span {
@@ -18,7 +18,7 @@ span {
   font-size: 20px;
   font-weight: bold;
   color: #ffffff;
-  background-color: #06a98a;
+  background-color: #0791a8;
 }
 
 app-header-news {
