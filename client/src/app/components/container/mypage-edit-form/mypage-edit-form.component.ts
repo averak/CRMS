@@ -43,6 +43,10 @@ export class MypageEditFormComponent implements OnInit {
     this.admissionYears = this.admissionYearService.getAdmissionYears();
   }
 
+  onClickDisabledColumn(): void {
+    this.alertService.openSnackBar('この項目の編集は禁止されています', 'WARN');
+  }
+
   onGoBack(): void {
     this.router.navigate(['/dashboard']);
   }
