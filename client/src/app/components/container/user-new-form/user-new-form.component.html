@@ -1,6 +1,5 @@
 <app-user-edit-card
-  [user]="user"
   [enablePassword]="true"
   (goBackTransit)="handleGoBack()"
-  (submitUser)="handleSubmitUser(user)"
+  (submitUser)="handleSubmitUser($event)"
 ></app-user-edit-card>

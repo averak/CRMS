@@ -12,7 +12,6 @@ import { UserCreateRequest } from 'src/app/request/user-create-request';
   styleUrls: ['./user-new-form.component.css'],
 })
 export class UserNewFormComponent implements OnInit {
-  user: UserModel = {} as UserModel;
   hide = true;
 
   constructor(

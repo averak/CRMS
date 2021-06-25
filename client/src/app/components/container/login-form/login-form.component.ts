@@ -14,7 +14,6 @@ import { UserLoginRequest } from 'src/app/request/user-login-request';
 export class LoginFormComponent implements OnInit {
   @Output() loginTransit: EventEmitter<any> = new EventEmitter<any>();
 
-  userLoginRequest!: UserLoginRequest;
   hide = true;
 
   constructor(
@@ -23,15 +22,10 @@ export class LoginFormComponent implements OnInit {
     private cookieService: CookieService
   ) {}
 
-  ngOnInit(): void {
-    this.userLoginRequest = {
-      email: undefined,
-      password: undefined,
-    };
-  }
+  ngOnInit(): void {}
 
-  onSubmit() {
-    this.authService.login(this.userLoginRequest).subscribe(
+  handleLogin(requestBody: UserLoginRequest) {
+    this.authService.login(requestBody).subscribe(
       (resp) => {
         this.cookieService.set(environment.COOKIE_AUTH_KEY, resp.headers.get('Authorization'));
         this.alertService.openSnackBar('ログインに成功しました', 'SUCCESS');
