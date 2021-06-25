@@ -1,0 +1,77 @@
+<mat-grid-list cols="1" rowHeight="600px">
+  <mat-grid-tile>
+    <form (ngSubmit)="onSubmit()" class="user-create-form" #userEditForm="ngForm">
+      <mat-form-field appearance="fill" class="width-50">
+        <mat-label>First Name</mat-label>
+        <input matInput [(ngModel)]="userUpdateRequest.firstName" name="first-name" required />
+        <mat-error>ファーストネームを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="width-50 ml-2">
+        <mat-label>Last Name</mat-label>
+        <input matInput [(ngModel)]="userUpdateRequest.lastName" name="last-name" required />
+        <mat-error>ラストネームを入力してください</mat-error>
+      </mat-form-field>
+
+      <br />
+
+      <mat-form-field appearance="fill" class="width-100">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="userUpdateRequest.email" name="email" required />
+        <mat-error>メールアドレスを入力してください</mat-error>
+      </mat-form-field>
+
+      <br />
+
+      <mat-form-field appearance="fill" class="width-100">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          [(ngModel)]="userUpdateRequest.password"
+          name="password"
+          required
+        />
+        <mat-icon matSuffix (click)="hide = !hide">{{
+          hide ? 'visibility' : 'visibility_off'
+        }}</mat-icon>
+        <mat-error>パスワードを入力してください</mat-error>
+      </mat-form-field>
+
+      <br />
+
+      <mat-form-field class="width-50">
+        <mat-label>権限</mat-label>
+        <mat-select [(ngModel)]="userUpdateRequest.roleId" name="roleId" required>
+          <mat-option [value]="1">管理者</mat-option>
+          <mat-option [value]="2">一般</mat-option>
+        </mat-select>
+        <mat-error>権限を入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="width-50 ml-2">
+        <mat-label>入学年度</mat-label>
+        <mat-select [(ngModel)]="userUpdateRequest.admissionYear" name="admission-year" required>
+          <mat-option *ngFor="let option of admissionYears" [value]="option">{{
+            option
+          }}</mat-option>
+        </mat-select>
+        <mat-error>入学年度を入力してください</mat-error>
+      </mat-form-field>
+
+      <button type="button" mat-raised-button class="width-100 back-button" (click)="onGoBack()">
+        保存せずに戻る
+      </button>
+
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="userEditForm.invalid"
+        class="width-100 submit-button"
+      >
+        編集内容を保存する
+      </button>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>

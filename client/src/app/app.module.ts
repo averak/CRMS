@@ -23,6 +23,9 @@ import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/
 import { AdminUsersEditComponent } from './components/page/admin/admin-users-edit/admin-users-edit.component';
 import { MypageComponent } from './components/page/mypage/mypage.component';
 import { MypageEditComponent } from './components/page/mypage/mypage-edit/mypage-edit.component';
+import { UserEditFormComponent } from './components/container/user-edit-form/user-edit-form.component';
+import { UserNewFormComponent } from './components/container/user-new-form/user-new-form.component';
+import { MypageEditFormComponent } from './components/container/mypage-edit-form/mypage-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { MypageEditComponent } from './components/page/mypage/mypage-edit/mypage
     AdminUsersEditComponent,
     MypageComponent,
     MypageEditComponent,
+    UserEditFormComponent,
+    UserNewFormComponent,
+    MypageEditFormComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule],
   providers: [CookieService],

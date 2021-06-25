@@ -1,0 +1,28 @@
+mat-grid-tile {
+  background: #fafafa;
+}
+
+.width-50 {
+  width: 49%;
+}
+
+.ml-2 {
+  margin-left: 2%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.back-button {
+  margin-top: 60px;
+  margin-bottom: 15px;
+  height: 50px;
+  color: #333333;
+  background-color: #dcdcdc;
+}
+
+.submit-button {
+  height: 50px;
+  color: #ffffff;
+}
