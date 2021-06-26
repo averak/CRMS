@@ -9,7 +9,6 @@
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "check": "npm-run-all check:*",
-    "check:type": "tsc",
     "check:lint": "ng lint",
     "check:format": "prettier --check src",
     "format": "prettier --write src"
