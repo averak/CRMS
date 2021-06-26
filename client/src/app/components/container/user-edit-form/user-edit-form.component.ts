@@ -46,7 +46,6 @@ export class UserEditFormComponent implements OnInit {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      password: user.password,
       roleId: user.roleId,
       admissionYear: user.admissionYear,
     };
