@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
-import java.util.Date;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.api.request.LoginUserUpdateRequest;
+import dev.abelab.crms.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
@@ -46,6 +46,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 	static final String GET_LOGIN_USER_PATH = BASE_PATH + "/me";
 	static final String UPDATE_LOGIN_USER_PATH = BASE_PATH + "/me";
+	static final String UPDATE_LOGIN_USER_PASSWORD_PATH = BASE_PATH + "/me/password";
 
 	@Autowired
 	UserRepository userRepository;
@@ -452,10 +453,42 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 		@Test
 		void 正_ログインユーザのパスワードを更新() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = LoginUserPasswordUpdateRequest.builder() //
+				.currentPassword(LOGIN_USER_PASSWORD) //
+				.newPassword(LOGIN_USER_PASSWORD + "XXX") //
+				.build();
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var updatedUser = userRepository.selectById(loginUser.getId());
+			assertThat(passwordEncoder.matches(requestBody.getNewPassword(), updatedUser.getPassword())).isTrue();
 		}
 
 		@Test
 		void 異_現在のパスワードが間違えている() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = LoginUserPasswordUpdateRequest.builder() //
+				.currentPassword(LOGIN_USER_PASSWORD + "XXX") //
+				.newPassword(LOGIN_USER_PASSWORD + "XXX") //
+				.build();
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new UnauthorizedException(ErrorCode.WRONG_PASSWORD));
 		}
 
 	}

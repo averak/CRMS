@@ -10,6 +10,7 @@ import lombok.*;
 import dev.abelab.crms.api.request.UserCreateRequest;
 import dev.abelab.crms.api.request.UserUpdateRequest;
 import dev.abelab.crms.api.request.LoginUserUpdateRequest;
+import dev.abelab.crms.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.service.UserService;
@@ -178,6 +179,32 @@ public class UserRestController {
         @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final LoginUserUpdateRequest requestBody //
     ) {
         this.userService.updateLoginUser(requestBody, jwt);
+    }
+
+    /**
+     * ログインユーザのパスワード更新API
+     *
+     * @param jwt         JWT
+     *
+     * @param requestBody ログインユーザのパスワード更新リクエスト
+     */
+    @ApiOperation(value = "ログインユーザのパスワード更新", //
+        notes = "ログインユーザのパスワードを更新する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "更新成功"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+        } //
+    )
+    @PutMapping(value = "/me/password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateLoginUserPassword( //
+        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @Validated @ApiParam(name = "body", required = true, value = "パスワード更新情報")
+        @RequestBody final LoginUserPasswordUpdateRequest requestBody //
+    ) {
+        this.userService.updateLoginPasswordUser(requestBody, jwt);
     }
 
 }
