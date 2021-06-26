@@ -17,11 +17,9 @@ header {
   font-weight: bold;
 }
 
-app-header-news {
-  display: flex;
-  margin-left: 10px;
-  align-items: center;
-  width: 15%;
+.rcc-image {
+  padding: 7px;
+  pointer-events: none;
 }
 
 app-header-user-menu {

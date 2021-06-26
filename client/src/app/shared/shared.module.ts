@@ -28,7 +28,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { HeaderComponent } from './components/header/header.component';
-import { HeaderNewsComponent } from './components/header/header-news/header-news.component';
 import { HeaderUserMenuComponent } from './components/header/header-user-menu/header-user-menu.component';
 import { FooterComponent } from './components/footer/footer.component';
 
@@ -37,7 +36,6 @@ import { FooterComponent } from './components/footer/footer.component';
     ConfirmDialogComponent,
     SnackBarComponent,
     HeaderComponent,
-    HeaderNewsComponent,
     HeaderUserMenuComponent,
     FooterComponent,
   ],
