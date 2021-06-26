@@ -36,7 +36,11 @@ export class HeaderUserMenuComponent implements OnInit {
   }
 
   onProfileClick(): void {
-    this.router.navigate(['/mypage', 'edit']);
+    this.router.navigate(['/mypage', 'profile']);
+  }
+
+  onPasswordClick(): void {
+    this.router.navigate(['/mypage', 'password']);
   }
 
   onLogoutClick(): void {

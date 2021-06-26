@@ -2,15 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // page components
+// login
 import { LoginComponent } from './components/page/login/login.component';
+// dashboard
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
+// reservations
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
+// admin
 import { AdminComponent } from './components/page/admin/admin.component';
-import { AdminUsersComponent } from './components/page/admin/admin-users/admin-users.component';
-import { AdminUsersNewComponent } from './components/page/admin/admin-users-new/admin-users-new.component';
-import { AdminUsersEditComponent } from './components/page/admin/admin-users-edit/admin-users-edit.component';
+import { UsersComponent } from './components/page/admin/users/users.component';
+import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
+import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
+// mypage
 import { MypageComponent } from './components/page/mypage/mypage.component';
-import { MypageEditComponent } from './components/page/mypage/mypage-edit/mypage-edit.component';
+import { ProfileEditComponent } from './components/page/mypage/profile-edit/profile-edit.component';
+import { PasswordEditComponent } from './components/page/mypage/password-edit/password-edit.component';
+// others
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -42,14 +49,14 @@ const routes: Routes = [
             component: AdminComponent,
             canActivate: [AdminGuard],
             children: [
-              { path: 'users', component: AdminUsersComponent },
+              { path: 'users', component: UsersComponent },
               {
                 path: 'users/new',
-                component: AdminUsersNewComponent,
+                component: UsersNewComponent,
               },
               {
                 path: 'users/:userId/edit',
-                component: AdminUsersEditComponent,
+                component: UsersEditComponent,
               },
             ],
           },
@@ -58,8 +65,12 @@ const routes: Routes = [
             component: MypageComponent,
             children: [
               {
-                path: 'edit',
-                component: MypageEditComponent,
+                path: 'profile',
+                component: ProfileEditComponent,
+              },
+              {
+                path: 'password',
+                component: PasswordEditComponent,
               },
             ],
           },

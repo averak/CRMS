@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminUsersNewComponent } from './admin-users-new.component';
+import { PasswordEditComponent } from './password-edit.component';
 
-describe('AdminUsersNewComponent', () => {
-  let component: AdminUsersNewComponent;
-  let fixture: ComponentFixture<AdminUsersNewComponent>;
+describe('PasswordEditComponent', () => {
+  let component: PasswordEditComponent;
+  let fixture: ComponentFixture<PasswordEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminUsersNewComponent],
+      declarations: [PasswordEditComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminUsersNewComponent);
+    fixture = TestBed.createComponent(PasswordEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
