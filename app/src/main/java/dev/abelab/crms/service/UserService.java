@@ -103,7 +103,6 @@ public class UserService {
         user.setFirstName(requestBody.getFirstName());
         user.setLastName(requestBody.getLastName());
         user.setEmail(requestBody.getEmail());
-        user.setPassword(this.userLogic.encodePassword(requestBody.getPassword()));
         user.setRoleId(requestBody.getRoleId());
         user.setAdmissionYear(requestBody.getAdmissionYear());
         this.userRepository.update(user);
@@ -157,14 +156,10 @@ public class UserService {
         // ログインユーザを取得
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
-        // パスワードチェック
-        this.userLogic.verifyPassword(loginUser.getId(), requestBody.getCurrentPassword());
-
         // ログインユーザの更新
         loginUser.setFirstName(requestBody.getFirstName());
         loginUser.setLastName(requestBody.getLastName());
         loginUser.setEmail(requestBody.getEmail());
-        loginUser.setPassword(this.userLogic.encodePassword(requestBody.getNewPassword()));
         this.userRepository.update(loginUser);
     }
 

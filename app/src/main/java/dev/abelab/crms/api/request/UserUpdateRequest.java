@@ -32,12 +32,6 @@ public class UserUpdateRequest {
     String email;
 
     /**
-     * パスワード
-     */
-    @NotNull
-    String password;
-
-    /**
      * ロールID
      */
     @NotNull

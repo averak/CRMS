@@ -46,7 +46,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 	static final String GET_LOGIN_USER_PATH = BASE_PATH + "/me";
 	static final String UPDATE_LOGIN_USER_PATH = BASE_PATH + "/me";
-	static final String UPDATE_LOGIN_USER_PASSWORD_PATH = BASE_PATH + "/me/password";
 
 	@Autowired
 	UserRepository userRepository;
@@ -237,7 +236,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserUpdateRequest.builder() //
 				.firstName(SAMPLE_STR + "XXX") //
 				.lastName(SAMPLE_STR + "XXX") //
-				.password(SAMPLE_STR + "XXX") //
 				.email(SAMPLE_STR + "XXX") //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT + 1) //
@@ -258,7 +256,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 					requestBody.getEmail(), //
 					requestBody.getRoleId(), //
 					requestBody.getAdmissionYear());
-			assertThat(passwordEncoder.matches(requestBody.getPassword(), updatedUser.getPassword())).isTrue();
 		}
 
 		@Test
@@ -275,7 +272,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserUpdateRequest.builder() //
 				.firstName(SAMPLE_STR + "XXX") //
 				.lastName(SAMPLE_STR + "XXX") //
-				.password(SAMPLE_STR + "XXX") //
 				.email(SAMPLE_STR + "XXX") //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT + 1) //
@@ -297,7 +293,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserUpdateRequest.builder() //
 				.firstName(SAMPLE_STR + "XXX") //
 				.lastName(SAMPLE_STR + "XXX") //
-				.password(SAMPLE_STR + "XXX") //
 				.email(SAMPLE_STR + "XXX") //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT + 1) //
@@ -428,8 +423,6 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = LoginUserUpdateRequest.builder() //
 				.firstName(loginUser.getFirstName() + "XXX") //
 				.lastName(loginUser.getLastName() + "XXX") //
-				.currentPassword(LOGIN_USER_PASSWORD) //
-				.newPassword(loginUser.getPassword() + "XXX") //
 				.email(loginUser.getEmail() + "XXX") //
 				.build();
 
@@ -446,28 +439,23 @@ public class UserRestController_IT extends AbstractRestController_IT {
 					requestBody.getFirstName(), //
 					requestBody.getLastName(), //
 					requestBody.getEmail());
-			assertThat(passwordEncoder.matches(requestBody.getNewPassword(), updatedUser.getPassword())).isTrue();
+		}
+
+	}
+
+	/**
+	 * ログインユーザパスワード更新APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class UpdateLoginUserPasswordTest extends AbstractRestControllerInitialization_IT {
+
+		@Test
+		void 正_ログインユーザのパスワードを更新() throws Exception {
 		}
 
 		@Test
 		void 異_現在のパスワードが間違えている() throws Exception {
-			// login user
-			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
-			final var jwt = getLoginUserJwt(loginUser);
-
-			// request body
-			final var requestBody = LoginUserUpdateRequest.builder() //
-				.firstName(loginUser.getFirstName() + "XXX") //
-				.lastName(loginUser.getLastName() + "XXX") //
-				.currentPassword(LOGIN_USER_PASSWORD + "miss") //
-				.newPassword(loginUser.getPassword() + "XXX") //
-				.email(loginUser.getEmail() + "XXX") //
-				.build();
-
-			// test
-			final var request = putRequest(UPDATE_LOGIN_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
-			execute(request, new UnauthorizedException(ErrorCode.WRONG_PASSWORD));
 		}
 
 	}

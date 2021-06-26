@@ -45,7 +45,7 @@ import dev.abelab.crms.api.response.ErrorResponse;
 public abstract class AbstractRestController_IT {
 
 	static final int SAMPLE_INT = 1;
-	static final String SAMPLE_STR = "SAMPLE";
+	static final String SAMPLE_STR = "SAMPLE STRING";
 	static final Date SAMPLE_DATE = new Date();
 	static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
 	static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
