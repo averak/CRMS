@@ -11,6 +11,8 @@ import { UserModel } from 'src/app/model/user-model';
 })
 export class UserEditCardComponent implements OnInit {
   @Input() user: UserModel = {} as UserModel;
+
+  // 表示するか
   @Input() enableName: boolean = false;
   @Input() enableEmail: boolean = false;
   @Input() enablePassword: boolean = false;
@@ -19,6 +21,7 @@ export class UserEditCardComponent implements OnInit {
   @Input() enableRoleId: boolean = false;
   @Input() enableAdmissionYear: boolean = false;
 
+  // 編集を許可するか
   @Input() allowNameInput: boolean = false;
   @Input() allowEmailInput: boolean = false;
   @Input() allowPasswordInput: boolean = false;
