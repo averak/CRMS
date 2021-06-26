@@ -27,6 +27,8 @@ public enum ErrorCode {
 
     NOT_FOUND_RESERVATION(1103, "exception.not_found.reservation"),
 
+    NOT_FOUND_API(1104, "exception.not_found.api"),
+
     /**
      * Conflict: 1200~1299
      */

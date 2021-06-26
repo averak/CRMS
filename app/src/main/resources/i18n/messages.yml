@@ -6,6 +6,7 @@ exception:
     user: "User does not exists."
     role: "Role does not exists."
     reservation: "Reservation does not exists."
+    api: "API does not exists."
   conflict:
     email: "Email already exists."
     reservation: "Reservation already exists."

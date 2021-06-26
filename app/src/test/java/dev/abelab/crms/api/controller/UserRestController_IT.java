@@ -46,6 +46,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 	static final String GET_LOGIN_USER_PATH = BASE_PATH + "/me";
 	static final String UPDATE_LOGIN_USER_PATH = BASE_PATH + "/me";
+	static final String UPDATE_LOGIN_USER_PASSWORD_PATH = BASE_PATH + "/me/password";
 
 	@Autowired
 	UserRepository userRepository;

@@ -1,7 +1,5 @@
 package dev.abelab.crms.api.response;
 
-import java.util.Date;
-
 import lombok.*;
 
 /**

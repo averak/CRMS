@@ -1,5 +1,7 @@
 package dev.abelab.crms.api.request;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 /**
@@ -14,11 +16,13 @@ public class LoginRequest {
     /**
      * メールアドレス
      */
+    @NotNull
     String email;
 
     /**
      * パスワード
      */
+    @NotNull
     String password;
 
 }
