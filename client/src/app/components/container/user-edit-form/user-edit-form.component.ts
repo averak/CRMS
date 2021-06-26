@@ -50,14 +50,22 @@ export class UserEditFormComponent implements OnInit {
       admissionYear: user.admissionYear,
     };
 
-    // リクエスト送信
-    this.userService.updateUser(user.id, requestBody).subscribe(
-      () => {
-        this.handleGoBack();
-        this.alertService.openSnackBar('ユーザを更新しました', 'SUCCESS');
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
+    this.alertService.confirmDialog(
+      '更新確認',
+      'この内容でユーザ情報を更新しますか？',
+      (result: boolean): void => {
+        if (result) {
+          // リクエスト送信
+          this.userService.updateUser(user.id, requestBody).subscribe(
+            () => {
+              this.handleGoBack();
+              this.alertService.openSnackBar('ユーザを更新しました', 'SUCCESS');
+            },
+            (error) => {
+              this.alertService.openSnackBar(error, 'ERROR');
+            }
+          );
+        }
       }
     );
   }

@@ -36,24 +36,33 @@ export class MypagePasswordEditFormComponent implements OnInit {
       newPassword: user.newPassword,
     };
 
-    this.userService.updateLoginUserPassword(requestBody).subscribe(
-      () => {
-        this.handleGoBack();
-        this.alertService.openSnackBar('パスワードを更新しました', 'SUCCESS');
+    this.alertService.confirmDialog(
+      '更新確認',
+      'この内容でパスワードを更新しますか？',
+      (result: boolean): void => {
+        if (result) {
+          // リクエスト送信
+          this.userService.updateLoginUserPassword(requestBody).subscribe(
+            () => {
+              this.handleGoBack();
+              this.alertService.openSnackBar('パスワードを更新しました', 'SUCCESS');
 
-        // reload login user
-        this.userService.getLoginUser().subscribe(
-          (user: UserModel) => {
-            this.user = user;
-            this.userService.setLoginUser(this.user);
-          },
-          (error) => {
-            this.alertService.openSnackBar(error, 'ERROR');
-          }
-        );
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
+              // reload login user
+              this.userService.getLoginUser().subscribe(
+                (user: UserModel) => {
+                  this.user = user;
+                  this.userService.setLoginUser(this.user);
+                },
+                (error) => {
+                  this.alertService.openSnackBar(error, 'ERROR');
+                }
+              );
+            },
+            (error) => {
+              this.alertService.openSnackBar(error, 'ERROR');
+            }
+          );
+        }
       }
     );
   }
