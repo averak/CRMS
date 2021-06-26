@@ -13,6 +13,7 @@ import { UserRoleEnum } from 'src/app/enums/user-role-enum';
 import { UserCreateRequest } from 'src/app/request/user-create-request';
 import { UserUpdateRequest } from 'src/app/request/user-update-request';
 import { LoginUserUpdateRequest } from 'src/app/request/login-user-update-request';
+import { LoginUserPasswordUpdateRequest } from 'src/app/request/login-user-password-update-request';
 
 @Injectable({
   providedIn: 'root',
@@ -98,6 +99,24 @@ export class UserService {
         throw this.errorMessageService.getErrorMessage(error.error.code);
       })
     );
+  }
+
+  updateLoginUserPassword(requestBody: LoginUserPasswordUpdateRequest): Observable<any> {
+    // request options
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: this.authService.getJwt(),
+      }),
+    };
+
+    return this.http
+      .put<any>(`${environment.API_PREFIX}/api/users/me/password`, requestBody, options)
+      .pipe(
+        catchError((error) => {
+          throw this.errorMessageService.getErrorMessage(error.error.code);
+        })
+      );
   }
 
   deleteUser(userId: number): Observable<any> {

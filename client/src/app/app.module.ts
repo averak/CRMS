@@ -21,7 +21,6 @@ import { AdminComponent } from './components/page/admin/admin.component';
 import { MypageComponent } from './components/page/mypage/mypage.component';
 import { UserEditFormComponent } from './components/container/user-edit-form/user-edit-form.component';
 import { UserNewFormComponent } from './components/container/user-new-form/user-new-form.component';
-import { MypageEditFormComponent } from './components/container/mypage-edit-form/mypage-edit-form.component';
 import { UserEditCardComponent } from './components/presentational/user-edit-card/user-edit-card.component';
 import { LoginCardComponent } from './components/presentational/login-card/login-card.component';
 import { ProfileEditComponent } from './components/page/mypage/profile-edit/profile-edit.component';
@@ -29,6 +28,8 @@ import { PasswordEditComponent } from './components/page/mypage/password-edit/pa
 import { UsersComponent } from './components/page/admin/users/users.component';
 import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
 import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
+import { MypageProfileEditFormComponent } from './components/container/mypage-profile-edit-form/mypage-profile-edit-form.component';
+import { MypagePasswordEditFormComponent } from './components/container/mypage-password-edit-form/mypage-password-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,6 @@ import { UsersNewComponent } from './components/page/admin/users-new/users-new.c
     MypageComponent,
     UserEditFormComponent,
     UserNewFormComponent,
-    MypageEditFormComponent,
     UserEditCardComponent,
     LoginCardComponent,
     ProfileEditComponent,
@@ -54,6 +54,8 @@ import { UsersNewComponent } from './components/page/admin/users-new/users-new.c
     UsersComponent,
     UsersEditComponent,
     UsersNewComponent,
+    MypageProfileEditFormComponent,
+    MypagePasswordEditFormComponent,
   ],
   imports: [BrowserModule, SharedModule, AppRoutingModule],
   providers: [CookieService],

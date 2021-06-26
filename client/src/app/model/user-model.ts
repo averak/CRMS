@@ -4,6 +4,8 @@ export interface UserModel {
   lastName: string;
   email: string;
   password: string;
+  currentPassword: string;
+  newPassword: string;
   roleId: number;
   admissionYear: number;
 }

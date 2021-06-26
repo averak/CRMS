@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { UserModel } from 'src/app/model/user-model';
-import { LoginUserUpdateRequest } from 'src/app/request/login-user-update-request';
+import { LoginUserPasswordUpdateRequest } from 'src/app/request/login-user-password-update-request';
 
 @Component({
-  selector: 'app-mypage-edit-form',
-  templateUrl: './mypage-edit-form.component.html',
-  styleUrls: ['./mypage-edit-form.component.css'],
+  selector: 'app-mypage-password-edit-form',
+  templateUrl: './mypage-password-edit-form.component.html',
+  styleUrls: ['./mypage-password-edit-form.component.css'],
 })
-export class MypageEditFormComponent implements OnInit {
+export class MypagePasswordEditFormComponent implements OnInit {
   user!: UserModel;
 
   constructor(
@@ -25,26 +25,21 @@ export class MypageEditFormComponent implements OnInit {
     this.user = this.userService.loginUser;
   }
 
-  onClickDisabledColumn(): void {
-    this.alertService.openSnackBar('この項目の編集は禁止されています', 'WARN');
-  }
-
   handleGoBack(): void {
     this.router.navigate(['/dashboard']);
   }
 
   handleSubmitUser(user: UserModel): void {
-    // ログインユーザ更新リクエストを作成
-    const requestBody: LoginUserUpdateRequest = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
+    // ログインユーザのパスワード更新リクエストを作成
+    const requestBody: LoginUserPasswordUpdateRequest = {
+      currentPassword: user.currentPassword,
+      newPassword: user.newPassword,
     };
 
-    this.userService.updateLoginUser(requestBody).subscribe(
+    this.userService.updateLoginUserPassword(requestBody).subscribe(
       () => {
         this.handleGoBack();
-        this.alertService.openSnackBar('プロフィールを更新しました', 'SUCCESS');
+        this.alertService.openSnackBar('パスワードを更新しました', 'SUCCESS');
 
         // reload login user
         this.userService.getLoginUser().subscribe(
