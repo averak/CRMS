@@ -53,7 +53,7 @@ import { LoginCardComponent } from './components/presentational/login-card/login
     UserEditCardComponent,
     LoginCardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, SharedModule],
+  imports: [BrowserModule, SharedModule, AppRoutingModule],
   providers: [CookieService],
   bootstrap: [AppComponent],
 })
