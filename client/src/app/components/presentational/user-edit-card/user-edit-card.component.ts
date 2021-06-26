@@ -50,7 +50,7 @@ export class UserEditCardComponent implements OnInit {
 
   onClickDisabledColumn(disabled: boolean): void {
     if (disabled) {
-      this.alertService.openSnackBar('この項目の編集は禁止されています', 'WARN');
+      this.alertService.openSnackBar('この項目は編集できません', 'WARN');
     }
   }
 

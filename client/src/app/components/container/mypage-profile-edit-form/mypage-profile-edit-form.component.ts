@@ -25,10 +25,6 @@ export class MypageProfileEditFormComponent implements OnInit {
     this.user = this.userService.loginUser;
   }
 
-  onClickDisabledColumn(): void {
-    this.alertService.openSnackBar('この項目の編集は禁止されています', 'WARN');
-  }
-
   handleGoBack(): void {
     this.router.navigate(['/dashboard']);
   }
