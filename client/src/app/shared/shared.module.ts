@@ -23,6 +23,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -63,6 +64,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
+    NgbModalModule,
   ],
   exports: [
     FormsModule,
@@ -87,6 +89,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
+    NgbModalModule,
 
     // components
     ConfirmDialogComponent,

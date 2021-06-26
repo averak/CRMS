@@ -1,4 +1,5 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '../node_modules/angular-calendar/css/angular-calendar.css';
 
 /* foreground colors */
 .crms-fg-white1 {

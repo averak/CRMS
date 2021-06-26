@@ -5,6 +5,11 @@ import { CookieService } from 'ngx-cookie-service';
 // shared module
 import { SharedModule } from './shared/shared.module';
 
+// angular calendar
+import { FlatpickrModule } from 'angularx-flatpickr';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 // components
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +17,7 @@ import { LoginComponent } from './components/page/login/login.component';
 import { LoginFormComponent } from './components/container/login-form/login-form.component';
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
+import { ReservationsCalendarComponent } from './components/container/reservations-calendar/reservations-calendar.component';
 import { SidenavComponent } from './components/container/sidenav/sidenav.component';
 import { TitleBoxComponent } from './components/container/title-box/title-box.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
@@ -38,6 +44,7 @@ import { MypagePasswordEditFormComponent } from './components/container/mypage-p
     LoginFormComponent,
     ErrorPageComponent,
     ReservationsComponent,
+    ReservationsCalendarComponent,
     SidenavComponent,
     TitleBoxComponent,
     DashboardComponent,
@@ -57,7 +64,13 @@ import { MypagePasswordEditFormComponent } from './components/container/mypage-p
     MypageProfileEditFormComponent,
     MypagePasswordEditFormComponent,
   ],
-  imports: [BrowserModule, SharedModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    SharedModule,
+    AppRoutingModule,
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+  ],
   providers: [CookieService],
   bootstrap: [AppComponent],
 })
