@@ -22,7 +22,14 @@ export class MypagePasswordEditFormComponent implements OnInit {
 
   ngOnInit(): void {
     // ログインユーザを取得
-    this.user = this.userService.loginUser;
+    this.userService.getLoginUser().subscribe(
+      (user: UserModel) => {
+        this.user = user;
+      },
+      (error) => {
+        this.alertService.openSnackBar(error, 'ERROR');
+      }
+    );
   }
 
   handleGoBack(): void {
@@ -46,17 +53,6 @@ export class MypagePasswordEditFormComponent implements OnInit {
             () => {
               this.handleGoBack();
               this.alertService.openSnackBar('パスワードを更新しました', 'SUCCESS');
-
-              // reload login user
-              this.userService.getLoginUser().subscribe(
-                (user: UserModel) => {
-                  this.user = user;
-                  this.userService.setLoginUser(this.user);
-                },
-                (error) => {
-                  this.alertService.openSnackBar(error, 'ERROR');
-                }
-              );
             },
             (error) => {
               this.alertService.openSnackBar(error, 'ERROR');

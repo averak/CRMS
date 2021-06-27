@@ -24,7 +24,6 @@ export class UsersContentsComponent implements OnInit {
       (users: UsersModel) => {
         this.users = users.users;
         this.userService.setUsers(this.users);
-        console.log(this.users);
 
         // 入学年度/IDでソート
         this.users.sort((a, b) => {

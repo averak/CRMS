@@ -65,7 +65,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
-		// FlexLayoutModule,
+    // FlexLayoutModule,
     NgbModalModule,
   ],
   exports: [
@@ -91,7 +91,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
-		// FlexLayoutModule,
+    // FlexLayoutModule,
     NgbModalModule,
 
     // components

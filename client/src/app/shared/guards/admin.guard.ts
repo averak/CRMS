@@ -16,15 +16,24 @@ export class AdminGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    let result: boolean = false;
-
-    const loginUser = this.userService.loginUser;
-
-    if (loginUser.roleId == 1) {
-      return true;
-    } else {
-      this.alertService.openSnackBar('このページへのアクセスは許可されていません', 'WARN');
-      return false;
-    }
+    return new Promise((resolve) => {
+      this.userService.getLoginUser().subscribe(
+        (user: UserModel) => {
+          if (user.roleId === undefined) {
+            // ログインユーザ情報が未取得なので一時的にtrueを返却
+            resolve(true);
+          } else if (user.roleId === 1) {
+            resolve(true);
+          } else {
+            this.alertService.openSnackBar('このページへのアクセスは許可されていません', 'WARN');
+            resolve(false);
+          }
+        },
+        (error) => {
+          this.alertService.openSnackBar(error, 'ERROR');
+          resolve(false);
+        }
+      );
+    });
   }
 }

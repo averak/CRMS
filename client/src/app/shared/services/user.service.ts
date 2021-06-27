@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
@@ -20,7 +20,7 @@ import { LoginUserPasswordUpdateRequest } from 'src/app/request/login-user-passw
 })
 export class UserService {
   users!: UserModel[];
-  loginUser!: UserModel;
+  loginUser: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>({} as UserModel);
 
   constructor(
     private http: HttpClient,
@@ -32,11 +32,20 @@ export class UserService {
   }
 
   getLoginUser(): Observable<UserModel> {
-    return this.httpBaseService.getRequest<UserModel>(`${environment.API_PREFIX}/api/users/me`);
+    if (Object.keys(this.loginUser.getValue()).length === 0) {
+      this.getSessionUser().subscribe(
+        (user: UserModel) => {
+          this.loginUser.next(user);
+        },
+        (error) => this.loginUser.error(error)
+      );
+    }
+
+    return this.loginUser;
   }
 
-  setLoginUser(loginUser: UserModel): void {
-    this.loginUser = loginUser;
+  getSessionUser(): Observable<UserModel> {
+    return this.httpBaseService.getRequest<UserModel>(`${environment.API_PREFIX}/api/users/me`);
   }
 
   getUsers(): Observable<UsersModel> {

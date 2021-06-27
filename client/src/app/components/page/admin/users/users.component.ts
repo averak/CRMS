@@ -18,6 +18,6 @@ export class UsersComponent implements OnInit {
   }
 
   handleUserEditTransit(user: UserModel): void {
-    this.router.navigate(['/admin', 'users', user.id , 'edit']);
+    this.router.navigate(['/admin', 'users', user.id, 'edit']);
   }
 }
