@@ -19,7 +19,7 @@ import { ProfileEditComponent } from './components/page/mypage/profile-edit/prof
 import { PasswordEditComponent } from './components/page/mypage/password-edit/password-edit.component';
 // others
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
-import { SidenavComponent } from './components/container/sidenav/sidenav.component';
+import { SidenavComponent } from './components/presentational/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 
 // guards

@@ -18,8 +18,8 @@ import { LoginFormComponent } from './components/container/login-form/login-form
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
 import { ReservationsCalendarComponent } from './components/container/reservations-calendar/reservations-calendar.component';
-import { SidenavComponent } from './components/container/sidenav/sidenav.component';
-import { TitleBoxComponent } from './components/container/title-box/title-box.component';
+import { SidenavComponent } from './components/presentational/sidenav/sidenav.component';
+import { TitleBoxComponent } from './components/presentational/title-box/title-box.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 import { UsersTableComponent } from './components/container/users-table/users-table.component';
 import { UserCreateButtonComponent } from './components/container/user-create-button/user-create-button.component';
