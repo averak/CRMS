@@ -22,7 +22,6 @@ import { SidenavComponent } from './components/presentational/sidenav/sidenav.co
 import { TitleBoxComponent } from './components/presentational/title-box/title-box.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 import { UsersTableComponent } from './components/container/users-table/users-table.component';
-import { UserCreateButtonComponent } from './components/container/user-create-button/user-create-button.component';
 import { AdminComponent } from './components/page/admin/admin.component';
 import { MypageComponent } from './components/page/mypage/mypage.component';
 import { UserEditFormComponent } from './components/container/user-edit-form/user-edit-form.component';
@@ -36,6 +35,7 @@ import { UsersEditComponent } from './components/page/admin/users-edit/users-edi
 import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
 import { MypageProfileEditFormComponent } from './components/container/mypage-profile-edit-form/mypage-profile-edit-form.component';
 import { MypagePasswordEditFormComponent } from './components/container/mypage-password-edit-form/mypage-password-edit-form.component';
+import { UsersContentsComponent } from './components/container/users-contents/users-contents.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +49,6 @@ import { MypagePasswordEditFormComponent } from './components/container/mypage-p
     TitleBoxComponent,
     DashboardComponent,
     UsersTableComponent,
-    UserCreateButtonComponent,
     AdminComponent,
     MypageComponent,
     UserEditFormComponent,
@@ -63,6 +62,7 @@ import { MypagePasswordEditFormComponent } from './components/container/mypage-p
     UsersNewComponent,
     MypageProfileEditFormComponent,
     MypagePasswordEditFormComponent,
+    UsersContentsComponent,
   ],
   imports: [
     BrowserModule,

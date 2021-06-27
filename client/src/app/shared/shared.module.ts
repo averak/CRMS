@@ -23,6 +23,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
@@ -64,6 +65,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
+		// FlexLayoutModule,
     NgbModalModule,
   ],
   exports: [
@@ -89,6 +91,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
+		// FlexLayoutModule,
     NgbModalModule,
 
     // components
