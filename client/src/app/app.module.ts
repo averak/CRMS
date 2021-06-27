@@ -21,7 +21,7 @@ import { ReservationsCalendarComponent } from './components/container/reservatio
 import { SidenavComponent } from './components/presentational/sidenav/sidenav.component';
 import { TitleBoxComponent } from './components/presentational/title-box/title-box.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
-import { UsersTableComponent } from './components/container/users-table/users-table.component';
+import { UsersTableComponent } from './components/presentational/users-table/users-table.component';
 import { AdminComponent } from './components/page/admin/admin.component';
 import { MypageComponent } from './components/page/mypage/mypage.component';
 import { UserEditFormComponent } from './components/container/user-edit-form/user-edit-form.component';

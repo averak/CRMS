@@ -1,4 +1,12 @@
-import { Component, OnInit, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -9,7 +17,7 @@ import { UserModel } from 'src/app/model/user-model';
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.css'],
 })
-export class UsersTableComponent implements OnInit {
+export class UsersTableComponent implements OnInit, AfterViewInit {
   @Input() users!: UserModel[];
   @Output() userEditTransit: EventEmitter<any> = new EventEmitter<any>();
   @Output() userDeleteTransit: EventEmitter<any> = new EventEmitter<any>();
@@ -22,6 +30,9 @@ export class UsersTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<UserModel>(this.users);
+  }
+
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
 
