@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 public class ConvertUtil {
 
-    private static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    private static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
     /**
      * Convert object to json string.
