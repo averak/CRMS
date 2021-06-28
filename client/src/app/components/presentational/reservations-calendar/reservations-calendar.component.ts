@@ -8,16 +8,6 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours,
-} from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -28,7 +18,9 @@ import {
 } from 'angular-calendar';
 import { MatDialog } from '@angular/material/dialog';
 
+import { UserModel } from 'src/app/model/user-model';
 import { ReservationModel } from 'src/app/model/reservation-model';
+import { ReservationColorEnum } from 'src/app/enums/reservation-color-enum';
 import { ReservationCreateRequest } from 'src/app/request/reservation-create-request';
 import { ReservationNewFormComponent } from 'src/app/components/container/reservation-new-form/reservation-new-form.component';
 
@@ -40,6 +32,7 @@ import { ReservationNewFormComponent } from 'src/app/components/container/reserv
 })
 export class ReservationsCalendarComponent implements OnInit {
   @Input() reservations!: ReservationModel[];
+  @Input() loginUser!: UserModel;
   @Output() submitReservation: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
@@ -59,56 +52,24 @@ export class ReservationsCalendarComponent implements OnInit {
   ngOnInit(): void {
     // イベント一覧
     this.events = this.reservations.map((reservation: ReservationModel) => {
+      const isOwnReservation: boolean = this.loginUser.id === reservation.user.id;
+
       return {
         start: new Date(reservation.startAt),
         end: new Date(reservation.finishAt),
         title: `${reservation.user.lastName} ${reservation.user.firstName}`,
-        // FIXME: 自分の予約の場合にはtrue
+        color: isOwnReservation ? ReservationColorEnum.BLUE : ReservationColorEnum.YELLOW,
         resizable: {
-          beforeStart: false,
-          afterEnd: false,
+          beforeStart: isOwnReservation,
+          afterEnd: isOwnReservation,
         },
-        draggable: false,
+        draggable: isOwnReservation,
       };
     });
-
-    console.log(this.events[0]);
   }
-
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      },
-    },
-  ];
 
   refresh: Subject<any> = new Subject();
   activeDayIsOpen: boolean = true;
-
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
-    }
-  }
 
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
@@ -134,8 +95,8 @@ export class ReservationsCalendarComponent implements OnInit {
       ...this.events,
       {
         title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
+        start: new Date(),
+        end: new Date(),
         draggable: true,
         resizable: {
           beforeStart: true,

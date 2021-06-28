@@ -2,8 +2,9 @@
   <app-title-box [title]="'予約一覧'"></app-title-box>
 
   <app-reservations-calendar
-    *ngIf="reservations"
+    *ngIf="reservations && loginUser"
     [reservations]="reservations"
+    [loginUser]="loginUser"
     (submitReservation)="handleSubmitReservation($event)"
   ></app-reservations-calendar>
 </div>
