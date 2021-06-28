@@ -79,3 +79,9 @@ body {
   min-height: 0 !important;
   max-width: 65vw !important;
 }
+
+.scroll-content {
+  height: calc(100vh - 46px - 80px - 50px);
+  overflow: auto;
+  overflow-y: scroll;
+}
