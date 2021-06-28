@@ -1,4 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import {
   startOfDay,
   endOfDay,
@@ -17,6 +26,11 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
+import { MatDialog } from '@angular/material/dialog';
+
+import { ReservationModel } from 'src/app/model/reservation-model';
+import { ReservationCreateRequest } from 'src/app/request/reservation-create-request';
+import { ReservationNewFormComponent } from 'src/app/components/container/reservation-new-form/reservation-new-form.component';
 
 @Component({
   selector: 'app-reservations-calendar',
@@ -25,7 +39,12 @@ import {
   styleUrls: ['./reservations-calendar.component.css'],
 })
 export class ReservationsCalendarComponent implements OnInit {
+  @Input() reservations!: ReservationModel[];
+  @Output() submitReservation: EventEmitter<any> = new EventEmitter<any>();
+
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
+
+  reservation: ReservationModel = {} as ReservationModel;
 
   view: CalendarView = CalendarView.Week;
 
@@ -37,6 +56,8 @@ export class ReservationsCalendarComponent implements OnInit {
     action: string;
     event: CalendarEvent;
   };
+
+  constructor(private modal: NgbModal, private matDialog: MatDialog) {}
 
   ngOnInit(): void {}
 
@@ -99,8 +120,6 @@ export class ReservationsCalendarComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
-
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
@@ -160,5 +179,28 @@ export class ReservationsCalendarComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  onClickCreateButton(): void {
+    this.matDialog.open(ReservationNewFormComponent, {
+      width: '640px',
+      disableClose: true,
+    });
+
+    // FIXME
+    /*
+    this.reservation.startAt = new Date();
+    this.reservation.finishAt = new Date();
+    console.log(this.reservation);
+    this.submitReservation.emit(this.reservation);
+		*/
+  }
+
+  handleSubmitReservation(): void {
+    this.matDialog.closeAll();
+  }
+
+  handleCancelSubmit(): void {
+    this.matDialog.closeAll();
   }
 }

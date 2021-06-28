@@ -36,6 +36,8 @@ import { MypageProfileEditFormComponent } from './components/container/mypage-pr
 import { MypagePasswordEditFormComponent } from './components/container/mypage-password-edit-form/mypage-password-edit-form.component';
 import { UsersContentsComponent } from './components/container/users-contents/users-contents.component';
 import { ReservationsContentsComponent } from './components/container/reservations-contents/reservations-contents.component';
+import { ReservationNewFormComponent } from './components/container/reservation-new-form/reservation-new-form.component';
+import { ReservationNewCardComponent } from './components/presentational/reservation-new-card/reservation-new-card.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { ReservationsContentsComponent } from './components/container/reservatio
     MypagePasswordEditFormComponent,
     UsersContentsComponent,
     ReservationsContentsComponent,
+    ReservationNewFormComponent,
+    ReservationNewCardComponent,
   ],
   imports: [
     BrowserModule,

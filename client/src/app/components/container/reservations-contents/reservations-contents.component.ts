@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ReservationModel } from 'src/app/model/reservation-model';
 import { ReservationsModel } from 'src/app/model/reservations-model';
 import { ReservationCreateRequest } from 'src/app/request/reservation-create-request';
 import { ReservationService } from 'src/app/shared/services/reservation.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'app-reservations-contents',
@@ -10,25 +12,32 @@ import { ReservationService } from 'src/app/shared/services/reservation.service'
   styleUrls: ['./reservations-contents.component.css'],
 })
 export class ReservationsContentsComponent implements OnInit {
-  constructor(private reservationService: ReservationService) {}
+  constructor(private reservationService: ReservationService, private alertService: AlertService) {}
 
   ngOnInit(): void {}
 
-  onCreateClick(): void {
+  handleSubmitReservation(reservation: ReservationModel): void {
+    // 予約作成リクエストを作成
     const requestBody: ReservationCreateRequest = {
-      startAt: new Date('2020/06/28 14:03:22'),
-      finishAt: new Date(),
+      startAt: reservation.startAt,
+      finishAt: reservation.finishAt,
     };
-    this.reservationService.createReservation(requestBody).subscribe((error) => {
-      console.log(error);
-    });
 
-    this.reservationService.getReservations().subscribe(
-      (reservations: ReservationsModel) => {
-        console.log(reservations);
+    this.reservationService.createReservation(requestBody).subscribe(
+      () => {
+        this.alertService.openSnackBar('予約を追加しました', 'SUCCESS');
       },
       (error) => {
-        console.log(error);
+        this.alertService.openSnackBar(error, 'ERROR');
+      }
+    );
+
+    this.reservationService.getReservations().subscribe(
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        this.alertService.openSnackBar(error, 'ERROR');
       }
     );
   }

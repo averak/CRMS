@@ -1,31 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="start">
-  <div fxLayout="column" fxLayoutAlign="start">
-    <app-title-box [title]="'予約一覧'"></app-title-box>
+  <app-title-box [title]="'予約一覧'"></app-title-box>
 
-    <div class="control-menu" fxLayout="row" fxLayoutAlign="start center" fxFlex="100px">
-      <button mat-icon-button class="crms-fg-black2"><mat-icon>arrow_back_ios</mat-icon></button>
-      <button mat-icon-button class="crms-fg-black2"><mat-icon>arrow_forward_ios</mat-icon></button>
-
-      <mat-form-field fxFlexOffset="50px" fxFlex="300px">
-        <input matInput placeholder="検索する名前" name="username" />
-      </mat-form-field>
-      <mat-form-field fxFlexOffset="50px" fxFlex="150px">
-        <input matInput placeholder="入学年度" name="admission-year" />
-      </mat-form-field>
-
-      <div class="new-reservation-button-container" fxLayout="row" fxLayoutAlign="end center">
-        <button
-          mat-raised-button
-          class="mat-elevation-z3 new-reservation-button crms-fg-white1"
-          color="primary"
-          (click)="onCreateClick()"
-        >
-          <mat-icon>add</mat-icon>
-          <span>予約を追加する</span>
-        </button>
-      </div>
-    </div>
-
-    <app-reservations-calendar></app-reservations-calendar>
-  </div>
+  <app-reservations-calendar
+    (submitReservation)="handleSubmitReservation($event)"
+  ></app-reservations-calendar>
 </div>
