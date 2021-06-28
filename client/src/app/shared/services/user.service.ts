@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { HttpBaseService } from 'src/app/shared/services/http-base.service';
-import { AuthService } from './auth.service';
-import { ErrorMessageService } from './error-message.service';
 import { UserModel } from 'src/app/model/user-model';
 import { UsersModel } from 'src/app/model/users-model';
 import { UserRoleEnum } from 'src/app/enums/user-role-enum';
@@ -22,12 +18,7 @@ export class UserService {
   users!: UserModel[];
   loginUser: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>({} as UserModel);
 
-  constructor(
-    private http: HttpClient,
-    private httpBaseService: HttpBaseService,
-    private authService: AuthService,
-    private errorMessageService: ErrorMessageService
-  ) {
+  constructor(private httpBaseService: HttpBaseService) {
     this.users = [];
   }
 
@@ -61,86 +52,36 @@ export class UserService {
   }
 
   createUser(requestBody: UserCreateRequest) {
-    // request options
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.post<any>(`${environment.API_PREFIX}/api/users`, requestBody, options).pipe(
-      catchError((error) => {
-        throw this.errorMessageService.getErrorMessage(error.error.code);
-      })
+    return this.httpBaseService.postRequest<UserModel>(
+      `${environment.API_PREFIX}/api/users`,
+      requestBody
     );
   }
 
   updateUser(userId: number, requestBody: UserUpdateRequest): Observable<any> {
-    // request options
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http
-      .put<any>(`${environment.API_PREFIX}/api/users/${userId}`, requestBody, options)
-      .pipe(
-        catchError((error) => {
-          throw this.errorMessageService.getErrorMessage(error.error.code);
-        })
-      );
+    return this.httpBaseService.putRequest<UserModel>(
+      `${environment.API_PREFIX}/api/users/${userId}`,
+      requestBody
+    );
   }
 
   updateLoginUser(requestBody: LoginUserUpdateRequest): Observable<any> {
-    // request options
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.put<any>(`${environment.API_PREFIX}/api/users/me`, requestBody, options).pipe(
-      catchError((error) => {
-        throw this.errorMessageService.getErrorMessage(error.error.code);
-      })
+    return this.httpBaseService.putRequest<UserModel>(
+      `${environment.API_PREFIX}/api/users/me`,
+      requestBody
     );
   }
 
   updateLoginUserPassword(requestBody: LoginUserPasswordUpdateRequest): Observable<any> {
-    // request options
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http
-      .put<any>(`${environment.API_PREFIX}/api/users/me/password`, requestBody, options)
-      .pipe(
-        catchError((error) => {
-          throw this.errorMessageService.getErrorMessage(error.error.code);
-        })
-      );
+    return this.httpBaseService.putRequest<UserModel>(
+      `${environment.API_PREFIX}/api/users/me/password`,
+      requestBody
+    );
   }
 
   deleteUser(userId: number): Observable<any> {
-    // request options
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.delete<any>(`${environment.API_PREFIX}/api/users/${userId}`, options).pipe(
-      catchError((error) => {
-        throw this.errorMessageService.getErrorMessage(error.error.code);
-      })
+    return this.httpBaseService.deleteRequest<UserModel>(
+      `${environment.API_PREFIX}/api/users/${userId}`
     );
   }
 

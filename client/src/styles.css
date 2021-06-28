@@ -85,3 +85,7 @@ body {
   overflow: auto;
   overflow-y: scroll;
 }
+
+.cal-time-label-column {
+  font-size: 12px;
+}
