@@ -27,17 +27,19 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
-import { HeaderComponent } from './components/header/header.component';
-import { HeaderUserMenuComponent } from './components/header/header-user-menu/header-user-menu.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component';
+import { HeaderComponent } from 'src/app/shared/components/header/header.component';
+import { SidenavComponent } from 'src/app/shared/components/sidenav/sidenav.component';
+import { HeaderUserMenuComponent } from 'src/app/shared/components/header/header-user-menu/header-user-menu.component';
+import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
 
 @NgModule({
   declarations: [
     ConfirmDialogComponent,
     SnackBarComponent,
     HeaderComponent,
+    SidenavComponent,
     HeaderUserMenuComponent,
     FooterComponent,
   ],
@@ -65,7 +67,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
-    // FlexLayoutModule,
+    FlexLayoutModule,
     NgbModalModule,
   ],
   exports: [
@@ -91,7 +93,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatPaginatorModule,
     MatDialogModule,
     ScrollingModule,
-    // FlexLayoutModule,
+    FlexLayoutModule,
     NgbModalModule,
 
     // components

@@ -79,15 +79,3 @@ body {
   min-height: 0 !important;
   max-width: 65vw !important;
 }
-
-.mat-sidenav-container {
-  padding: 0 !important;
-  min-height: 0 !important;
-  max-width: 230px !important;
-}
-
-.page-main-content {
-  margin-left: 230px;
-  min-height: calc(100vh - 46px);
-  min-width: calc(100vw - 230px);
-}
