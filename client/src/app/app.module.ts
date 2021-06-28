@@ -17,7 +17,7 @@ import { LoginComponent } from './components/page/login/login.component';
 import { LoginFormComponent } from './components/container/login-form/login-form.component';
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
-import { ReservationsCalendarComponent } from './components/container/reservations-calendar/reservations-calendar.component';
+import { ReservationsCalendarComponent } from './components/presentational/reservations-calendar/reservations-calendar.component';
 import { TitleBoxComponent } from './components/presentational/title-box/title-box.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 import { UsersTableComponent } from './components/presentational/users-table/users-table.component';
