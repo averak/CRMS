@@ -2,6 +2,8 @@
   <app-title-box [title]="'予約一覧'"></app-title-box>
 
   <app-reservations-calendar
+    *ngIf="reservations"
+    [reservations]="reservations"
     (submitReservation)="handleSubmitReservation($event)"
   ></app-reservations-calendar>
 </div>

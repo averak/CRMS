@@ -14,7 +14,19 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 export class ReservationsContentsComponent implements OnInit {
   constructor(private reservationService: ReservationService, private alertService: AlertService) {}
 
-  ngOnInit(): void {}
+  reservations!: ReservationModel[];
+
+  ngOnInit(): void {
+    // 予約一覧を取得
+    this.reservationService.getReservations().subscribe(
+      (reservations: ReservationsModel) => {
+        this.reservations = reservations.reservations;
+      },
+      (error) => {
+        this.alertService.openSnackBar(error, 'ERROR');
+      }
+    );
+  }
 
   handleSubmitReservation(reservation: ReservationModel): void {
     // 予約作成リクエストを作成

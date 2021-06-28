@@ -44,13 +44,10 @@ export class ReservationsCalendarComponent implements OnInit {
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
 
-  reservation: ReservationModel = {} as ReservationModel;
-
   view: CalendarView = CalendarView.Week;
-
-  CalendarView = CalendarView;
-
   viewDate: Date = new Date();
+
+  events!: CalendarEvent[];
 
   modalData!: {
     action: string;
@@ -59,7 +56,24 @@ export class ReservationsCalendarComponent implements OnInit {
 
   constructor(private modal: NgbModal, private matDialog: MatDialog) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // イベント一覧
+    this.events = this.reservations.map((reservation: ReservationModel) => {
+      return {
+        start: new Date(reservation.startAt),
+        end: new Date(reservation.finishAt),
+        title: `${reservation.user.lastName} ${reservation.user.firstName}`,
+        // FIXME: 自分の予約の場合にはtrue
+        resizable: {
+          beforeStart: false,
+          afterEnd: false,
+        },
+        draggable: false,
+      };
+    });
+
+    console.log(this.events[0]);
+  }
 
   actions: CalendarEventAction[] = [
     {
@@ -80,44 +94,6 @@ export class ReservationsCalendarComponent implements OnInit {
   ];
 
   refresh: Subject<any> = new Subject();
-
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      actions: this.actions,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-  ];
-
   activeDayIsOpen: boolean = true;
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
