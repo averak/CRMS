@@ -1,7 +1,7 @@
 .calendar-container {
-  margin-top: 100px;
-  max-height: calc(100vh - 46px - 80px - 100px);
+  max-height: calc(100vh - 46px - 80px - 100px - 20px);
   overflow: auto;
+  padding: 0px 20px 0px 20px;
 }
 
 .cal-header {

@@ -35,6 +35,7 @@ import { UsersNewComponent } from './components/page/admin/users-new/users-new.c
 import { MypageProfileEditFormComponent } from './components/container/mypage-profile-edit-form/mypage-profile-edit-form.component';
 import { MypagePasswordEditFormComponent } from './components/container/mypage-password-edit-form/mypage-password-edit-form.component';
 import { UsersContentsComponent } from './components/container/users-contents/users-contents.component';
+import { ReservationsContentsComponent } from './components/container/reservations-contents/reservations-contents.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { UsersContentsComponent } from './components/container/users-contents/us
     MypageProfileEditFormComponent,
     MypagePasswordEditFormComponent,
     UsersContentsComponent,
+    ReservationsContentsComponent,
   ],
   imports: [
     BrowserModule,
