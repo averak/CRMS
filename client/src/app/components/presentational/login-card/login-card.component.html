@@ -10,7 +10,7 @@
           matInput
           placeholder="Email"
           [(ngModel)]="userLoginRequest.email"
-          name="email"
+          name="login-email"
           required
         />
         <mat-error> メールアドレスを入力してください </mat-error>
@@ -22,7 +22,7 @@
           matInput
           placeholder="Password"
           [(ngModel)]="userLoginRequest.password"
-          name="password"
+          name="login-password"
           required
         />
         <mat-icon matSuffix (click)="hide = !hide">{{
