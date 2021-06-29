@@ -1,4 +1,4 @@
 export interface ReservationCreateRequest {
-  startAt: Date;
-  finishAt: Date;
+  startAt: string;
+  finishAt: string;
 }

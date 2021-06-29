@@ -8,12 +8,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
-  CalendarView,
-} from 'angular-calendar';
+import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { UserModel } from 'src/app/model/user-model';

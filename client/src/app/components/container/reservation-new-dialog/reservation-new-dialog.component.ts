@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import * as moment from 'moment-timezone';
 
 import { ReservationModel } from 'src/app/model/reservation-model';
 import { ReservationCreateRequest } from 'src/app/request/reservation-create-request';
@@ -24,8 +25,8 @@ export class ReservationNewDialogComponent implements OnInit {
   handleSubmitReservation(reservation: ReservationModel): void {
     // 予約作成リクエストを作成
     const requestBody: ReservationCreateRequest = {
-      startAt: new Date(reservation.startAt),
-      finishAt: new Date(reservation.finishAt),
+      startAt: moment(reservation.startAt).tz('Asia/Tokyo').format(),
+      finishAt: moment(reservation.finishAt).tz('Asia/Tokyo').format(),
     };
 
     this.reservationService.createReservation(requestBody).subscribe(
