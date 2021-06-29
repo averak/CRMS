@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -7,8 +7,24 @@ import { SharedModule } from './shared/shared.module';
 
 // angular calendar
 import { FlatpickrModule } from 'angularx-flatpickr';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import {
+  CalendarModule,
+  DateAdapter,
+  CalendarDateFormatter,
+  CalendarNativeDateFormatter,
+  DateFormatterParams,
+} from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
+@Injectable()
+class CustomDateFormatter extends CalendarNativeDateFormatter {
+  public weekViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat('ca', {
+      hour: 'numeric',
+      minute: 'numeric',
+    }).format(date);
+  }
+}
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -74,7 +90,18 @@ import { ReservationNewCardComponent } from './components/presentational/reserva
     SharedModule,
     AppRoutingModule,
     FlatpickrModule.forRoot(),
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    CalendarModule.forRoot(
+      {
+        provide: DateAdapter,
+        useFactory: adapterFactory,
+      },
+      {
+        dateFormatter: {
+          provide: CalendarDateFormatter,
+          useClass: CustomDateFormatter,
+        },
+      }
+    ),
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

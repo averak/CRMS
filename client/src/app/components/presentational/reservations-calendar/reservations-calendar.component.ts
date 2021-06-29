@@ -55,17 +55,14 @@ export class ReservationsCalendarComponent implements OnInit {
       // ユーザ一覧を保管
       users.push(reservation.user);
 
-      const isOwnReservation: boolean = this.loginUser.id === reservation.user.id;
       return {
         start: new Date(reservation.startAt),
         end: new Date(reservation.finishAt),
         title: this.userService.getUserName(reservation.user),
-        color: isOwnReservation ? ReservationColorEnum.BLUE : ReservationColorEnum.YELLOW,
-        resizable: {
-          beforeStart: isOwnReservation,
-          afterEnd: isOwnReservation,
-        },
-        draggable: isOwnReservation,
+        color:
+          this.loginUser.id === reservation.user.id
+            ? ReservationColorEnum.BLUE
+            : ReservationColorEnum.YELLOW,
       };
     });
 
