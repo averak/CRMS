@@ -44,30 +44,4 @@ export class ReservationsContentsComponent implements OnInit {
       }
     );
   }
-
-  handleSubmitReservation(reservation: ReservationModel): void {
-    // 予約作成リクエストを作成
-    const requestBody: ReservationCreateRequest = {
-      startAt: reservation.startAt,
-      finishAt: reservation.finishAt,
-    };
-
-    this.reservationService.createReservation(requestBody).subscribe(
-      () => {
-        this.alertService.openSnackBar('予約を追加しました', 'SUCCESS');
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
-      }
-    );
-
-    this.reservationService.getReservations().subscribe(
-      (data) => {
-        console.log(data);
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
-      }
-    );
-  }
 }

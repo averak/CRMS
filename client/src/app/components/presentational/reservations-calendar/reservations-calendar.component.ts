@@ -2,8 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
@@ -34,7 +32,6 @@ import { AdmissionYearService } from 'src/app/shared/services/admission-year.ser
 export class ReservationsCalendarComponent implements OnInit {
   @Input() reservations!: ReservationModel[];
   @Input() loginUser!: UserModel;
-  @Output() submitReservation: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
 
@@ -142,21 +139,5 @@ export class ReservationsCalendarComponent implements OnInit {
     this.matDialog.open(ReservationNewDialogComponent, {
       disableClose: true,
     });
-
-    // FIXME
-    /*
-    this.reservation.startAt = new Date();
-    this.reservation.finishAt = new Date();
-    console.log(this.reservation);
-    this.submitReservation.emit(this.reservation);
-		*/
-  }
-
-  handleSubmitReservation(): void {
-    this.matDialog.closeAll();
-  }
-
-  handleCancelSubmit(): void {
-    this.matDialog.closeAll();
   }
 }

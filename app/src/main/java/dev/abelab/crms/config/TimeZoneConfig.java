@@ -10,7 +10,7 @@ public class TimeZoneConfig {
 
     @Bean
     public TimeZone timeZone() {
-        final var defaultTimeZone = TimeZone.getTimeZone("Asia/Tokyo");
+        final var defaultTimeZone = TimeZone.getTimeZone("UTC");
         TimeZone.setDefault(defaultTimeZone);
         return defaultTimeZone;
     }
