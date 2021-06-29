@@ -140,7 +140,6 @@ export class ReservationsCalendarComponent implements OnInit {
 
   onClickCreateButton(): void {
     this.matDialog.open(ReservationNewFormComponent, {
-      width: '640px',
       disableClose: true,
     });
 

@@ -1,0 +1,47 @@
+<mat-grid-list cols="1">
+  <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+    <h2 class="crms-fg-black2">予約を追加する</h2>
+    <div>
+      <form (ngSubmit)="onSubmit()" class="user-create-form" #reservationNewForm="ngForm">
+        <mat-form-field class="start-at-form" appearance="fill">
+          <mat-label>開始日時</mat-label>
+          <input
+            matInput
+            [(ngModel)]="reservation.startAt"
+            type="datetime-local"
+            name="start-at"
+            required
+          />
+          <mat-error>開始日時を入力してください</mat-error>
+        </mat-form-field>
+
+        <br />
+
+        <mat-form-field class="finish-at-form" appearance="fill">
+          <mat-label>終了日時</mat-label>
+          <input
+            matInput
+            [(ngModel)]="reservation.finishAt"
+            type="datetime-local"
+            name="finish-at"
+            required
+          />
+          <mat-error>終了日時を入力してください</mat-error>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <button
+            mat-raised-button
+            type="submit"
+            color="primary"
+            (click)="onSubmit()"
+            [disabled]="reservationNewForm.invalid"
+          >
+            追加
+          </button>
+          <button mat-raised-button type="button" (click)="onCancel()">キャンセル</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-grid-list>

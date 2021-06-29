@@ -37,7 +37,7 @@ import { MypagePasswordEditFormComponent } from './components/container/mypage-p
 import { UsersContentsComponent } from './components/container/users-contents/users-contents.component';
 import { ReservationsContentsComponent } from './components/container/reservations-contents/reservations-contents.component';
 import { ReservationNewFormComponent } from './components/container/reservation-new-form/reservation-new-form.component';
-import { ReservationNewCardComponent } from './components/presentational/reservation-new-card/reservation-new-card.component';
+import { ReservationNewDialogComponent } from './components/presentational/reservation-new-dialog/reservation-new-dialog.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +66,7 @@ import { ReservationNewCardComponent } from './components/presentational/reserva
     UsersContentsComponent,
     ReservationsContentsComponent,
     ReservationNewFormComponent,
-    ReservationNewCardComponent,
+    ReservationNewDialogComponent,
   ],
   imports: [
     BrowserModule,
