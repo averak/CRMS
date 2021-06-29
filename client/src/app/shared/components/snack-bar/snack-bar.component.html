@@ -5,13 +5,13 @@
   [class.warn-snack-bar]="data.level === 'WARN'"
   [class.error-snack-bar]="data.level === 'ERROR'"
   fxLayout="row"
-  fxLayoutAlign="none center"
+  fxLayoutAlign="space-between center"
 >
   <span>{{ data.message }}</span>
 
   <span class="snack-bar-close-button">
     <button mat-icon-button (click)="dismiss()">
-      <mat-icon class="snack-bar-close-icon">close</mat-icon>
+      <mat-icon class="crms-fg-black2">close</mat-icon>
     </button>
   </span>
 </div>

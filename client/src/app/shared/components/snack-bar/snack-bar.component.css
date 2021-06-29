@@ -1,19 +1,5 @@
 .snack-bar {
-  min-height: 50px;
   padding: 6px 4px 6px 20px;
-}
-
-span {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.snack-bar-close-button {
-  margin-left: auto;
-}
-
-.snack-bar-close-icon {
-  color: #df646f;
 }
 
 .success-snack-bar {
