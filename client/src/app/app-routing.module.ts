@@ -34,6 +34,7 @@ const routes: Routes = [
     component: HeaderComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', component: DashboardComponent },
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -72,7 +73,6 @@ const routes: Routes = [
     ],
   },
   { path: 'error', component: ErrorPageComponent },
-  { path: '', component: LoginComponent },
   { path: '**', redirectTo: '/error?status_code=404', pathMatch: 'full' },
 ];
 
