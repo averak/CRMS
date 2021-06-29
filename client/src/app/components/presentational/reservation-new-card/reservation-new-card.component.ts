@@ -3,11 +3,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ReservationModel } from 'src/app/model/reservation-model';
 
 @Component({
-  selector: 'app-reservation-new-dialog',
-  templateUrl: './reservation-new-dialog.component.html',
-  styleUrls: ['./reservation-new-dialog.component.css'],
+  selector: 'app-reservation-new-card',
+  templateUrl: './reservation-new-card.component.html',
+  styleUrls: ['./reservation-new-card.component.css'],
 })
-export class ReservationNewDialogComponent implements OnInit {
+export class ReservationNewCardComponent implements OnInit {
   @Output() submitReservation: EventEmitter<any> = new EventEmitter<any>();
   @Output() cancelSubmit: EventEmitter<any> = new EventEmitter<any>();
 

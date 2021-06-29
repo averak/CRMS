@@ -29,17 +29,19 @@
           <mat-error>終了日時を入力してください</mat-error>
         </mat-form-field>
 
-        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button
-            mat-raised-button
-            type="submit"
-            color="primary"
-            (click)="onSubmit()"
-            [disabled]="reservationNewForm.invalid"
-          >
-            追加
-          </button>
-          <button mat-raised-button type="button" (click)="onCancel()">キャンセル</button>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <mat-dialog-actions>
+            <button
+              mat-raised-button
+              type="submit"
+              color="primary"
+              (click)="onSubmit()"
+              [disabled]="reservationNewForm.invalid"
+            >
+              追加
+            </button>
+            <button mat-raised-button type="button" (click)="onCancel()">キャンセル</button>
+          </mat-dialog-actions>
         </div>
       </form>
     </div>

@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserModel } from 'src/app/model/user-model';
 import { ReservationModel } from 'src/app/model/reservation-model';
 import { ReservationColorEnum } from 'src/app/enums/reservation-color-enum';
-import { ReservationNewFormComponent } from 'src/app/components/container/reservation-new-form/reservation-new-form.component';
+import { ReservationNewDialogComponent } from 'src/app/components/container/reservation-new-dialog/reservation-new-dialog.component';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AdmissionYearService } from 'src/app/shared/services/admission-year.service';
 
@@ -139,7 +139,7 @@ export class ReservationsCalendarComponent implements OnInit {
   }
 
   onClickCreateButton(): void {
-    this.matDialog.open(ReservationNewFormComponent, {
+    this.matDialog.open(ReservationNewDialogComponent, {
       disableClose: true,
     });
 
