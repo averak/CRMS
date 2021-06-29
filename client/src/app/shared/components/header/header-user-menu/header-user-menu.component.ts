@@ -26,7 +26,7 @@ export class HeaderUserMenuComponent implements OnInit {
     this.userService.getLoginUser().subscribe(
       (user: UserModel) => {
         this.user = user;
-        this.userName = `${user.lastName} ${user.firstName}`;
+        this.userName = this.userService.getUserName(user);
       },
       (error) => {
         this.alertService.openSnackBar(error, 'ERROR');

@@ -20,10 +20,16 @@
     </button>
 
     <mat-form-field fxFlexOffset="50px" fxFlex="300px">
-      <input matInput placeholder="検索する名前" name="username" />
+      <mat-label>検索する名前</mat-label>
+      <mat-select name="username">
+        <mat-option *ngFor="let option of userNames" [value]="option">{{ option }}</mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field fxFlexOffset="50px" fxFlex="150px">
-      <input matInput placeholder="入学年度" name="admission-year" />
+      <mat-label>入学年度</mat-label>
+      <mat-select name="admission-year">
+        <mat-option *ngFor="let option of admissionYears" [value]="option">{{ option }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <div class="new-reservation-button-container" fxLayout="row" fxLayoutAlign="end center">

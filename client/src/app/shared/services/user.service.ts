@@ -88,4 +88,18 @@ export class UserService {
   checkAdmin(user: UserModel): boolean {
     return user.roleId == UserRoleEnum.ADMIN;
   }
+
+  getUserName(user: UserModel): string {
+    return `${user.lastName} ${user.firstName}`;
+  }
+
+  sortUsers(users: UserModel[]): UserModel[] {
+    // 入学年度/IDでソート
+    users.sort((a, b) => {
+      if (a.admissionYear > b.admissionYear) return 1;
+      if (a.admissionYear < b.admissionYear) return -1;
+      return a.lastName.localeCompare(b.lastName, 'ja');
+    });
+    return users;
+  }
 }

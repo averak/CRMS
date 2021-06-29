@@ -24,13 +24,7 @@ export class UsersContentsComponent implements OnInit {
       (users: UsersModel) => {
         this.users = users.users;
         this.userService.setUsers(this.users);
-
-        // 入学年度/IDでソート
-        this.users.sort((a, b) => {
-          if (a.admissionYear > b.admissionYear) return 1;
-          if (a.admissionYear < b.admissionYear) return -1;
-          return a.lastName.localeCompare(b.lastName, 'ja');
-        });
+        this.users = this.userService.sortUsers(this.users);
       },
       (error) => {
         this.alertService.openSnackBar(error, 'ERROR');
