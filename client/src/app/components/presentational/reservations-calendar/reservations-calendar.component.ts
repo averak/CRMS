@@ -7,15 +7,17 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { CalendarEventAction, CalendarView } from 'angular-calendar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { UserModel } from 'src/app/model/user-model';
+import { CalendarEventWithReservation } from 'src/app/model/calendar-event-with-reservation';
 import { ReservationModel } from 'src/app/model/reservation-model';
 import { ReservationColorEnum } from 'src/app/enums/reservation-color-enum';
 import { ReservationNewDialogComponent } from 'src/app/components/container/reservation-new-dialog/reservation-new-dialog.component';
+import { ReservationService } from 'src/app/shared/services/reservation.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
 import { AdmissionYearService } from 'src/app/shared/services/admission-year.service';
 
 @Component({
@@ -32,19 +34,25 @@ export class ReservationsCalendarComponent implements OnInit {
 
   view: CalendarView = CalendarView.Week;
   viewDate: Date = new Date();
-  events!: CalendarEvent[];
+  events!: CalendarEventWithReservation[];
   userNames: string[] = [];
   admissionYears!: number[];
 
-  modalData!: {
-    action: string;
-    event: CalendarEvent;
-  };
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="fas fa-fw fa-trash-alt"></i>',
+      a11yLabel: 'Delete',
+      onClick: ({ event }: { event: any }): void => {
+        this.deleteEvent(event);
+      },
+    },
+  ];
 
   constructor(
-    private modal: NgbModal,
     private matDialog: MatDialog,
+    private reservationService: ReservationService,
     private userService: UserService,
+    private alertService: AlertService,
     private admissionYearService: AdmissionYearService
   ) {}
 
@@ -56,6 +64,7 @@ export class ReservationsCalendarComponent implements OnInit {
       users.push(reservation.user);
 
       return {
+        reservation: reservation,
         start: new Date(reservation.startAt),
         end: new Date(reservation.finishAt),
         title: this.userService.getUserName(reservation.user),
@@ -63,6 +72,7 @@ export class ReservationsCalendarComponent implements OnInit {
           this.loginUser.id === reservation.user.id
             ? ReservationColorEnum.BLUE
             : ReservationColorEnum.YELLOW,
+        actions: this.actions,
       };
     });
 
@@ -80,43 +90,25 @@ export class ReservationsCalendarComponent implements OnInit {
   refresh: Subject<any> = new Subject();
   activeDayIsOpen: boolean = true;
 
-  eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map((iEvent) => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd,
-        };
+  deleteEvent(eventToDelete: CalendarEventWithReservation) {
+    this.alertService.confirmDialog(
+      '削除確認',
+      '本当に予約を削除しますか？',
+      (result: boolean): void => {
+        if (result) {
+          // FIXME
+          this.reservationService.deleteReservation(eventToDelete.reservation.id).subscribe(
+            () => {
+              this.events = this.events.filter((event) => event !== eventToDelete);
+              this.alertService.openSnackBar('予約を削除しました', 'SUCCESS');
+            },
+            (error) => {
+              this.alertService.openSnackBar(error, 'ERROR');
+            }
+          );
+        }
       }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
-  }
-
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
-  }
-
-  addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: new Date(),
-        end: new Date(),
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
-  }
-
-  deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
+    );
   }
 
   setView(view: CalendarView) {
