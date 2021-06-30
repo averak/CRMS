@@ -6,10 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
+import java.util.Date;
+import java.util.Calendar;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,9 +19,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 
-import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.db.entity.UserSample;
-import dev.abelab.crms.db.entity.Reservation;
 import dev.abelab.crms.db.entity.ReservationSample;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
@@ -29,10 +28,10 @@ import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.api.response.ReservationResponse;
 import dev.abelab.crms.api.response.ReservationsResponse;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
 import dev.abelab.crms.exception.ForbiddenException;
-import dev.abelab.crms.exception.UnauthorizedException;
 
 /**
  * ReservationRestController Integration Test
@@ -106,10 +105,17 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var loginUser = createLoginUser(userRole);
 			final var jwt = getLoginUserJwt(loginUser);
 
+			final var calendar1 = Calendar.getInstance();
+			calendar1.setTime(SAMPLE_DATE);
+			calendar1.add(Calendar.HOUR, 1);
+			final var calendar2 = Calendar.getInstance();
+			calendar2.setTime(SAMPLE_DATE);
+			calendar2.add(Calendar.HOUR, 2);
+
 			// request body
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(SAMPLE_DATE) //
-				.finishAt(SAMPLE_DATE) //
+				.startAt(calendar1.getTime()) //
+				.finishAt(calendar2.getTime()) //
 				.build();
 
 			// test
@@ -136,6 +142,57 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 		@Test
 		void 異_指定時刻は既に予約済み() throws Exception {
 			// FIXME
+		}
+
+		@ParameterizedTest
+		@MethodSource
+		void 異_開始時刻が終了時刻よりも後だと予約不可(final Date startAt, final Date finishAt) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = ReservationCreateRequest.builder() //
+				.startAt(startAt) //
+				.finishAt(finishAt) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_RESERVATIONS_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new BadRequestException(ErrorCode.INVALID_RESERVATION));
+		}
+
+		Stream<Arguments> 異_開始時刻が終了時刻よりも後だと予約不可() {
+			return Stream.of(
+				// 開始時刻よりも前に終了時刻が設定されている
+				arguments(new Date(), SAMPLE_DATE),
+				// 開始時刻と終了時刻が同じ
+				arguments(SAMPLE_DATE, SAMPLE_DATE));
+		}
+
+		@Test
+		void 異_過去の日時は予約不可() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+
+			final var jwt = getLoginUserJwt(loginUser);
+
+			final var calendar1 = Calendar.getInstance();
+			calendar1.set(2000, 1, 1, 9, 30);
+			final var calendar2 = Calendar.getInstance();
+			calendar2.set(2000, 1, 1, 12, 0);
+
+			// request body
+			final var requestBody = ReservationCreateRequest.builder() //
+				.startAt(calendar1.getTime()) //
+				.finishAt(calendar2.getTime()) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_RESERVATIONS_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new BadRequestException(ErrorCode.INVALID_RESERVATION));
 		}
 
 	}
