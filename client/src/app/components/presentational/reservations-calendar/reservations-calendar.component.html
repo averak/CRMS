@@ -21,13 +21,17 @@
 
     <mat-form-field fxFlexOffset="50px" fxFlex="300px">
       <mat-label>検索する名前</mat-label>
-      <mat-select name="username">
+      <mat-select name="username" [(ngModel)]="searchName" (openedChange)="buildEvents()">
         <mat-option *ngFor="let option of userNames" [value]="option">{{ option }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field fxFlexOffset="50px" fxFlex="150px">
       <mat-label>入学年度</mat-label>
-      <mat-select name="admission-year">
+      <mat-select
+        name="admission-year"
+        [(ngModel)]="searchAdmissionYear"
+        (openedChange)="buildEvents()"
+      >
         <mat-option *ngFor="let option of admissionYears" [value]="option">{{ option }}</mat-option>
       </mat-select>
     </mat-form-field>

@@ -38,6 +38,9 @@ export class ReservationsCalendarComponent implements OnInit {
   userNames: string[] = [];
   admissionYears!: number[];
 
+  searchName!: string;
+  searchAdmissionYear!: number;
+
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
@@ -57,23 +60,12 @@ export class ReservationsCalendarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let users: UserModel[] = [];
-    // イベント一覧
-    this.events = this.reservations.map((reservation: ReservationModel) => {
-      // ユーザ一覧を保管
-      users.push(reservation.user);
+    // イベントを取得
+    this.buildEvents();
 
-      return {
-        reservation: reservation,
-        start: new Date(reservation.startAt),
-        end: new Date(reservation.finishAt),
-        title: this.userService.getUserName(reservation.user),
-        color:
-          this.loginUser.id === reservation.user.id
-            ? ReservationColorEnum.BLUE
-            : ReservationColorEnum.YELLOW,
-        actions: this.actions,
-      };
+    // ユーザ一覧を保管
+    let users: UserModel[] = this.reservations.map((reservation: ReservationModel) => {
+      return reservation.user;
     });
 
     // 予約者のユーザ名リストを取得
@@ -109,6 +101,48 @@ export class ReservationsCalendarComponent implements OnInit {
         }
       }
     );
+  }
+
+  buildEvents(): void {
+    this.events = [];
+
+    const pushEvent = (reservation: ReservationModel) => {
+      this.events.push({
+        reservation: reservation,
+        start: new Date(reservation.startAt),
+        end: new Date(reservation.finishAt),
+        title: this.userService.getUserName(reservation.user),
+        color:
+          this.loginUser.id === reservation.user.id
+            ? ReservationColorEnum.BLUE
+            : ReservationColorEnum.YELLOW,
+        actions: this.actions,
+      });
+    };
+
+    // イベント一覧
+    this.reservations.map((reservation: ReservationModel) => {
+      if (this.searchName === undefined && this.searchAdmissionYear === undefined) {
+        pushEvent(reservation);
+      }
+      // ユーザ名&入学年度で絞り込み検索
+      else if (this.searchName !== undefined && this.searchAdmissionYear !== undefined) {
+        if (
+          this.searchName === this.userService.getUserName(reservation.user) &&
+          this.searchAdmissionYear === reservation.user.admissionYear
+        ) {
+          pushEvent(reservation);
+        }
+      }
+      // ユーザ名で絞り込み検索
+      else if (this.searchName === this.userService.getUserName(reservation.user)) {
+        pushEvent(reservation);
+      }
+      // 入学年度で絞り込み検索
+      else if (this.searchAdmissionYear === reservation.user.admissionYear) {
+        pushEvent(reservation);
+      }
+    });
   }
 
   setView(view: CalendarView) {
