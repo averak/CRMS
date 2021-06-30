@@ -70,6 +70,9 @@ public class UserService {
         // 作成するアカウントのロールの有効性をチェック
         this.userRoleLogic.checkForValidRoleId(requestBody.getRoleId());
 
+        // 有効なパスワードかチェック
+        this.userLogic.validatePassword(requestBody.getPassword());
+
         // ユーザの作成
         final var user = User.builder() //
             .firstName(requestBody.getFirstName()) //
@@ -178,6 +181,9 @@ public class UserService {
 
         // パスワードチェック
         this.userLogic.verifyPassword(loginUser.getId(), requestBody.getCurrentPassword());
+
+        // 有効なパスワードかチェック
+        this.userLogic.validatePassword(requestBody.getNewPassword());
 
         // ログインユーザの更新
         loginUser.setPassword(this.userLogic.encodePassword(requestBody.getNewPassword()));

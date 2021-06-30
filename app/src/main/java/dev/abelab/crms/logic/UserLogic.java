@@ -12,6 +12,7 @@ import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.property.JwtProperty;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.UnauthorizedException;
 import dev.abelab.crms.exception.ForbiddenException;
 
@@ -117,6 +118,15 @@ public class UserLogic {
         // ハッシュ値が一致するか
         if (!this.passwordEncoder.matches(password, user.getPassword())) {
             throw new UnauthorizedException(ErrorCode.WRONG_PASSWORD);
+        }
+    }
+
+    /**
+     * パスワードが有効かチェック
+     */
+    public void validatePassword(final String password) {
+        if (password.length() < 8) {
+            throw new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD);
         }
     }
 

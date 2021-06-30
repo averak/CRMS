@@ -16,6 +16,7 @@ exception:
     validation_error: "Validation error has occured."
     invalid_reservation: "Reservation is invalid."
     too_long_reservation_hours: "Reservation hours is too long."
+    too_short_password: "Password is to short."
   unauthorized:
     user_not_logged_in: "User has no logged in."
     wrong_password: "Password is wrong."

@@ -28,6 +28,7 @@ import dev.abelab.crms.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
 import dev.abelab.crms.exception.ForbiddenException;
@@ -212,6 +213,28 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
 			request.header("Authorization", jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
+		}
+
+		@Test
+		void 異_パスワードが短すぎる() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var requestBody = UserCreateRequest.builder() //
+				.firstName(SAMPLE_STR) //
+				.lastName(SAMPLE_STR) //
+				.password("*******") //
+				.email(SAMPLE_STR) //
+				.roleId(UserRoleEnum.MEMBER.getId()) //
+				.admissionYear(SAMPLE_INT) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD));
 		}
 
 	}
@@ -489,6 +512,24 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
 			request.header("Authorization", jwt);
 			execute(request, new UnauthorizedException(ErrorCode.WRONG_PASSWORD));
+		}
+
+		@Test
+		void 異_パスワードが短すぎる() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var requestBody = LoginUserPasswordUpdateRequest.builder() //
+				.currentPassword(LOGIN_USER_PASSWORD) //
+				.newPassword("*******") //
+				.build();
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD));
 		}
 
 	}
