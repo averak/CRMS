@@ -11,6 +11,7 @@ import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BadRequestException;
+import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.ForbiddenException;
 
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class ReservationLogic {
     /**
      * 予約時間のバリデーション
      */
-    public void validateReservationTime(final Date startAt, final Date finishAt) {
+    public void validateReservationTime(final Date startAt, final Date finishAt, final int userId) {
         // 過去の日時
         final var now = new Date();
         if (now.after(startAt)) {
@@ -61,9 +62,20 @@ public class ReservationLogic {
         }
 
         // 制限時間を超過している
-        final var diffHours = (finishAt.getTime() - startAt.getTime() ) /(1000 * 60 * 60);
+        final var diffHours = (finishAt.getTime() - startAt.getTime()) / (1000 * 60 * 60);
         if (diffHours > this.crmsProperty.getReservableHours()) {
             throw new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS);
+        }
+
+        // 同時刻はすでに予約済み
+        final var reservations = this.reservationRepository.selectByUserId(userId);
+        for (var reservation : reservations) {
+            if (reservation.getStartAt().after(startAt) && reservation.getStartAt().before(finishAt)) {
+                throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
+            }
+            if (reservation.getFinishAt().after(startAt) && reservation.getFinishAt().before(finishAt)) {
+                throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
+            }
         }
     }
 

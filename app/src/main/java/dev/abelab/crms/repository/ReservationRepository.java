@@ -10,7 +10,6 @@ import dev.abelab.crms.db.entity.Reservation;
 import dev.abelab.crms.db.entity.ReservationExample;
 import dev.abelab.crms.db.mapper.ReservationMapper;
 import dev.abelab.crms.exception.ErrorCode;
-import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
 
 @RequiredArgsConstructor
@@ -27,8 +26,6 @@ public class ReservationRepository {
      * @return 予約ID
      */
     public int insert(Reservation reservation) {
-        // FIXME: 重複確認
-        // throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
         return this.reservationMapper.insertSelective(reservation);
     }
 

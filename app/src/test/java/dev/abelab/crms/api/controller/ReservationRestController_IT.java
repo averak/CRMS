@@ -109,14 +109,13 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var loginUser = createLoginUser(userRole);
 			final var jwt = getLoginUserJwt(loginUser);
 
+			// request body
 			final var calendar1 = Calendar.getInstance();
 			calendar1.setTime(SAMPLE_DATE);
 			calendar1.add(Calendar.HOUR, 1);
 			final var calendar2 = Calendar.getInstance();
 			calendar2.setTime(SAMPLE_DATE);
 			calendar2.add(Calendar.HOUR, 2);
-
-			// request body
 			final var requestBody = ReservationCreateRequest.builder() //
 				.startAt(calendar1.getTime()) //
 				.finishAt(calendar2.getTime()) //
@@ -182,12 +181,11 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 
 			final var jwt = getLoginUserJwt(loginUser);
 
+			// request body
 			final var calendar1 = Calendar.getInstance();
 			calendar1.set(2000, 1, 1, 9, 0);
 			final var calendar2 = Calendar.getInstance();
 			calendar2.set(2000, 1, 1, 12, 0);
-
-			// request body
 			final var requestBody = ReservationCreateRequest.builder() //
 				.startAt(calendar1.getTime()) //
 				.finishAt(calendar2.getTime()) //
@@ -206,14 +204,13 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 
 			final var jwt = getLoginUserJwt(loginUser);
 
+			// request body
 			final var calendar1 = Calendar.getInstance();
 			calendar1.setTime(SAMPLE_DATE);
 			calendar1.add(Calendar.HOUR, 1);
 			final var calendar2 = Calendar.getInstance();
 			calendar2.setTime(SAMPLE_DATE);
 			calendar2.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours() + 1);
-
-			// request body
 			final var requestBody = ReservationCreateRequest.builder() //
 				.startAt(calendar1.getTime()) //
 				.finishAt(calendar2.getTime()) //
@@ -223,6 +220,57 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var request = postRequest(CREATE_RESERVATIONS_PATH, requestBody);
 			request.header("Authorization", jwt);
 			execute(request, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS));
+		}
+
+		@ParameterizedTest
+		@MethodSource
+		void 異_同時刻は既に予約済み(final int startHour, final int finishHour) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// 9~13時は既に予約済み
+			final var calendar1 = Calendar.getInstance();
+			calendar1.setTime(SAMPLE_DATE);
+			calendar1.add(Calendar.DATE, 1);
+			calendar1.set(Calendar.HOUR, 9);
+			final var calendar2 = Calendar.getInstance();
+			calendar2.setTime(SAMPLE_DATE);
+			calendar2.add(Calendar.DATE, 1);
+			calendar2.set(Calendar.HOUR, 11);
+
+			final var reservation = ReservationSample.builder().id(1).userId(loginUser.getId()).startAt(calendar1.getTime())
+				.finishAt(calendar2.getTime()).build();
+			reservationRepository.insert(reservation);
+
+			// request body
+			final var calendar3 = Calendar.getInstance();
+			calendar3.setTime(SAMPLE_DATE);
+			calendar3.add(Calendar.DATE, 1);
+			calendar3.set(Calendar.HOUR, startHour);
+			final var calendar4 = Calendar.getInstance();
+			calendar4.setTime(SAMPLE_DATE);
+			calendar4.add(Calendar.DATE, 1);
+			calendar4.set(Calendar.HOUR, finishHour);
+			final var requestBody = ReservationCreateRequest.builder() //
+				.startAt(calendar3.getTime()) //
+				.finishAt(calendar4.getTime()) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_RESERVATIONS_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME));
+		}
+
+		Stream<Arguments> 異_同時刻は既に予約済み() {
+			return Stream.of(
+				// 開始時刻が重複
+				arguments(10, 12),
+				// 終了時刻が重複
+				arguments(8, 10),
+				// 開始時刻，終了時刻共に重複
+				arguments(9, 11));
 		}
 
 	}
