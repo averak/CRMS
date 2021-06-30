@@ -70,10 +70,20 @@ public class ReservationLogic {
         // 同時刻はすでに予約済み
         final var reservations = this.reservationRepository.selectByUserId(userId);
         for (var reservation : reservations) {
-            if (reservation.getStartAt().after(startAt) && reservation.getStartAt().before(finishAt)) {
+            // 開始時刻が重複
+            if (startAt.after(reservation.getStartAt()) && startAt.before(reservation.getFinishAt())) {
                 throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
             }
-            if (reservation.getFinishAt().after(startAt) && reservation.getFinishAt().before(finishAt)) {
+            // 終了時刻が重複
+            if (finishAt.after(reservation.getStartAt()) && finishAt.before(reservation.getFinishAt())) {
+                throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
+            }
+            // 開始時刻，終了時刻共に重複
+            if (startAt.after(reservation.getStartAt()) && finishAt.before(reservation.getFinishAt())) {
+                throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
+            }
+            // 開始時刻，終了時刻共に完全一致
+            if (startAt.equals(reservation.getStartAt()) && finishAt.equals(reservation.getFinishAt())) {
                 throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
             }
         }
