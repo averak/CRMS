@@ -14,6 +14,7 @@ exception:
     user_has_no_permission: "User has no permission."
   bad_request:
     validation_error: "Validation error has occured."
+    invalid_reservation: "Reservation is invalid."
   unauthorized:
     user_not_logged_in: "User has no logged in."
     wrong_password: "Password is wrong."

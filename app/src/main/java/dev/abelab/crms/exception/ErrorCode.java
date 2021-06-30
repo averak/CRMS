@@ -46,6 +46,8 @@ public enum ErrorCode {
      */
     VALIDATION_ERROR(1400, "exception.bad_request.validation_error"),
 
+    INVALID_RESERVATION(1401, "exception.bad_request.invalid_reservation"),
+
     /**
      * Unauthorized: 1500~1599
      */
