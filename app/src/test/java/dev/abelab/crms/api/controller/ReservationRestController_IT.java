@@ -23,6 +23,7 @@ import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.db.entity.ReservationSample;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
+import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.api.response.ReservationResponse;
@@ -49,6 +50,9 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 
 	@Autowired
 	ReservationRepository reservationRepository;
+
+	@Autowired
+	CrmsProperty crmsProperty;
 
 	/**
 	 * 予約一覧取得APIのテスト
@@ -179,7 +183,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			final var calendar1 = Calendar.getInstance();
-			calendar1.set(2000, 1, 1, 9, 30);
+			calendar1.set(2000, 1, 1, 9, 0);
 			final var calendar2 = Calendar.getInstance();
 			calendar2.set(2000, 1, 1, 12, 0);
 
@@ -193,6 +197,32 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var request = postRequest(CREATE_RESERVATIONS_PATH, requestBody);
 			request.header("Authorization", jwt);
 			execute(request, new BadRequestException(ErrorCode.INVALID_RESERVATION));
+		}
+
+		@Test
+		void 異_予約時間が制限を超過している() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+
+			final var jwt = getLoginUserJwt(loginUser);
+
+			final var calendar1 = Calendar.getInstance();
+			calendar1.setTime(SAMPLE_DATE);
+			calendar1.add(Calendar.HOUR, 1);
+			final var calendar2 = Calendar.getInstance();
+			calendar2.setTime(SAMPLE_DATE);
+			calendar2.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours() + 1);
+
+			// request body
+			final var requestBody = ReservationCreateRequest.builder() //
+				.startAt(calendar1.getTime()) //
+				.finishAt(calendar2.getTime()) //
+				.build();
+
+			// test
+			final var request = postRequest(CREATE_RESERVATIONS_PATH, requestBody);
+			request.header("Authorization", jwt);
+			execute(request, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS));
 		}
 
 	}

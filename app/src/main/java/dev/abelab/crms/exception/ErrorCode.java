@@ -48,6 +48,8 @@ public enum ErrorCode {
 
     INVALID_RESERVATION(1401, "exception.bad_request.invalid_reservation"),
 
+    TOO_LONG_RESERVATION_HOURS(1402, "exception.bad_request.too_long_reservation_hours"),
+
     /**
      * Unauthorized: 1500~1599
      */

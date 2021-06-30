@@ -22,6 +22,7 @@ import dev.abelab.crms.db.entity.ReservationSample;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
+import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.exception.ForbiddenException;
 
 public class ReservationLogic_UT extends AbstractLogic_UT {
@@ -31,6 +32,9 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
     @Injectable
     ReservationRepository reservationRepository;
+
+    @Injectable
+    CrmsProperty crmsProperty;
 
     @Tested
     ReservationLogic reservationLogic;
