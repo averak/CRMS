@@ -56,6 +56,7 @@ public class ReservationRestController {
     @ApiResponses( //
         value = { //
                 @ApiResponse(code = 201, message = "作成成功"), //
+                @ApiResponse(code = 400, message = "指定時刻が無効"), //
                 @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
                 @ApiResponse(code = 409, message = "指定時刻の予約が既に存在している"), //
         } //
