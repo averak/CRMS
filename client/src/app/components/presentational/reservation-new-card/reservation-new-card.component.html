@@ -32,14 +32,14 @@
         <div fxLayout="row" fxLayoutAlign="end center">
           <mat-dialog-actions>
             <button
-              mat-raised-button
+              mat-flat-button
               type="submit"
               color="primary"
               [disabled]="reservationNewForm.invalid"
             >
               追加
             </button>
-            <button mat-raised-button type="button" (click)="onCancel()">キャンセル</button>
+            <button mat-stroked-button type="button" (click)="onCancel()">キャンセル</button>
           </mat-dialog-actions>
         </div>
       </form>
