@@ -61,6 +61,9 @@ public class ReservationService {
         // ログインユーザを取得
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
+        // 開始時刻と終了時刻のバリデーション
+        ReservationUtil.validateReservationTime(requestBody.getStartAt(), requestBody.getFinishAt());
+
         // 予約の作成
         final var reservation = Reservation.builder() //
             .userId(loginUser.getId()) //
