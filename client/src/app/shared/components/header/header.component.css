@@ -5,7 +5,8 @@
 }
 
 .rcc-image {
-  max-height: 70%;
+  height: 70%;
+  width: auto;
   pointer-events: none;
 }
 
