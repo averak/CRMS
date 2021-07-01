@@ -142,11 +142,6 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 				arguments(UserRoleEnum.MEMBER));
 		}
 
-		@Test
-		void 異_指定時刻は既に予約済み() throws Exception {
-			// FIXME
-		}
-
 		@ParameterizedTest
 		@MethodSource
 		void 異_開始時刻が終了時刻よりも後だと予約不可(final Date startAt, final Date finishAt) throws Exception {
@@ -210,7 +205,8 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			calendar1.add(Calendar.HOUR, 1);
 			final var calendar2 = Calendar.getInstance();
 			calendar2.setTime(SAMPLE_DATE);
-			calendar2.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours() + 1);
+			calendar2.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours());
+			calendar2.add(Calendar.MINUTE, 1);
 			final var requestBody = ReservationCreateRequest.builder() //
 				.startAt(calendar1.getTime()) //
 				.finishAt(calendar2.getTime()) //

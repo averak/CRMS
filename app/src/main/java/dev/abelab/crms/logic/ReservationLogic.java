@@ -62,7 +62,7 @@ public class ReservationLogic {
         }
 
         // 制限時間を超過している
-        final var diffHours = (finishAt.getTime() - startAt.getTime()) / (1000 * 60 * 60);
+        final var diffHours = (finishAt.getTime() - startAt.getTime()) / (1000.0 * 60.0 * 60.0);
         if (diffHours > this.crmsProperty.getReservableHours()) {
             throw new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS);
         }
