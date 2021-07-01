@@ -69,7 +69,7 @@ public class ReservationLogic {
 
         // 同時刻はすでに予約済み
         final var reservations = this.reservationRepository.selectByUserId(userId);
-        for (var reservation : reservations) {
+        reservations.forEach(reservation -> {
             // 開始時刻が重複
             if (startAt.after(reservation.getStartAt()) && startAt.before(reservation.getFinishAt())) {
                 throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
@@ -86,7 +86,7 @@ public class ReservationLogic {
             if (startAt.equals(reservation.getStartAt()) && finishAt.equals(reservation.getFinishAt())) {
                 throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
             }
-        }
+        });
     }
 
 }
