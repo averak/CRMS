@@ -1,5 +1,6 @@
 package dev.abelab.crms.api.controller;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.api.request.LoginRequest;
@@ -47,9 +49,12 @@ public class AuthRestController_IT extends AbstractRestController_IT {
 				.password(LOGIN_USER_PASSWORD) //
 				.build();
 
-			// verify
+			// test
 			final var request = postRequest("/api/login", requestBody);
-			execute(request, HttpStatus.OK);
+			final var response = execute(request, HttpStatus.OK);
+
+			// verify
+			assertThat(response.getResponse().getHeader(HttpHeaders.AUTHORIZATION)).isNotNull();
 		}
 
 		Stream<Arguments> 正_存在するユーザがログイン() {
