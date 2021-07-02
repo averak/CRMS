@@ -2,6 +2,7 @@ package dev.abelab.crms.api.controller;
 
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +42,8 @@ public class AuthRestController {
         @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody, //
         final HttpServletResponse response //
     ) {
-        this.authService.login(requestBody, response);
+        final var jwt = this.authService.login(requestBody);
+        response.setHeader(HttpHeaders.AUTHORIZATION, jwt);
     }
 
 }

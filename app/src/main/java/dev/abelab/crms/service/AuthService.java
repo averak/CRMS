@@ -1,6 +1,5 @@
 package dev.abelab.crms.service;
 
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +20,11 @@ public class AuthService {
      * ログイン処理
      *
      * @param requestBody ログインリクエスト
+     *
+     * @return JWT
      */
     @Transactional
-    public void login(final LoginRequest requestBody, final HttpServletResponse response) {
+    public String login(final LoginRequest requestBody) {
         // ユーザ情報を取得
         final var user = this.userRepository.selectByEmail(requestBody.getEmail());
 
@@ -31,8 +32,7 @@ public class AuthService {
         this.userLogic.verifyPassword(user.getId(), requestBody.getPassword());
 
         // JWTを発行
-        final var jwt = this.userLogic.generateJwt(user);
-        response.setHeader("Authorization", jwt);
+        return this.userLogic.generateJwt(user);
     }
 
 }
