@@ -45,9 +45,8 @@ public class UserService {
 
         // ユーザの取得
         final var users = this.userRepository.findAll();
-        final var userResponses = users.stream().map(user -> {
-            return UserUtil.buildUserResponse(user);
-        }).collect(Collectors.toList());
+        final var userResponses = users.stream().map(UserUtil::buildUserResponse) //
+            .collect(Collectors.toList());
 
         return new UsersResponse(userResponses);
     }
