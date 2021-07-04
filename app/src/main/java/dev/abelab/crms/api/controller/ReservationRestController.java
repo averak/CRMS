@@ -1,6 +1,7 @@
 package dev.abelab.crms.api.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +39,7 @@ public class ReservationRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ReservationsResponse getReservations( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt //
     ) {
         return this.reservationService.getReservations(jwt);
     }
@@ -64,7 +65,7 @@ public class ReservationRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "新規予約情報") @RequestBody final ReservationCreateRequest requestBody //
     ) {
         this.reservationService.createReservation(jwt, requestBody);
@@ -90,7 +91,7 @@ public class ReservationRestController {
     @DeleteMapping(value = "/{reservation_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteReservation( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @ApiParam(name = "reservation_id", required = true, value = "予約ID") @PathVariable("reservation_id") final int reservationId //
     ) {
         this.reservationService.deleteReservation(jwt, reservationId);

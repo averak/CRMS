@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.repository.UserRepository;
@@ -76,7 +77,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = getRequest(GET_USERS_PATH);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			final var response = execute(request, HttpStatus.OK, UsersResponse.class);
 
 			// verify
@@ -99,7 +100,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = getRequest(GET_USERS_PATH);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
 
@@ -130,7 +131,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
@@ -164,7 +165,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
 
@@ -186,7 +187,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.CREATED);
 
 			// verify
@@ -211,7 +212,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
 		}
 
@@ -233,7 +234,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD));
 		}
 
@@ -267,7 +268,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
 			// verify
@@ -303,7 +304,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
 
@@ -324,7 +325,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
 
@@ -349,7 +350,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
 			// verify
@@ -369,7 +370,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 
 			// verify
@@ -384,7 +385,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = deleteRequest(format(DELETE_USER_PATH, SAMPLE_INT));
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
 
@@ -406,7 +407,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = getRequest(GET_LOGIN_USER_PATH);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			final var response = execute(request, HttpStatus.OK, UserResponse.class);
 
 			assertThat(response) //
@@ -452,7 +453,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(UPDATE_LOGIN_USER_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
 			// verify
@@ -488,7 +489,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
 			// verify
@@ -510,7 +511,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new UnauthorizedException(ErrorCode.WRONG_PASSWORD));
 		}
 
@@ -528,7 +529,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = putRequest(UPDATE_LOGIN_USER_PASSWORD_PATH, requestBody);
-			request.header("Authorization", jwt);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD));
 		}
 

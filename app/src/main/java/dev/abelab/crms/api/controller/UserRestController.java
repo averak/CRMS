@@ -1,6 +1,7 @@
 package dev.abelab.crms.api.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -43,7 +44,7 @@ public class UserRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public UsersResponse getUsers( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt //
     ) {
         return this.userService.getUsers(jwt);
     }
@@ -69,7 +70,7 @@ public class UserRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserCreateRequest requestBody //
     ) {
         this.userService.createUser(requestBody, jwt);
@@ -98,7 +99,7 @@ public class UserRestController {
     @PutMapping(value = "/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId, //
         @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final UserUpdateRequest requestBody //
     ) {
@@ -126,7 +127,7 @@ public class UserRestController {
     @DeleteMapping(value = "/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId //
     ) {
         this.userService.deleteUser(userId, jwt);
@@ -151,7 +152,7 @@ public class UserRestController {
     @GetMapping(value = "/me")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse getLoginUser( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt //
     ) {
         return this.userService.getLoginUser(jwt);
     }
@@ -175,7 +176,7 @@ public class UserRestController {
     @PutMapping(value = "/me")
     @ResponseStatus(HttpStatus.OK)
     public void updateLoginUser( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final LoginUserUpdateRequest requestBody //
     ) {
         this.userService.updateLoginUser(requestBody, jwt);
@@ -200,7 +201,7 @@ public class UserRestController {
     @PutMapping(value = "/me/password")
     @ResponseStatus(HttpStatus.OK)
     public void updateLoginUserPassword( //
-        @RequestHeader(name = "Authorization", required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "パスワード更新情報")
         @RequestBody final LoginUserPasswordUpdateRequest requestBody //
     ) {
