@@ -9,8 +9,9 @@ import lombok.*;
 import dev.abelab.crms.db.entity.Reservation;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
-import dev.abelab.crms.api.response.ReservationsResponse;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
+import dev.abelab.crms.api.request.ReservationUpdateRequest;
+import dev.abelab.crms.api.response.ReservationsResponse;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.ReservationLogic;
 import dev.abelab.crms.util.ReservationUtil;
@@ -62,7 +63,7 @@ public class ReservationService {
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
         // 開始時刻と終了時刻のバリデーション
-        this.reservationLogic.validateReservationTime(requestBody.getStartAt(), requestBody.getFinishAt(), loginUser.getId());
+        this.reservationLogic.validateReservationTime(requestBody.getStartAt(), requestBody.getFinishAt(), loginUser.getId(), 0);
 
         // 予約の作成
         final var reservation = Reservation.builder() //
@@ -71,6 +72,30 @@ public class ReservationService {
             .finishAt(requestBody.getFinishAt()) //
             .build();
         this.reservationRepository.insert(reservation);
+    }
+
+    /**
+     * 予約を更新
+     *
+     * @param jwt         JWT
+     *
+     * @param requestBody 予約更新リクエスト
+     */
+    @Transactional
+    public void updateReservation(final String jwt, final int reservationId, final ReservationUpdateRequest requestBody) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(jwt);
+
+        // 削除権限をチェック
+        this.reservationLogic.checkPermission(reservationId, loginUser.getId());
+
+        // 開始時刻と終了時刻のバリデーション
+        this.reservationLogic.validateReservationTime(requestBody.getStartAt(), requestBody.getFinishAt(), loginUser.getId(), reservationId);
+
+        final var reservation = this.reservationRepository.selectById(reservationId);
+        reservation.setStartAt(requestBody.getStartAt());
+        reservation.setFinishAt(requestBody.getFinishAt());
+        this.reservationRepository.update(reservation);
     }
 
     /**

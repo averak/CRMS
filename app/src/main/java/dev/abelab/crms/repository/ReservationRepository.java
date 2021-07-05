@@ -25,8 +25,18 @@ public class ReservationRepository {
      *
      * @return 予約ID
      */
-    public int insert(Reservation reservation) {
+    public int insert(final Reservation reservation) {
         return this.reservationMapper.insertSelective(reservation);
+    }
+
+    /**
+     * 予約を更新
+     *
+     * @param reservation 予約
+     */
+    public void update(final Reservation reservation) {
+        reservation.setUpdatedAt(null);
+        this.reservationMapper.updateByPrimaryKeySelective(reservation);
     }
 
     /**

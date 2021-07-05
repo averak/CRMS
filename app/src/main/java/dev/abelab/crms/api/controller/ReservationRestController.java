@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.*;
 import lombok.*;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
+import dev.abelab.crms.api.request.ReservationUpdateRequest;
 import dev.abelab.crms.api.response.ReservationsResponse;
 import dev.abelab.crms.service.ReservationService;
 
@@ -64,11 +65,40 @@ public class ReservationRestController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser( //
+    public void createReservation( //
         @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
         @Validated @ApiParam(name = "body", required = true, value = "新規予約情報") @RequestBody final ReservationCreateRequest requestBody //
     ) {
         this.reservationService.createReservation(jwt, requestBody);
+    }
+
+    /**
+     * 予約更新API
+     *
+     * @param jwt         JWT
+     *
+     * @param requestBody 予約更新リクエスト
+     */
+    @ApiOperation(value = "予約の更新", //
+        notes = "予約を更新する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "更新成功"), //
+                @ApiResponse(code = 400, message = "指定時刻が無効"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 403, message = "ユーザに権限がない"), //
+                @ApiResponse(code = 409, message = "指定時刻の予約が既に存在している"), //
+        } //
+    )
+    @PutMapping(value = "/{reservation_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateReservation( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
+        @ApiParam(name = "reservation_id", required = true, value = "予約ID") @PathVariable("reservation_id") final int reservationId, //
+        @Validated @ApiParam(name = "body", required = true, value = "予約更新情報") @RequestBody final ReservationUpdateRequest requestBody //
+    ) {
+        this.reservationService.updateReservation(jwt, reservationId, requestBody);
     }
 
     /**

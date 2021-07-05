@@ -44,7 +44,7 @@ public class ReservationLogic {
     /**
      * 予約時間のバリデーション
      */
-    public void validateReservationTime(final Date startAt, final Date finishAt, final int userId) {
+    public void validateReservationTime(final Date startAt, final Date finishAt, final int userId, final int reservationId) {
         // 過去の日時
         final var now = new Date();
         if (now.after(startAt)) {
@@ -70,6 +70,10 @@ public class ReservationLogic {
         // 同時刻はすでに予約済み
         final var reservations = this.reservationRepository.selectByUserId(userId);
         reservations.forEach(reservation -> {
+            if (reservation.getId() == reservationId) {
+                return;
+            }
+
             // 開始時刻が重複
             if (startAt.after(reservation.getStartAt()) && startAt.before(reservation.getFinishAt())) {
                 throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
