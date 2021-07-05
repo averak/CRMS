@@ -113,15 +113,15 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var calendar1 = Calendar.getInstance();
-			calendar1.setTime(SAMPLE_DATE);
-			calendar1.add(Calendar.HOUR, 1);
-			final var calendar2 = Calendar.getInstance();
-			calendar2.setTime(SAMPLE_DATE);
-			calendar2.add(Calendar.HOUR, 2);
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, 2);
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(calendar1.getTime()) //
-				.finishAt(calendar2.getTime()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
 				.build();
 
 			// test
@@ -180,13 +180,13 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var calendar1 = Calendar.getInstance();
-			calendar1.set(2000, 1, 1, 9, 0);
-			final var calendar2 = Calendar.getInstance();
-			calendar2.set(2000, 1, 1, 12, 0);
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.set(2000, 1, 1, 9, 0);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.set(2000, 1, 1, 12, 0);
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(calendar1.getTime()) //
-				.finishAt(calendar2.getTime()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
 				.build();
 
 			// test
@@ -203,16 +203,16 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var calendar1 = Calendar.getInstance();
-			calendar1.setTime(SAMPLE_DATE);
-			calendar1.add(Calendar.HOUR, 1);
-			final var calendar2 = Calendar.getInstance();
-			calendar2.setTime(SAMPLE_DATE);
-			calendar2.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours());
-			calendar2.add(Calendar.MINUTE, 1);
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours());
+			finishAtCalendar.add(Calendar.MINUTE, 1);
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(calendar1.getTime()) //
-				.finishAt(calendar2.getTime()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
 				.build();
 
 			// test
@@ -229,31 +229,29 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// 9~13時は既に予約済み
-			final var calendar1 = Calendar.getInstance();
-			calendar1.setTime(SAMPLE_DATE);
-			calendar1.add(Calendar.DATE, 1);
-			calendar1.set(Calendar.HOUR, 9);
-			final var calendar2 = Calendar.getInstance();
-			calendar2.setTime(SAMPLE_DATE);
-			calendar2.add(Calendar.DATE, 1);
-			calendar2.set(Calendar.HOUR, 11);
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.DATE, 1);
+			startAtCalendar.set(Calendar.HOUR, 9);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.DATE, 1);
+			finishAtCalendar.set(Calendar.HOUR, 11);
 
-			final var reservation = ReservationSample.builder().id(1).userId(loginUser.getId()).startAt(calendar1.getTime())
-				.finishAt(calendar2.getTime()).build();
+			final var reservation = ReservationSample.builder() //
+				.id(1) //
+				.userId(loginUser.getId()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
+				.build();
 			reservationRepository.insert(reservation);
 
 			// request body
-			final var calendar3 = Calendar.getInstance();
-			calendar3.setTime(SAMPLE_DATE);
-			calendar3.add(Calendar.DATE, 1);
-			calendar3.set(Calendar.HOUR, startHour);
-			final var calendar4 = Calendar.getInstance();
-			calendar4.setTime(SAMPLE_DATE);
-			calendar4.add(Calendar.DATE, 1);
-			calendar4.set(Calendar.HOUR, finishHour);
+			startAtCalendar.set(Calendar.HOUR, startHour);
+			finishAtCalendar.set(Calendar.HOUR, finishHour);
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(calendar3.getTime()) //
-				.finishAt(calendar4.getTime()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
 				.build();
 
 			// test
@@ -291,20 +289,18 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			// setup
 			final var startAtCalendar = Calendar.getInstance();
 			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.DATE, 1);
-			startAtCalendar.set(Calendar.HOUR, 9);
+			startAtCalendar.add(Calendar.HOUR, 1);
 			final var finishAtCalendar = Calendar.getInstance();
 			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.DATE, 1);
-			finishAtCalendar.set(Calendar.HOUR, 11);
+			finishAtCalendar.add(Calendar.HOUR, 2);
 
 			final var reservation = ReservationSample.builder().id(1).userId(loginUser.getId()).startAt(startAtCalendar.getTime())
 				.finishAt(finishAtCalendar.getTime()).build();
 			reservationRepository.insert(reservation);
 
 			// request body
-			startAtCalendar.add(Calendar.DATE, 1);
-			finishAtCalendar.add(Calendar.DATE, 1);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			finishAtCalendar.add(Calendar.HOUR, 1);
 			final var requestBody = ReservationUpdateRequest.builder() //
 				.startAt(startAtCalendar.getTime()) //
 				.finishAt(finishAtCalendar.getTime()) //
@@ -350,15 +346,15 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			reservationRepository.insert(reservation);
 
 			// request body
-			final var calendar1 = Calendar.getInstance();
-			calendar1.setTime(SAMPLE_DATE);
-			calendar1.add(Calendar.HOUR, 1);
-			final var calendar2 = Calendar.getInstance();
-			calendar2.setTime(SAMPLE_DATE);
-			calendar2.add(Calendar.HOUR, 2);
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, 2);
 			final var requestBody = ReservationUpdateRequest.builder() //
-				.startAt(calendar1.getTime()) //
-				.finishAt(calendar2.getTime()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
 				.build();
 
 			// test
@@ -380,15 +376,15 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var calendar1 = Calendar.getInstance();
-			calendar1.setTime(SAMPLE_DATE);
-			calendar1.add(Calendar.HOUR, 1);
-			final var calendar2 = Calendar.getInstance();
-			calendar2.setTime(SAMPLE_DATE);
-			calendar2.add(Calendar.HOUR, 2);
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, 2);
 			final var requestBody = ReservationUpdateRequest.builder() //
-				.startAt(calendar1.getTime()) //
-				.finishAt(calendar2.getTime()) //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
 				.build();
 
 			// test
