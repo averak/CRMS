@@ -107,6 +107,9 @@ export class ReservationsCalendarComponent implements OnInit {
     this.events = [];
 
     const pushEvent = (reservation: ReservationModel) => {
+      const editable =
+        this.loginUser.id === reservation.user.id || this.userService.checkAdmin(this.loginUser);
+
       this.events.push({
         reservation: reservation,
         start: new Date(reservation.startAt),
@@ -117,6 +120,11 @@ export class ReservationsCalendarComponent implements OnInit {
             ? ReservationColorEnum.BLUE
             : ReservationColorEnum.YELLOW,
         actions: this.actions,
+        resizable: {
+          beforeStart: editable,
+          afterEnd: editable,
+        },
+        draggable: editable,
       });
     };
 
