@@ -275,6 +275,131 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 	}
 
 	/**
+	 * 予約更新APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class UpdateReservationsTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_予約を更新(final UserRoleEnum userRole) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(userRole);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.DATE, 1);
+			startAtCalendar.set(Calendar.HOUR, 9);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.DATE, 1);
+			finishAtCalendar.set(Calendar.HOUR, 11);
+
+			final var reservation = ReservationSample.builder().id(1).userId(loginUser.getId()).startAt(startAtCalendar.getTime())
+				.finishAt(finishAtCalendar.getTime()).build();
+			reservationRepository.insert(reservation);
+
+			// request body
+			startAtCalendar.add(Calendar.DATE, 1);
+			finishAtCalendar.add(Calendar.DATE, 1);
+			final var requestBody = ReservationUpdateRequest.builder() //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
+				.build();
+
+			// test
+			final var request = putRequest(format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var createdReservation = reservationRepository.selectById(reservation.getId());
+			assertThat(createdReservation.getUserId()).isEqualTo(loginUser.getId());
+			assertThat(createdReservation.getStartAt()).isInSameMinuteAs(requestBody.getStartAt());
+			assertThat(createdReservation.getFinishAt()).isInSameMinuteAs(requestBody.getFinishAt());
+		}
+
+		Stream<Arguments> 正_予約を更新() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// 一般ユーザ
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@ParameterizedTest
+		@MethodSource
+		void 異_予約を更新する権限がない(final UserRoleEnum userRole, final boolean isReservationUser) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(userRole);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var reservation = ReservationSample.builder().build();
+			// 予約者かどうか
+			if (isReservationUser) {
+				reservation.setUserId(loginUser.getId());
+			} else {
+				final var reservationUser = UserSample.builder().id(loginUser.getId() + 1).build();
+				userRepository.insert(reservationUser);
+				reservation.setUserId(reservationUser.getId());
+			}
+			reservationRepository.insert(reservation);
+
+			// request body
+			final var calendar1 = Calendar.getInstance();
+			calendar1.setTime(SAMPLE_DATE);
+			calendar1.add(Calendar.HOUR, 1);
+			final var calendar2 = Calendar.getInstance();
+			calendar2.setTime(SAMPLE_DATE);
+			calendar2.add(Calendar.HOUR, 2);
+			final var requestBody = ReservationUpdateRequest.builder() //
+				.startAt(calendar1.getTime()) //
+				.finishAt(calendar2.getTime()) //
+				.build();
+
+			// test
+			final var request = putRequest(format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+		}
+
+		Stream<Arguments> 異_予約を更新する権限がない() {
+			return Stream.of(
+				// 一般ユーザ & 非予約者
+				arguments(UserRoleEnum.MEMBER, false));
+		}
+
+		@Test
+		void 異_更新対象予約が存在しない() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// request body
+			final var calendar1 = Calendar.getInstance();
+			calendar1.setTime(SAMPLE_DATE);
+			calendar1.add(Calendar.HOUR, 1);
+			final var calendar2 = Calendar.getInstance();
+			calendar2.setTime(SAMPLE_DATE);
+			calendar2.add(Calendar.HOUR, 2);
+			final var requestBody = ReservationUpdateRequest.builder() //
+				.startAt(calendar1.getTime()) //
+				.finishAt(calendar2.getTime()) //
+				.build();
+
+			// test
+			final var request = putRequest(format(UPDATE_RESERVATION_PATH, 1), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
+		}
+
+	}
+
+	/**
 	 * 予約削除APIのテスト
 	 */
 	@Nested
