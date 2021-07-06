@@ -72,7 +72,7 @@ public class ReservationLogic {
         reservations.forEach(reservation -> {
             if (reservation.getId() == reservationId) {
                 // 過去の予約は更新不可
-                if (now.after(reservation.getStartAt())) {
+                if (now.after(reservation.getFinishAt())) {
                     throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_MODIFIED);
                 }
 
