@@ -13,9 +13,7 @@ export class ReservationService {
   constructor(private httpBaseService: HttpBaseService) {}
 
   getReservations(): Observable<any> {
-    return this.httpBaseService.getRequest<any>(
-      `${environment.API_PREFIX}/api/reservations`
-    );
+    return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/reservations`);
   }
 
   createReservation(requestBody: ReservationCreateRequest): Observable<any> {

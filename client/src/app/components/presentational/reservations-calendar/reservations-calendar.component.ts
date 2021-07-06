@@ -7,12 +7,18 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CalendarEventAction, CalendarView } from 'angular-calendar';
+import {
+  CalendarEventAction,
+  CalendarView,
+  CalendarEventTimesChangedEvent,
+} from 'angular-calendar';
 import { MatDialog } from '@angular/material/dialog';
+import * as moment from 'moment-timezone';
 
 import { UserModel } from 'src/app/model/user-model';
 import { CalendarEventWithReservation } from 'src/app/model/calendar-event-with-reservation';
 import { ReservationModel } from 'src/app/model/reservation-model';
+import { ReservationUpdateRequest } from 'src/app/request/reservation-update-request';
 import { ReservationColorEnum } from 'src/app/enums/reservation-color-enum';
 import { ReservationNewDialogComponent } from 'src/app/components/container/reservation-new-dialog/reservation-new-dialog.component';
 import { ReservationService } from 'src/app/shared/services/reservation.service';
@@ -153,8 +159,25 @@ export class ReservationsCalendarComponent implements OnInit {
     });
   }
 
-  setView(view: CalendarView) {
-    this.view = view;
+  eventTimesChanged(changedEvent: CalendarEventTimesChangedEvent): void {
+    // 予約更新リクエストを作成
+    const requestBody: ReservationUpdateRequest = {
+      startAt: moment(changedEvent.newStart).tz('Asia/Tokyo').format(),
+      finishAt: moment(changedEvent.newEnd).tz('Asia/Tokyo').format(),
+    };
+
+    this.events.map((event) => {
+      if (event === changedEvent.event) {
+        this.reservationService.updateReservation(event.reservation.id, requestBody).subscribe(
+          () => {
+            this.alertService.openSnackBar('予約を編集しました', 'SUCCESS');
+          },
+          (error) => {
+            this.alertService.openSnackBar(error, 'ERROR');
+          }
+        );
+      }
+    });
   }
 
   closeOpenMonthViewDay() {
