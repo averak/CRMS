@@ -2,6 +2,8 @@ import {
   Component,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
@@ -13,17 +15,13 @@ import {
   CalendarEventTimesChangedEvent,
 } from 'angular-calendar';
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment-timezone';
 
 import { UserModel } from 'src/app/model/user-model';
 import { CalendarEventWithReservation } from 'src/app/model/calendar-event-with-reservation';
 import { ReservationModel } from 'src/app/model/reservation-model';
-import { ReservationUpdateRequest } from 'src/app/request/reservation-update-request';
 import { ReservationColorEnum } from 'src/app/enums/reservation-color-enum';
 import { ReservationNewDialogComponent } from 'src/app/components/container/reservation-new-dialog/reservation-new-dialog.component';
-import { ReservationService } from 'src/app/shared/services/reservation.service';
 import { UserService } from 'src/app/shared/services/user.service';
-import { AlertService } from 'src/app/shared/services/alert.service';
 import { AdmissionYearService } from 'src/app/shared/services/admission-year.service';
 
 @Component({
@@ -35,6 +33,9 @@ import { AdmissionYearService } from 'src/app/shared/services/admission-year.ser
 export class ReservationsCalendarComponent implements OnInit {
   @Input() reservations!: ReservationModel[];
   @Input() loginUser!: UserModel;
+
+  @Output() reservationEdit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() reservationDelete: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
 
@@ -59,9 +60,7 @@ export class ReservationsCalendarComponent implements OnInit {
 
   constructor(
     private matDialog: MatDialog,
-    private reservationService: ReservationService,
     private userService: UserService,
-    private alertService: AlertService,
     private admissionYearService: AdmissionYearService
   ) {}
 
@@ -87,27 +86,6 @@ export class ReservationsCalendarComponent implements OnInit {
 
   refresh: Subject<any> = new Subject();
   activeDayIsOpen: boolean = true;
-
-  deleteEvent(eventToDelete: CalendarEventWithReservation) {
-    this.alertService.confirmDialog(
-      '削除確認',
-      '本当に予約を削除しますか？',
-      (result: boolean): void => {
-        if (result) {
-          // FIXME
-          this.reservationService.deleteReservation(eventToDelete.reservation.id).subscribe(
-            () => {
-              this.events = this.events.filter((event) => event !== eventToDelete);
-              this.alertService.openSnackBar('予約を削除しました', 'SUCCESS');
-            },
-            (error) => {
-              this.alertService.openSnackBar(error, 'ERROR');
-            }
-          );
-        }
-      }
-    );
-  }
 
   buildEvents(): void {
     this.events = [];
@@ -160,28 +138,18 @@ export class ReservationsCalendarComponent implements OnInit {
   }
 
   eventTimesChanged(changedEvent: CalendarEventTimesChangedEvent): void {
-    // 予約更新リクエストを作成
-    const requestBody: ReservationUpdateRequest = {
-      startAt: moment(changedEvent.newStart).tz('Asia/Tokyo').format(),
-      finishAt: moment(changedEvent.newEnd).tz('Asia/Tokyo').format(),
-    };
-
     this.events.map((event) => {
       if (event === changedEvent.event) {
-        this.reservationService.updateReservation(event.reservation.id, requestBody).subscribe(
-          () => {
-            this.alertService.openSnackBar('予約を編集しました', 'SUCCESS');
-          },
-          (error) => {
-            this.alertService.openSnackBar(error, 'ERROR');
-          }
-        );
+        const reservation = event.reservation;
+        reservation.startAt = changedEvent.newStart as Date;
+        reservation.finishAt = changedEvent.newEnd as Date;
+        this.reservationEdit.emit(reservation);
       }
     });
   }
 
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
+  deleteEvent(eventToDelete: CalendarEventWithReservation) {
+    this.reservationDelete.emit(eventToDelete.reservation);
   }
 
   onClickCreateButton(): void {

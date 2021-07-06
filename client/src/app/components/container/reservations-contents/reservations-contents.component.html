@@ -5,5 +5,7 @@
     *ngIf="reservations && loginUser"
     [reservations]="reservations"
     [loginUser]="loginUser"
+    (reservationEdit)="handleReservationEdit($event)"
+    (reservationDelete)="handleReservationDelete($event)"
   ></app-reservations-calendar>
 </div>
