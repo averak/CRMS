@@ -36,11 +36,11 @@ export class UserService {
   }
 
   getSessionUser(): Observable<UserModel> {
-    return this.httpBaseService.getRequest<UserModel>(`${environment.API_PREFIX}/api/users/me`);
+    return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users/me`);
   }
 
   getUsers(): Observable<UsersModel> {
-    return this.httpBaseService.getRequest<UsersModel>(`${environment.API_PREFIX}/api/users`);
+    return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users`);
   }
 
   setUsers(users: UserModel[]): void {
@@ -52,28 +52,28 @@ export class UserService {
   }
 
   createUser(requestBody: UserCreateRequest) {
-    return this.httpBaseService.postRequest<UserModel>(
+    return this.httpBaseService.postRequest<any>(
       `${environment.API_PREFIX}/api/users`,
       requestBody
     );
   }
 
   updateUser(userId: number, requestBody: UserUpdateRequest): Observable<any> {
-    return this.httpBaseService.putRequest<UserModel>(
+    return this.httpBaseService.putRequest<any>(
       `${environment.API_PREFIX}/api/users/${userId}`,
       requestBody
     );
   }
 
   updateLoginUser(requestBody: LoginUserUpdateRequest): Observable<any> {
-    return this.httpBaseService.putRequest<UserModel>(
+    return this.httpBaseService.putRequest<any>(
       `${environment.API_PREFIX}/api/users/me`,
       requestBody
     );
   }
 
   updateLoginUserPassword(requestBody: LoginUserPasswordUpdateRequest): Observable<any> {
-    return this.httpBaseService.putRequest<UserModel>(
+    return this.httpBaseService.putRequest<any>(
       `${environment.API_PREFIX}/api/users/me/password`,
       requestBody
     );
