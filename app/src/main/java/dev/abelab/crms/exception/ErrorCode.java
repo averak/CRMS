@@ -50,7 +50,9 @@ public enum ErrorCode {
 
     TOO_LONG_RESERVATION_HOURS(1402, "exception.bad_request.too_long_reservation_hours"),
 
-    TOO_SHORT_PASSWORD(1403, "exception.bad_request.too_short_password"),
+    PAST_RESERVATION_CANNOT_BE_MODIFIED(1403, "exception.bad_request.past_reservation_cannot_be_modified"),
+
+    TOO_SHORT_PASSWORD(1404, "exception.bad_request.too_short_password"),
 
     /**
      * Unauthorized: 1500~1599

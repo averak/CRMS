@@ -71,6 +71,11 @@ public class ReservationLogic {
         final var reservations = this.reservationRepository.selectByUserId(userId);
         reservations.forEach(reservation -> {
             if (reservation.getId() == reservationId) {
+                // 過去の予約は更新不可
+                if (now.after(reservation.getStartAt())) {
+                    throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_MODIFIED);
+                }
+
                 return;
             }
 
