@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -31,6 +32,24 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
         final var messageKey = exception.getErrorCode().getMessageKey();
         final var args = exception.getArgs();
         return this.messageSource.getMessage(messageKey, args, Locale.ENGLISH);
+    }
+
+    /**
+     * Handle not found exception
+     *
+     * @param exception exception
+     *
+     * @return response entity
+     */
+    @RequestMapping("/api/**")
+    public ResponseEntity<ErrorResponse> handleApiNotFoundException() {
+        final var errorCode = ErrorCode.NOT_FOUND_API;
+        final var message = messageSource.getMessage(errorCode.getMessageKey(), null, Locale.ENGLISH);
+        final var errorResponse = ErrorResponse.builder().message(message).code(errorCode.getCode()).build();
+
+        log.warn(message);
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     /**
