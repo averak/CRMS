@@ -32,7 +32,8 @@ public class UserRestController {
      *
      * @return ユーザ一覧レスポンス
      */
-    @ApiOperation(value = "ユーザ一覧の取得", //
+    @ApiOperation( //
+        value = "ユーザ一覧の取得", //
         notes = "ユーザ一覧を取得する。" //
     )
     @ApiResponses( //
@@ -56,7 +57,8 @@ public class UserRestController {
      *
      * @param requestBody ユーザ作成リクエスト
      */
-    @ApiOperation(value = "ユーザの作成", //
+    @ApiOperation( //
+        value = "ユーザの作成", //
         notes = "ユーザを作成する。" //
     )
     @ApiResponses( //
@@ -85,7 +87,8 @@ public class UserRestController {
      *
      * @param requestBody ユーザ更新リクエスト
      */
-    @ApiOperation(value = "ユーザの更新", //
+    @ApiOperation( //
+        value = "ユーザの更新", //
         notes = "ユーザを更新する。" //
     )
     @ApiResponses( //
@@ -113,7 +116,8 @@ public class UserRestController {
      *
      * @param userId ユーザID
      */
-    @ApiOperation(value = "ユーザの削除", //
+    @ApiOperation( //
+        value = "ユーザの削除", //
         notes = "ユーザを削除する。" //
     )
     @ApiResponses( //
@@ -140,7 +144,8 @@ public class UserRestController {
      *
      * @return ユーザ詳細レスポンス
      */
-    @ApiOperation(value = "ログインユーザ詳細の取得", //
+    @ApiOperation( //
+        value = "ログインユーザ詳細の取得", //
         notes = "ログインユーザ詳細を取得する。" //
     )
     @ApiResponses( //
@@ -164,7 +169,8 @@ public class UserRestController {
      *
      * @param requestBody ログインユーザ更新リクエスト
      */
-    @ApiOperation(value = "ログインユーザの更新", //
+    @ApiOperation( //
+        value = "ログインユーザの更新", //
         notes = "ログインユーザを更新する。" //
     )
     @ApiResponses( //
@@ -189,7 +195,8 @@ public class UserRestController {
      *
      * @param requestBody ログインユーザのパスワード更新リクエスト
      */
-    @ApiOperation(value = "ログインユーザのパスワード更新", //
+    @ApiOperation( //
+        value = "ログインユーザのパスワード更新", //
         notes = "ログインユーザのパスワードを更新する。" //
     )
     @ApiResponses( //

@@ -29,7 +29,8 @@ public class ReservationRestController {
      *
      * @return 予約一覧レスポンス
      */
-    @ApiOperation(value = "予約一覧の取得", //
+    @ApiOperation( //
+        value = "予約一覧の取得", //
         notes = "予約一覧を取得する。" //
     )
     @ApiResponses( //
@@ -52,7 +53,8 @@ public class ReservationRestController {
      *
      * @param requestBody 予約作成リクエスト
      */
-    @ApiOperation(value = "予約の作成", //
+    @ApiOperation( //
+        value = "予約の作成", //
         notes = "予約を作成する。" //
     )
     @ApiResponses( //
@@ -79,7 +81,8 @@ public class ReservationRestController {
      *
      * @param requestBody 予約更新リクエスト
      */
-    @ApiOperation(value = "予約の更新", //
+    @ApiOperation( //
+        value = "予約の更新", //
         notes = "予約を更新する。" //
     )
     @ApiResponses( //
@@ -108,7 +111,8 @@ public class ReservationRestController {
      *
      * @param reservationId 予約ID
      */
-    @ApiOperation(value = "予約の削除", //
+    @ApiOperation( //
+        value = "予約の削除", //
         notes = "予約を削除する。" //
     )
     @ApiResponses( //
