@@ -1,4 +1,4 @@
-package dev.abelab.crms.api.controller;
+package dev.abelab.crms.aspect;
 
 import java.util.Locale;
 
@@ -18,13 +18,13 @@ import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.api.response.ErrorResponse;
 
 /**
- * Rest controller exception handler
+ * Rest controller exception advice
  */
 @Slf4j
 @Controller
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestControllerExceptionAdvice extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
 
