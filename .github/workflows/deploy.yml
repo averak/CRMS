@@ -12,8 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: back-end deploy
+      - name: deploy
         env:
-          TOKEN: ${{secrets.TOKEN}}
+          JENKINS_USER_TOKEN: ${{secrets.JENKINS_USER_TOKEN}}
+          JENKINS_JOB_TOKEN: ${{secrets.JENKINS_JOB_TOKEN}}
         run: |
-          curl -X POST -H 'Content-Type: application/json' 'https://api.abelab.dev/auto-deploy/' -d '{"app": "CRMS", "token": "'"$TOKEN"'"}'
+          curl --user $JENKINS_USER_TOKEN https://jenkins.abelab.dev/job/crms-deploy/build -d token=$JENKINS_JOB_TOKEN
