@@ -77,4 +77,34 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
     }
 
+    /**
+     * Test for generate JWT
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class GenerateJwtTest {
+
+        @Test
+        void 正_ユーザのJWTを発行する() {
+            new Expectations() {
+                {
+                    jwtProperty.getIssuer();
+                    result = SAMPLE_STR;
+                }
+                {
+                    jwtProperty.getSecret();
+                    result = SAMPLE_STR;
+                }
+            };
+
+            // setup
+            final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).build();
+
+            // verify
+            final var jwt = userLogic.generateJwt(user);
+            assertThat(jwt).matches("[A-Za-z0-9-_]+.[A-Za-z0-9-_]+.[A-Za-z0-9-_]+");
+        }
+
+    }
+
 }
