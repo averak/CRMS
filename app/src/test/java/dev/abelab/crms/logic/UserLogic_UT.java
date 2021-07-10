@@ -4,10 +4,16 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.params.provider.Arguments.*;
+
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
@@ -19,7 +25,9 @@ import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.property.JwtProperty;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.ForbiddenException;
+import dev.abelab.crms.exception.UnauthorizedException;
 
 public class UserLogic_UT extends AbstractLogic_UT {
 
@@ -103,6 +111,67 @@ public class UserLogic_UT extends AbstractLogic_UT {
             // verify
             final var jwt = userLogic.generateJwt(user);
             assertThat(jwt).matches("[A-Za-z0-9-_]+.[A-Za-z0-9-_]+.[A-Za-z0-9-_]+");
+        }
+
+    }
+
+    /**
+     * Test for get login user
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class getLoginTest {
+
+        @Test
+        void 正_有効なJWTからログインユーザを取得() {
+            // setup
+            final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).build();
+
+            new Expectations() {
+                {
+                    jwtProperty.getIssuer();
+                    result = SAMPLE_STR;
+                }
+                {
+                    jwtProperty.getSecret();
+                    result = SAMPLE_STR;
+                }
+                {
+                    userRepository.selectById(anyInt);
+                    result = user;
+                }
+            };
+
+            // verify
+            final var jwt = userLogic.generateJwt(user);
+            final var loginUser = userLogic.getLoginUser(jwt);
+            assertThat(loginUser.getId()).isEqualTo(user.getId());
+        }
+
+        @ParameterizedTest
+        @MethodSource
+        void 異_無効なJWT(final String jwt, final BaseException exception) {
+            new Expectations() {
+                {
+                    jwtProperty.getSecret();
+                    result = SAMPLE_STR;
+                }
+            };
+
+            // verify
+            final var occurredException = assertThrows(exception.getClass(), () -> userLogic.getLoginUser(jwt));
+            assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
+
+        }
+
+        Stream<Arguments> 異_無効なJWT() {
+            return Stream.of(
+                // 無効
+                arguments(SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
+                // 期限切れ
+                arguments(
+                    "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJTQU1QTEUiLCJpZCI6MSwiaWF0IjoxNjI1OTEyMjUxLCJleHAiOjE2MjU5MTIyNTF9.sg0Nf3hQ7d7NpfO569v9zrwF1mvgIq9bewULiZ7H0UF2--UgqPa98XFiF6kpvNLlnv7om6KpmRB6HOzeImfD2w",
+                    new UnauthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN)));
         }
 
     }
