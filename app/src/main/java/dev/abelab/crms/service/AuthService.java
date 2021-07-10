@@ -29,7 +29,7 @@ public class AuthService {
         final var user = this.userRepository.selectByEmail(requestBody.getEmail());
 
         // パスワードチェック
-        this.userLogic.verifyPassword(user.getId(), requestBody.getPassword());
+        this.userLogic.verifyPassword(user, requestBody.getPassword());
 
         // JWTを発行
         return this.userLogic.generateJwt(user);

@@ -185,14 +185,9 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
         @Test
         void 正_パスワードが一致している() {
-            // setup
             final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).build();
 
             new Expectations() {
-                {
-                    userRepository.selectById(anyInt);
-                    result = user;
-                }
                 {
                     passwordEncoder.matches(anyString, anyString);
                     result = true;
@@ -200,7 +195,7 @@ public class UserLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertDoesNotThrow(() -> userLogic.verifyPassword(user.getId(), anyString()));
+            assertDoesNotThrow(() -> userLogic.verifyPassword(user, anyString()));
         }
 
         @Test
@@ -210,17 +205,13 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
             new Expectations() {
                 {
-                    userRepository.selectById(anyInt);
-                    result = user;
-                }
-                {
                     passwordEncoder.matches(anyString, anyString);
                     result = false;
                 }
             };
 
             // verify
-            final var exception = assertThrows(UnauthorizedException.class, () -> userLogic.verifyPassword(user.getId(), anyString()));
+            final var exception = assertThrows(UnauthorizedException.class, () -> userLogic.verifyPassword(user, anyString()));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.WRONG_PASSWORD);
         }
 

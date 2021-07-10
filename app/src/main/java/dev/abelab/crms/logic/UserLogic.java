@@ -108,14 +108,11 @@ public class UserLogic {
     /**
      * パスワードが一致するか検証
      *
-     * @param userId   ユーザID
+     * @param user   ユーザ
      *
      * @param password パスワード
      */
-    public void verifyPassword(final int userId, final String password) {
-        final var user = this.userRepository.selectById(userId);
-
-        // ハッシュ値が一致するか
+    public void verifyPassword(final User user, final String password) {
         if (!this.passwordEncoder.matches(password, user.getPassword())) {
             throw new UnauthorizedException(ErrorCode.WRONG_PASSWORD);
         }

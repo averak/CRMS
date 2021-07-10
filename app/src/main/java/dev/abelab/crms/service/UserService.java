@@ -179,7 +179,7 @@ public class UserService {
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
         // パスワードチェック
-        this.userLogic.verifyPassword(loginUser.getId(), requestBody.getCurrentPassword());
+        this.userLogic.verifyPassword(loginUser, requestBody.getCurrentPassword());
 
         // 有効なパスワードかチェック
         this.userLogic.validatePassword(requestBody.getNewPassword());
