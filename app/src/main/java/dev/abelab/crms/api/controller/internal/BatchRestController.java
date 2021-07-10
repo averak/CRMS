@@ -1,4 +1,4 @@
-package dev.abelab.crms.api.controller;
+package dev.abelab.crms.api.controller.internal;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

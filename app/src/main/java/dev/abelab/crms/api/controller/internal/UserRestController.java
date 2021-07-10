@@ -1,4 +1,4 @@
-package dev.abelab.crms.api.controller;
+package dev.abelab.crms.api.controller.internal;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;

@@ -29,7 +29,7 @@ public class SwaggerConfig {
             .protocols(Collections.singleton(this.crmsProperty.getProtocol())) //
             .host(this.crmsProperty.getHostname()) //
             .select() //
-            .apis(RequestHandlerSelectors.basePackage("dev.abelab.crms.api.controller")) //
+            .apis(RequestHandlerSelectors.basePackage("dev.abelab.crms.api.controller.internal")) //
             .build() //
             .apiInfo(apiInfo()) //
             .tags( //

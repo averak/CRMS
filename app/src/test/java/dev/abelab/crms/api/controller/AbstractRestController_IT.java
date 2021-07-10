@@ -45,12 +45,12 @@ import dev.abelab.crms.api.response.ErrorResponse;
 @IntegrationTest
 public abstract class AbstractRestController_IT {
 
-	static final int SAMPLE_INT = 1;
-	static final String SAMPLE_STR = "SAMPLE STRING";
-	static final Date SAMPLE_DATE = new Date();
-	static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
-	static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
-	static final Integer LOGIN_USER_ADMISSION_AT = SAMPLE_INT;
+	protected static final int SAMPLE_INT = 1;
+	protected static final String SAMPLE_STR = "SAMPLE STRING";
+	protected static final Date SAMPLE_DATE = new Date();
+	protected static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
+	protected static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
+	protected static final Integer LOGIN_USER_ADMISSION_AT = SAMPLE_INT;
 
 	/**
 	 * The Mock MVC

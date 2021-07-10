@@ -1,4 +1,4 @@
-package dev.abelab.crms.aspect;
+package dev.abelab.crms.api.controller;
 
 import java.util.Locale;
 
@@ -28,6 +28,13 @@ public class RestControllerExceptionAdvice extends ResponseEntityExceptionHandle
 
     private final MessageSource messageSource;
 
+    /**
+     * エラーメッセージを取得
+     *
+     * @param exception exception
+     *
+     * @return エラーメッセージ
+     */
     private String getErrorMessage(final BaseException exception) {
         final var messageKey = exception.getErrorCode().getMessageKey();
         final var args = exception.getArgs();

@@ -1,4 +1,4 @@
-package dev.abelab.crms.api.controller;
+package dev.abelab.crms.api.controller.internal;
 
 import static java.lang.String.*;
 import static org.assertj.core.api.Assertions.*;
@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 
+import dev.abelab.crms.api.controller.AbstractRestController_IT;
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.enums.UserRoleEnum;
