@@ -3,7 +3,7 @@ package dev.abelab.crms.repository;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

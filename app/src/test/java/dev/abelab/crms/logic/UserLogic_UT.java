@@ -3,9 +3,8 @@ package dev.abelab.crms.logic;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.jupiter.params.provider.Arguments.*;
+import static org.mockito.ArgumentMatchers.*;
 
 import java.util.stream.Stream;
 
