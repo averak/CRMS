@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
 import java.util.stream.Stream;
@@ -63,7 +64,7 @@ public class UserLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertDoesNotThrow(() -> userLogic.checkAdmin(anyInt()));
+            assertDoesNotThrow(() -> userLogic.checkAdmin(user.getId()));
         }
 
         @Test
@@ -79,7 +80,7 @@ public class UserLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            final var exception = assertThrows(ForbiddenException.class, () -> userLogic.checkAdmin(anyInt()));
+            final var exception = assertThrows(ForbiddenException.class, () -> userLogic.checkAdmin(user.getId()));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.USER_HAS_NO_PERMISSION);
         }
 
@@ -129,16 +130,16 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
             new Expectations() {
                 {
+                    userRepository.selectById(anyInt);
+                    result = user;
+                }
+                {
                     jwtProperty.getIssuer();
                     result = SAMPLE_STR;
                 }
                 {
                     jwtProperty.getSecret();
                     result = SAMPLE_STR;
-                }
-                {
-                    userRepository.selectById(anyInt);
-                    result = user;
                 }
             };
 
@@ -172,6 +173,56 @@ public class UserLogic_UT extends AbstractLogic_UT {
                 arguments(
                     "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJTQU1QTEUiLCJpZCI6MSwiaWF0IjoxNjI1OTEyMjUxLCJleHAiOjE2MjU5MTIyNTF9.sg0Nf3hQ7d7NpfO569v9zrwF1mvgIq9bewULiZ7H0UF2--UgqPa98XFiF6kpvNLlnv7om6KpmRB6HOzeImfD2w",
                     new UnauthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN)));
+        }
+
+    }
+
+    /**
+     * Test for verify password
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class verifyPasswordTest {
+
+        @Test
+        void 正_パスワードが一致している() {
+            // setup
+            final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).build();
+
+            new Expectations() {
+                {
+                    userRepository.selectById(anyInt);
+                    result = user;
+                }
+                {
+                    passwordEncoder.matches(anyString, anyString);
+                    result = true;
+                }
+            };
+
+            // verify
+            assertDoesNotThrow(() -> userLogic.verifyPassword(user.getId(), anyString()));
+        }
+
+        @Test
+        void 異_パスワードが間違っている() {
+            // setup
+            final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).build();
+
+            new Expectations() {
+                {
+                    userRepository.selectById(anyInt);
+                    result = user;
+                }
+                {
+                    passwordEncoder.matches(anyString, anyString);
+                    result = false;
+                }
+            };
+
+            // verify
+            final var exception = assertThrows(UnauthorizedException.class, () -> userLogic.verifyPassword(user.getId(), anyString()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.WRONG_PASSWORD);
         }
 
     }
