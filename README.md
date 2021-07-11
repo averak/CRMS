@@ -23,7 +23,7 @@ If you want to run on Windows, you can use `gradlew.bat` instead of of `gradlew`
 #### How to bulid
 
 ```sh
-$ ./gradlew build
+$ ./gradlew build -x test
 ```
 
 When build successful, you can find .jar file in `app/build/libs`
