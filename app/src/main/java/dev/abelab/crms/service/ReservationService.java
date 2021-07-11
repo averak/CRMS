@@ -87,7 +87,7 @@ public class ReservationService {
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
         // 権限をチェック
-        this.reservationLogic.checkPermission(reservationId, loginUser.getId());
+        this.reservationLogic.checkEditPermission(reservationId, loginUser.getId());
 
         // 開始時刻と終了時刻のバリデーション
         final var userId = this.reservationRepository.selectById(reservationId).getUserId();
@@ -112,7 +112,7 @@ public class ReservationService {
         final var loginUser = this.userLogic.getLoginUser(jwt);
 
         // 権限をチェック
-        this.reservationLogic.checkPermission(reservationId, loginUser.getId());
+        this.reservationLogic.checkEditPermission(reservationId, loginUser.getId());
 
         this.reservationRepository.deleteById(reservationId);
     }

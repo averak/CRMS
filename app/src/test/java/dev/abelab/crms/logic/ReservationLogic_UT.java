@@ -40,15 +40,15 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
     ReservationLogic reservationLogic;
 
     /**
-     * Test for check permission
+     * Test for check edit permission
      */
     @Nested
     @TestInstance(PER_CLASS)
-    class CheckPermissionTest {
+    class CheckEditPermissionTest {
 
         @ParameterizedTest
         @MethodSource
-        void 正_アクセス権限がある(final Reservation reservation, final User user) {
+        void 正_編集権限がある(final Reservation reservation, final User user) {
             new Expectations() {
                 {
                     reservationRepository.selectById(anyInt);
@@ -61,10 +61,10 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertDoesNotThrow(() -> reservationLogic.checkPermission(reservation.getId(), user.getId()));
+            assertDoesNotThrow(() -> reservationLogic.checkEditPermission(reservation.getId(), user.getId()));
         }
 
-        Stream<Arguments> 正_アクセス権限がある() {
+        Stream<Arguments> 正_編集権限がある() {
             return Stream.of(
                 // 管理者 & 予約者
                 arguments( //
@@ -82,7 +82,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
         @ParameterizedTest
         @MethodSource
-        void 異_アクセス権限がない(final Reservation reservation, final User user) {
+        void 異_編集権限がない(final Reservation reservation, final User user) {
             new Expectations() {
                 {
                     reservationRepository.selectById(anyInt);
@@ -95,10 +95,10 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertThrows(ForbiddenException.class, () -> reservationLogic.checkPermission(reservation.getId(), user.getId()));
+            assertThrows(ForbiddenException.class, () -> reservationLogic.checkEditPermission(reservation.getId(), user.getId()));
         }
 
-        Stream<Arguments> 異_アクセス権限がない() {
+        Stream<Arguments> 異_編集権限がない() {
             return Stream.of(
                 // 一般ユーザ & 非予約者
                 arguments( //

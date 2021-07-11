@@ -31,7 +31,7 @@ public class ReservationLogic {
      *
      * @param userId        ユーザID
      */
-    public void checkPermission(final int reservationId, final int userId) {
+    public void checkEditPermission(final int reservationId, final int userId) {
         final var reservation = this.reservationRepository.selectById(reservationId);
         final var user = this.userRepository.selectById(userId);
 
