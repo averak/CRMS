@@ -2,6 +2,7 @@ package dev.abelab.crms.client;
 
 import java.lang.StringBuilder;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.List;
 import java.text.SimpleDateFormat;
@@ -38,14 +39,17 @@ public class SlackClient {
         reservationsAndUsersModel.stream().forEach(reservationAndUserModel -> {
             final var reservation = reservationAndUserModel.getReservation();
             final var user = reservationAndUserModel.getUser();
-            builder.append(String.format("%s %s", user.getLastName(), user.getLastName())).append(" ") //
+            builder.append(String.format("%s %s", user.getLastName(), user.getFirstName())).append(" ") //
                 .append(timeFormatter.format(reservation.getStartAt())).append(" - ") //
                 .append(timeFormatter.format(reservation.getFinishAt())) //
                 .append("\n");
         });
 
         final var dateFormatter = new SimpleDateFormat("MM月dd日(E)", Locale.JAPAN);
-        final var message = dateFormatter.format(new Date()) + "\n" + builder.toString();
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        final var message = dateFormatter.format(calendar.getTime()) + "\n" + builder.toString();
         this.sendMessage(message);
     }
 
