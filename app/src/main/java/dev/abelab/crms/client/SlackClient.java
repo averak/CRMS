@@ -11,7 +11,7 @@ import com.slack.api.Slack;
 import com.slack.api.webhook.Payload;
 
 import lombok.extern.slf4j.Slf4j;
-import dev.abelab.crms.model.ReservationWithUser;
+import dev.abelab.crms.model.ReservationAndUserModel;
 import dev.abelab.crms.property.SlackProperty;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.InternalServerErrorException;
@@ -32,11 +32,12 @@ public class SlackClient {
     /**
      * 抽選結果を送信
      */
-    public void sendLotteryResult(final List<ReservationWithUser> reservations) {
+    public void sendLotteryResult(final List<ReservationAndUserModel> reservationsAndUsersModel) {
         final var builder = new StringBuilder();
         final var timeFormatter = new SimpleDateFormat("HH:mm", Locale.JAPAN);
-        reservations.stream().forEach(reservation -> {
-            final var user = reservation.getUser();
+        reservationsAndUsersModel.stream().forEach(reservationAndUserModel -> {
+            final var reservation = reservationAndUserModel.getReservation();
+            final var user = reservationAndUserModel.getUser();
             builder.append(String.format("%s %s", user.getLastName(), user.getLastName())).append(" ") //
                 .append(timeFormatter.format(reservation.getStartAt())).append(" - ") //
                 .append(timeFormatter.format(reservation.getFinishAt())) //

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.Reservation;
-import dev.abelab.crms.model.ReservationWithUser;
+import dev.abelab.crms.model.ReservationAndUserModel;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
@@ -142,9 +142,10 @@ public class ReservationService {
                 return true;
             }).map(reservation -> {
                 final var user = this.userRepository.selectById(reservation.getUserId());
-                final var reservationWithUser = (ReservationWithUser) reservation;
-                reservationWithUser.setUser(user);
-                return reservationWithUser;
+                return ReservationAndUserModel.builder() //
+                    .reservation(reservation) //
+                    .user(user) //
+                    .build();
             }).collect(Collectors.toList());
 
         // 抽選結果をSlackに送信

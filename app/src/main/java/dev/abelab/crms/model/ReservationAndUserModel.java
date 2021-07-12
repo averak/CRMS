@@ -7,8 +7,10 @@ import dev.abelab.crms.db.entity.Reservation;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ReservationWithUser extends Reservation {
+@Builder
+public class ReservationAndUserModel {
+
+    Reservation reservation;
 
     User user;
 
