@@ -1,5 +1,6 @@
 package dev.abelab.crms.api.controller.internal;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +27,7 @@ public class BatchRestController {
     } //
     )
     @GetMapping("/reservations/lottery")
+    @ResponseStatus(HttpStatus.OK)
     public void lotteryReservations() {
         // FIXME
     }
