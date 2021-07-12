@@ -2,6 +2,7 @@ package dev.abelab.crms.service;
 
 import java.util.Date;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,20 +128,24 @@ public class ReservationService {
      */
     @Transactional
     public void lotteryReservations() {
-        // 翌日の予約一覧を取得
         final var now = new Date();
         final var reservations = this.reservationRepository.findAll().stream() //
+            // 翌日の予約のみを抽出
             .filter(reservation -> {
                 // 過去の予約
-                if (now.before(reservation.getStartAt())) {
+                if (now.after(reservation.getStartAt())) {
                     return false;
                 }
                 // 翌日以降の予約
-                if ((reservation.getStartAt().getTime() - now.getTime()) / 1000 * 60 * 60 * 24 > 1.0) {
+                if ((reservation.getStartAt().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) >= 1) {
                     return false;
                 }
                 return true;
-            }).map(reservation -> {
+            })
+            // ユーザIDでソート
+            .sorted(Comparator.comparing(reservation -> reservation.getUserId()))
+            // DTOに変換
+            .map(reservation -> {
                 final var user = this.userRepository.selectById(reservation.getUserId());
                 return ReservationAndUserModel.builder() //
                     .reservation(reservation) //
