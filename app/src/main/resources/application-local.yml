@@ -4,3 +4,7 @@ spring:
     username: crms
     password: crms
     driver: com.mysql.cj.jdbc.Driver
+
+slack:
+  enabled: false
+  webhook-url:

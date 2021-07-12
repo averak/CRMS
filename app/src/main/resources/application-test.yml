@@ -5,6 +5,10 @@ spring:
     password: crms
     driver: com.mysql.cj.jdbc.Driver
 
+slack:
+  enabled: false
+  webhook-url:
+
 logging:
   level:
     root: ERROR
