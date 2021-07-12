@@ -87,6 +87,9 @@ dependencies {
 
     // logging
     implementation "ch.qos.logback:logback-classic:1.2.3"
+
+    // slack client
+    implementation "com.slack.api:slack-api-client:1.8.1"
 }
 
 bootJar{
