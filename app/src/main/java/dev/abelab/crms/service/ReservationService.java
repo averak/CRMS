@@ -1,5 +1,6 @@
 package dev.abelab.crms.service;
 
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.Reservation;
+import dev.abelab.crms.model.ReservationWithUser;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
@@ -14,6 +16,7 @@ import dev.abelab.crms.api.request.ReservationUpdateRequest;
 import dev.abelab.crms.api.response.ReservationsResponse;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.ReservationLogic;
+import dev.abelab.crms.client.SlackClient;
 import dev.abelab.crms.util.ReservationUtil;
 
 @RequiredArgsConstructor
@@ -27,6 +30,8 @@ public class ReservationService {
     private final UserRepository userRepository;
 
     private final ReservationRepository reservationRepository;
+
+    private final SlackClient slackClient;
 
     /**
      * 予約一覧を取得
@@ -115,6 +120,37 @@ public class ReservationService {
         this.reservationLogic.checkEditPermission(reservationId, loginUser.getId());
 
         this.reservationRepository.deleteById(reservationId);
+    }
+
+    /**
+     * 予約の抽選
+     */
+    @Transactional
+    public void lotteryReservations() {
+        // 翌日の予約一覧を取得
+        final var now = new Date();
+        final var reservations = this.reservationRepository.findAll().stream() //
+            .filter(reservation -> {
+                // 過去の予約
+                if (now.before(reservation.getStartAt())) {
+                    return false;
+                }
+                // 翌日以降の予約
+                if ((reservation.getStartAt().getTime() - now.getTime()) / 1000 * 60 * 60 * 24 > 1.0) {
+                    return false;
+                }
+                return true;
+            }).map(reservation -> {
+                final var user = this.userRepository.selectById(reservation.getUserId());
+                final var reservationWithUser = (ReservationWithUser) reservation;
+                reservationWithUser.setUser(user);
+                return reservationWithUser;
+            }).collect(Collectors.toList());
+
+        // 抽選結果をSlackに送信
+        if (!reservations.isEmpty()) {
+            this.slackClient.sendLotteryResult(reservations);
+        }
     }
 
 }

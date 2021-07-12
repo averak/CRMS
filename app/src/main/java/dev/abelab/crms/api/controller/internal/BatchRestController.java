@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.*;
 import lombok.*;
+import dev.abelab.crms.service.ReservationService;
 
 @Api(tags = "Batch")
 @RequiredArgsConstructor
@@ -14,6 +15,8 @@ import lombok.*;
 @RequestMapping(path = "/api/batch", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class BatchRestController {
+
+    private final ReservationService reservationService;
 
     /**
      * 予約抽選API
@@ -29,7 +32,7 @@ public class BatchRestController {
     @GetMapping("/reservations/lottery")
     @ResponseStatus(HttpStatus.OK)
     public void lotteryReservations() {
-        // FIXME
+        this.reservationService.lotteryReservations();
     }
 
 }
