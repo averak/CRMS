@@ -90,6 +90,7 @@ dependencies {
 
     // slack client
     implementation "com.slack.api:slack-api-client:1.8.1"
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
 }
 
 bootJar{
