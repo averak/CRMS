@@ -1,6 +1,7 @@
 exception:
   internal_server_error:
     unexpected_error: "Unexpected error has occured."
+    failed_to_send_slack: "Failed to send slack."
   not_found:
     error_code: "Error Code does not exists."
     user: "User does not exists."

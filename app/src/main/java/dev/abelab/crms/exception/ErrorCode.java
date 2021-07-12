@@ -16,6 +16,8 @@ public enum ErrorCode {
      */
     UNEXPECTED_ERROR(1000, "exception.internal_server_error.unexpected_error"),
 
+    FAILED_TO_SEND_SLACK(1001, "exception.internal_server_error.failed_to_send_slack"),
+
     /**
      * Not Found: 1100~1199
      */
