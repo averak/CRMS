@@ -1,15 +1,12 @@
 package dev.abelab.crms.service;
 
-import java.util.Date;
 import java.util.stream.Collectors;
-import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.Reservation;
-import dev.abelab.crms.model.ReservationAndUserModel;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
@@ -128,30 +125,8 @@ public class ReservationService {
      */
     @Transactional
     public void lotteryReservations() {
-        final var now = new Date();
-        final var reservations = this.reservationRepository.findAll().stream() //
-            // 翌日の予約のみを抽出
-            .filter(reservation -> {
-                // 過去の予約
-                if (now.after(reservation.getStartAt())) {
-                    return false;
-                }
-                // 翌日以降の予約
-                if ((reservation.getStartAt().getTime() - now.getTime()) / (1000 * 60 * 60 * 24) >= 1) {
-                    return false;
-                }
-                return true;
-            })
-            // ユーザIDでソート
-            .sorted(Comparator.comparing(reservation -> reservation.getUserId()))
-            // DTOに変換
-            .map(reservation -> {
-                final var user = this.userRepository.selectById(reservation.getUserId());
-                return ReservationAndUserModel.builder() //
-                    .reservation(reservation) //
-                    .user(user) //
-                    .build();
-            }).collect(Collectors.toList());
+        // 明日の予約一覧を取得
+        final var reservations = this.reservationLogic.getNextDayReservations();
 
         // 抽選結果をSlackに送信
         if (!reservations.isEmpty()) {
