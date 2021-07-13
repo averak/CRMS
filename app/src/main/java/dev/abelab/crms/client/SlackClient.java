@@ -39,7 +39,7 @@ public class SlackClient {
         reservationsAndUsersModel.stream().forEach(reservationAndUserModel -> {
             final var reservation = reservationAndUserModel.getReservation();
             final var user = reservationAndUserModel.getUser();
-            builder.append(String.format("%s %s", user.getLastName(), user.getFirstName())).append(" ") //
+            builder.append(String.format("%s %s", user.getLastName(), user.getFirstName())).append("  ") //
                 .append(timeFormatter.format(reservation.getStartAt())).append(" - ") //
                 .append(timeFormatter.format(reservation.getFinishAt())) //
                 .append("\n");
