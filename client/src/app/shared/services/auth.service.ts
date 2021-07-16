@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -13,6 +14,7 @@ import { ErrorMessageService } from 'src/app/shared/services/error-message.servi
 })
 export class AuthService {
   constructor(
+    private router: Router,
     private http: HttpClient,
     private errorMessageService: ErrorMessageService,
     private cookieService: CookieService
@@ -34,6 +36,7 @@ export class AuthService {
   }
 
   public logout(): void {
+    this.router.navigate(['/login']);
     this.cookieService.deleteAll();
   }
 
