@@ -34,7 +34,7 @@ Default port is `8080`. If you want to change port, run with `-Dserver.port=XXXX
 
 ```sh
 # 1. run .jar file
-$ java -jar crms-<version>.jar
+$ java -jar crms-<version>.jar  # -Dspring.profiles.active=<environment>
 
 # 2. run on dev environment
 $ ./gradlew bootRun
