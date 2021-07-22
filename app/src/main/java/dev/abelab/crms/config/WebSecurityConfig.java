@@ -46,7 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
 
 		// アクセス許可
-		http.authorizeRequests() // .
+		http.authorizeRequests() //
+			.antMatchers("/api/batch/**").hasIpAddress("::1") //
 			.antMatchers("/api/**").permitAll() //
 			.anyRequest().authenticated();
 	}
