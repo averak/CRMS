@@ -8,7 +8,7 @@ import java.util.Comparator;
 import org.springframework.stereotype.Component;
 
 import lombok.*;
-import dev.abelab.crms.model.ReservationAndUserModel;
+import dev.abelab.crms.model.ReservationWithUserModel;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.property.CrmsProperty;
@@ -103,13 +103,28 @@ public class ReservationLogic {
     }
 
     /**
+     * 予約（+ユーザ）一覧を取得
+     *
+     * @return 予約（+ユーザ）
+     */
+    public List<ReservationWithUserModel> findAllWithUser() {
+        return this.reservationRepository.findAll().stream() //
+            .map(reservation -> {
+                final var user = this.userRepository.selectById(reservation.getUserId());
+                final var reservationWithUserModel = (ReservationWithUserModel) reservation;
+                reservationWithUserModel.setUser(user);
+                return reservationWithUserModel;
+            }).collect(Collectors.toList());
+    }
+
+    /**
      * 明日の予約一覧を取得
      *
      * @return 予約一覧
      */
-    public List<ReservationAndUserModel> getNextDayReservations() {
+    public List<ReservationWithUserModel> getNextDayReservations() {
         final var now = new Date();
-        return this.reservationRepository.findAll().stream() //
+        return this.findAllWithUser().stream() //
             // 翌日の予約のみを抽出
             .filter(reservation -> {
                 // 過去の予約
@@ -123,15 +138,8 @@ public class ReservationLogic {
                 return true;
             })
             // ユーザIDでソート
-            .sorted(Comparator.comparing(reservation -> reservation.getUserId()))
-            // DTOに変換
-            .map(reservation -> {
-                final var user = this.userRepository.selectById(reservation.getUserId());
-                return ReservationAndUserModel.builder() //
-                    .reservation(reservation) //
-                    .user(user) //
-                    .build();
-            }).collect(Collectors.toList());
+            .sorted(Comparator.comparing(reservation -> reservation.getUserId())) //
+            .collect(Collectors.toList());
     }
 
 }
