@@ -1,12 +1,15 @@
 package dev.abelab.crms.logic;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import mockit.Expectations;
 import mockit.Injectable;
@@ -14,6 +17,7 @@ import mockit.Tested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.modelmapper.ModelMapper;
 
 import dev.abelab.crms.db.entity.User;
 import dev.abelab.crms.db.entity.UserSample;
@@ -35,6 +39,9 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
     @Injectable
     CrmsProperty crmsProperty;
+
+    @Tested
+    ModelMapper modelMapper;
 
     @Tested
     ReservationLogic reservationLogic;
@@ -104,6 +111,43 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
                 arguments( //
                     ReservationSample.builder().userId(SAMPLE_INT).build(), //
                     UserSample.builder().id(SAMPLE_INT + 1).roleId(UserRoleEnum.MEMBER.getId()).build()));
+        }
+
+    }
+
+    /**
+     * Test for find all with user
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class FindAllWithUserTest {
+
+        @Test
+        void 正_予約一覧を取得() {
+            final var user = UserSample.builder().build();
+            final var reservations = Arrays.asList( //
+                ReservationSample.builder().id(1).userId(user.getId()).build(), //
+                ReservationSample.builder().id(2).userId(user.getId()).build() //
+            );
+
+            new Expectations() {
+                {
+                    reservationRepository.findAll();
+                    result = reservations;
+                }
+                {
+                    userRepository.selectById(anyInt);
+                    result = user;
+                }
+            };
+
+            // verify
+            assertThat(reservationLogic.findAllWithUser()) //
+                .extracting("id", "user") //
+                .containsExactlyInAnyOrder( //
+                    tuple(reservations.get(0).getId(), user), //
+                    tuple(reservations.get(1).getId(), user) //
+                );
         }
 
     }
