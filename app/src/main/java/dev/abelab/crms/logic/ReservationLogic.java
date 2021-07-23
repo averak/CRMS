@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 
 import org.springframework.stereotype.Component;
+import org.modelmapper.ModelMapper;
 
 import lombok.*;
 import dev.abelab.crms.model.ReservationWithUserModel;
@@ -27,6 +28,8 @@ public class ReservationLogic {
     private final ReservationRepository reservationRepository;
 
     private final CrmsProperty crmsProperty;
+
+    private final ModelMapper modelMapper;
 
     /**
      * 編集権限があるか確認
@@ -111,7 +114,7 @@ public class ReservationLogic {
         return this.reservationRepository.findAll().stream() //
             .map(reservation -> {
                 final var user = this.userRepository.selectById(reservation.getUserId());
-                final var reservationWithUserModel = (ReservationWithUserModel) reservation;
+                final var reservationWithUserModel = this.modelMapper.map(reservation, ReservationWithUserModel.class);
                 reservationWithUserModel.setUser(user);
                 return reservationWithUserModel;
             }).collect(Collectors.toList());
