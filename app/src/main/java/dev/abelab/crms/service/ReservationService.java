@@ -125,12 +125,12 @@ public class ReservationService {
      */
     @Transactional
     public void lotteryReservations() {
-        // 明日の予約一覧を取得
-        final var reservationAndUserModels = this.reservationLogic.getNextDayReservations();
+        // 翌日の予約一覧を取得
+        final var reservationWithUserModels = this.reservationLogic.getNextDayReservations();
 
         // 抽選結果をSlackに送信
-        if (!reservationAndUserModels.isEmpty()) {
-            this.slackClient.sendLotteryResult(reservationAndUserModels);
+        if (!reservationWithUserModels.isEmpty()) {
+            this.slackClient.sendLotteryResult(reservationWithUserModels);
         }
     }
 

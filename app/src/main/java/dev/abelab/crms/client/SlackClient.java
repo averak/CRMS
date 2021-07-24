@@ -33,14 +33,14 @@ public class SlackClient {
     /**
      * 抽選結果を送信
      */
-    public void sendLotteryResult(final List<ReservationWithUserModel> reservationsAndUsersModel) {
+    public void sendLotteryResult(final List<ReservationWithUserModel> reservationWithUserModels) {
         final var builder = new StringBuilder();
         final var timeFormatter = new SimpleDateFormat("HH:mm", Locale.JAPAN);
-        reservationsAndUsersModel.stream().forEach(reservationAndUserModel -> {
-            final var user = reservationAndUserModel.getUser();
+        reservationWithUserModels.stream().forEach(reservationWithUserModel -> {
+            final var user = reservationWithUserModel.getUser();
             builder.append(String.format("%s %s", user.getLastName(), user.getFirstName())).append("  ") //
-                .append(timeFormatter.format(reservationAndUserModel.getStartAt())).append(" - ") //
-                .append(timeFormatter.format(reservationAndUserModel.getFinishAt())) //
+                .append(timeFormatter.format(reservationWithUserModel.getStartAt())).append(" - ") //
+                .append(timeFormatter.format(reservationWithUserModel.getFinishAt())) //
                 .append("\n");
         });
 

@@ -121,7 +121,7 @@ public class ReservationLogic {
     }
 
     /**
-     * 明日の予約一覧を取得
+     * 翌日の予約一覧を取得
      *
      * @return 予約一覧
      */
@@ -142,7 +142,7 @@ public class ReservationLogic {
                 return true;
             })
             // ユーザIDでソート
-            .sorted(Comparator.comparing(reservation -> reservation.getUserId())) //
+            .sorted(Comparator.comparing(Reservation::getId)) //
             .collect(Collectors.toList());
     }
 
