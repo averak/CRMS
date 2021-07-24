@@ -1,5 +1,9 @@
 package dev.abelab.crms.logic;
 
+import java.util.Date;
+import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -116,19 +120,55 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
     }
 
     /**
-     * Test for find all with user
+     * Test for get next day reservations
      */
     @Nested
     @TestInstance(PER_CLASS)
-    class FindAllWithUserTest {
+    class GetNextDayReservationsTest {
 
         @Test
-        void 正_予約一覧を取得() {
+        void 正_翌日の予約一覧を取得() {
             final var user = UserSample.builder().build();
-            final var reservations = Arrays.asList( //
-                ReservationSample.builder().id(1).userId(user.getId()).build(), //
-                ReservationSample.builder().id(2).userId(user.getId()).build() //
-            );
+
+            // 翌日の日時
+            final var now = new Date();
+            final var startAtCalendar = Calendar.getInstance();
+            final var finishAtCalendar = Calendar.getInstance();
+
+            final List<Reservation> reservations = new ArrayList<Reservation>();
+
+            // 翌日の予約
+            startAtCalendar.setTime(now);
+            startAtCalendar.add(Calendar.DAY_OF_WEEK, 1);
+            finishAtCalendar.setTime(now);
+            finishAtCalendar.add(Calendar.DAY_OF_WEEK, 1);
+
+            reservations.add(ReservationSample.builder().id(1).userId(user.getId()) //
+                .startAt(startAtCalendar.getTime()).finishAt(finishAtCalendar.getTime()).build());
+            reservations.add(ReservationSample.builder().id(2).userId(user.getId()) //
+                .startAt(startAtCalendar.getTime()).finishAt(finishAtCalendar.getTime()).build());
+
+            // 過去の予約
+            startAtCalendar.setTime(now);
+            startAtCalendar.add(Calendar.DAY_OF_WEEK, -1);
+            finishAtCalendar.setTime(now);
+            finishAtCalendar.add(Calendar.DAY_OF_WEEK, -1);
+
+            reservations.add(ReservationSample.builder().id(3).userId(user.getId()) //
+                .startAt(startAtCalendar.getTime()).finishAt(finishAtCalendar.getTime()).build());
+            reservations.add(ReservationSample.builder().id(4).userId(user.getId()) //
+                .startAt(startAtCalendar.getTime()).finishAt(finishAtCalendar.getTime()).build());
+
+            // 翌日以降の予約
+            startAtCalendar.setTime(now);
+            startAtCalendar.add(Calendar.DAY_OF_WEEK, 2);
+            finishAtCalendar.setTime(now);
+            finishAtCalendar.add(Calendar.DAY_OF_WEEK, 2);
+
+            reservations.add(ReservationSample.builder().id(5).userId(user.getId()) //
+                .startAt(startAtCalendar.getTime()).finishAt(finishAtCalendar.getTime()).build());
+            reservations.add(ReservationSample.builder().id(6).userId(user.getId()) //
+                .startAt(startAtCalendar.getTime()).finishAt(finishAtCalendar.getTime()).build());
 
             new Expectations() {
                 {
@@ -142,7 +182,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertThat(reservationLogic.findAllWithUser()) //
+            assertThat(reservationLogic.getNextDayReservations()) //
                 .extracting("id", "user") //
                 .containsExactlyInAnyOrder( //
                     tuple(reservations.get(0).getId(), user), //
