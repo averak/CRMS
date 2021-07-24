@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.modelmapper.ModelMapper;
 
 import lombok.*;
+import dev.abelab.crms.db.entity.Reservation;
 import dev.abelab.crms.model.ReservationWithUserModel;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
@@ -106,18 +107,17 @@ public class ReservationLogic {
     }
 
     /**
-     * 予約（+ユーザ）一覧を取得
+     * 予約（+ユーザ）を取得
+     *
+     * @param reservation 予約
      *
      * @return 予約（+ユーザ）
      */
-    public List<ReservationWithUserModel> findAllWithUser() {
-        return this.reservationRepository.findAll().stream() //
-            .map(reservation -> {
-                final var user = this.userRepository.selectById(reservation.getUserId());
-                final var reservationWithUserModel = this.modelMapper.map(reservation, ReservationWithUserModel.class);
-                reservationWithUserModel.setUser(user);
-                return reservationWithUserModel;
-            }).collect(Collectors.toList());
+    public ReservationWithUserModel getWithUser(final Reservation reservation) {
+        final var user = this.userRepository.selectById(reservation.getUserId());
+        final var reservationWithUserModel = this.modelMapper.map(reservation, ReservationWithUserModel.class);
+        reservationWithUserModel.setUser(user);
+        return reservationWithUserModel;
     }
 
     /**
@@ -127,7 +127,8 @@ public class ReservationLogic {
      */
     public List<ReservationWithUserModel> getNextDayReservations() {
         final var now = new Date();
-        return this.findAllWithUser().stream() //
+        return this.reservationRepository.findAll().stream() //
+            .map(this::getWithUser) //
             // 翌日の予約のみを抽出
             .filter(reservation -> {
                 // 過去の予約
