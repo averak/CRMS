@@ -126,6 +126,11 @@ public class ReservationLogic {
      * @return 予約一覧
      */
     public List<ReservationWithUserModel> getNextDayReservations() {
+        // 入学年度->ユーザIDでソート
+        final Comparator<ReservationWithUserModel> comparator = Comparator //
+            .comparing((ReservationWithUserModel reservation) -> reservation.getUser().getAdmissionYear()) //
+            .thenComparing(ReservationWithUserModel::getUserId);
+
         final var now = new Date();
         return this.reservationRepository.findAll().stream() //
             .map(this::getWithUser) //
@@ -140,9 +145,8 @@ public class ReservationLogic {
                     return false;
                 }
                 return true;
-            })
-            // ユーザIDでソート
-            .sorted(Comparator.comparing(Reservation::getId)) //
+            }) //
+            .sorted(comparator) //
             .collect(Collectors.toList());
     }
 
