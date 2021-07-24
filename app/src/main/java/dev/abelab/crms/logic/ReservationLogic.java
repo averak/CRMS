@@ -126,10 +126,10 @@ public class ReservationLogic {
      * @return 予約一覧
      */
     public List<ReservationWithUserModel> getNextDayReservations() {
-        // 入学年度->ユーザIDでソート
+        // 予約時刻でソート
         final Comparator<ReservationWithUserModel> comparator = Comparator //
-            .comparing((ReservationWithUserModel reservation) -> reservation.getUser().getAdmissionYear()) //
-            .thenComparing(ReservationWithUserModel::getUserId);
+            .comparing(ReservationWithUserModel::getStartAt) //
+            .thenComparing(ReservationWithUserModel::getFinishAt);
 
         final var now = new Date();
         return this.reservationRepository.findAll().stream() //
