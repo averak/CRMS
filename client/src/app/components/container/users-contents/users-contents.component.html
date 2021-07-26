@@ -1,7 +1,7 @@
-<div fxLayout="column" fxLayoutAlign="start">
+<div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="0px">
   <app-title-box [title]="'管理者ページ'"></app-title-box>
 
-  <div class="control-menu" fxLayout="row" fxLayoutAlign="start center" fxFlex="100px">
+  <div class="control-menu" fxLayout="row" fxLayoutAlign="start center">
     <div class="new-user-button-container" fxLayout="row" fxLayoutAlign="end center">
       <button
         mat-raised-button
@@ -15,12 +15,11 @@
     </div>
   </div>
 
-  <div class="scroll-content">
-    <app-users-table
-      *ngIf="users"
-      [users]="users"
-      (userEditTransit)="handleUserEditTransit($event)"
-      (userDeleteTransit)="handleUserDelete($event)"
-    ></app-users-table>
-  </div>
+  <app-users-table
+    *ngIf="users"
+    class="scroll-content"
+    [users]="users"
+    (userEditTransit)="handleUserEditTransit($event)"
+    (userDeleteTransit)="handleUserDelete($event)"
+  ></app-users-table>
 </div>
