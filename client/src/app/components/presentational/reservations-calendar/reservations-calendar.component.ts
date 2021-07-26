@@ -3,6 +3,8 @@ import {
   OnInit,
   Input,
   Output,
+  OnChanges,
+  SimpleChanges,
   EventEmitter,
   ChangeDetectionStrategy,
   ViewChild,
@@ -30,7 +32,7 @@ import { AdmissionYearService } from 'src/app/shared/services/admission-year.ser
   templateUrl: './reservations-calendar.component.html',
   styleUrls: ['./reservations-calendar.component.css'],
 })
-export class ReservationsCalendarComponent implements OnInit {
+export class ReservationsCalendarComponent implements OnInit, OnChanges {
   @Input() reservations!: ReservationModel[];
   @Input() loginUser!: UserModel;
 
@@ -156,5 +158,10 @@ export class ReservationsCalendarComponent implements OnInit {
     this.matDialog.open(ReservationNewDialogComponent, {
       disableClose: true,
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.reservations = changes.reservations.currentValue;
+    this.ngOnInit();
   }
 }

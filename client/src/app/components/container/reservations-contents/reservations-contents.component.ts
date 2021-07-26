@@ -3,7 +3,6 @@ import * as moment from 'moment-timezone';
 
 import { UserModel } from 'src/app/model/user-model';
 import { ReservationModel } from 'src/app/model/reservation-model';
-import { ReservationsModel } from 'src/app/model/reservations-model';
 import { ReservationUpdateRequest } from 'src/app/request/reservation-update-request';
 import { ReservationService } from 'src/app/shared/services/reservation.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -27,8 +26,8 @@ export class ReservationsContentsComponent implements OnInit {
   ngOnInit(): void {
     // 予約一覧を取得
     this.reservationService.getReservations().subscribe(
-      (reservations: ReservationsModel) => {
-        this.reservations = reservations.reservations;
+      (reservations: ReservationModel[]) => {
+        this.reservations = reservations;
       },
       (error) => {
         this.alertService.openSnackBar(error, 'ERROR');
@@ -60,6 +59,7 @@ export class ReservationsContentsComponent implements OnInit {
         if (result) {
           this.reservationService.updateReservation(reservation.id, requestBody).subscribe(
             () => {
+              this.reservationService.fetchReservations();
               this.alertService.openSnackBar('予約を編集しました', 'SUCCESS');
             },
             (error) => {
@@ -79,6 +79,7 @@ export class ReservationsContentsComponent implements OnInit {
         if (result) {
           this.reservationService.deleteReservation(reservation.id).subscribe(
             () => {
+              this.reservationService.fetchReservations();
               this.alertService.openSnackBar('予約を削除しました', 'SUCCESS');
             },
             (error) => {

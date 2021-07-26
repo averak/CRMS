@@ -31,6 +31,7 @@ export class ReservationNewDialogComponent implements OnInit {
 
     this.reservationService.createReservation(requestBody).subscribe(
       () => {
+        this.reservationService.fetchReservations();
         this.alertService.openSnackBar('予約を追加しました', 'SUCCESS');
         this.matDialogRef.close();
       },

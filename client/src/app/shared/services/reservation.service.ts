@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { HttpBaseService } from 'src/app/shared/services/http-base.service';
+import { ReservationModel } from 'src/app/model/reservation-model';
+import { ReservationsModel } from 'src/app/model/reservations-model';
 import { ReservationCreateRequest } from 'src/app/request/reservation-create-request';
 import { ReservationUpdateRequest } from 'src/app/request/reservation-update-request';
 
@@ -10,10 +12,25 @@ import { ReservationUpdateRequest } from 'src/app/request/reservation-update-req
   providedIn: 'root',
 })
 export class ReservationService {
+  reservations: BehaviorSubject<ReservationModel[]> = new BehaviorSubject<ReservationModel[]>([]);
+
   constructor(private httpBaseService: HttpBaseService) {}
 
-  getReservations(): Observable<any> {
-    return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/reservations`);
+  getReservations(): Observable<ReservationModel[]> {
+    if (Object.keys(this.reservations.getValue()).length === 0) {
+      this.fetchReservations();
+    }
+
+    return this.reservations;
+  }
+
+  fetchReservations(): void {
+    this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/reservations`).subscribe(
+      (reservations: ReservationsModel) => {
+        this.reservations.next(reservations.reservations);
+      },
+      (error) => this.reservations.error(error)
+    );
   }
 
   createReservation(requestBody: ReservationCreateRequest): Observable<any> {
