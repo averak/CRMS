@@ -25,6 +25,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 // components
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
@@ -69,6 +70,7 @@ import { FooterComponent } from 'src/app/shared/components/footer/footer.compone
     ScrollingModule,
     FlexLayoutModule,
     NgbModalModule,
+    NgApexchartsModule,
   ],
   exports: [
     FormsModule,
@@ -95,6 +97,7 @@ import { FooterComponent } from 'src/app/shared/components/footer/footer.compone
     ScrollingModule,
     FlexLayoutModule,
     NgbModalModule,
+    NgApexchartsModule,
 
     // components
     ConfirmDialogComponent,

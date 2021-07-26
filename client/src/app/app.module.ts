@@ -55,6 +55,7 @@ import { ReservationsContentsComponent } from './components/container/reservatio
 import { ReservationNewDialogComponent } from './components/container/reservation-new-dialog/reservation-new-dialog.component';
 import { ReservationNewCardComponent } from './components/presentational/reservation-new-card/reservation-new-card.component';
 import { ActivitiesComponent } from './components/page/activities/activities.component';
+import { ActivitiesContentsComponent } from './components/container/activities-contents/activities-contents.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { ActivitiesComponent } from './components/page/activities/activities.com
     ReservationNewDialogComponent,
     ReservationNewCardComponent,
     ActivitiesComponent,
+    ActivitiesContentsComponent,
   ],
   imports: [
     BrowserModule,

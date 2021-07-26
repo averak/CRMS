@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutAlign="start">
+  <app-title-box [title]="'活動実績'"></app-title-box>
+
+  <apx-chart
+    class="activities-chart scroll-content"
+    [title]="chartOptions.title"
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+  ></apx-chart>
+</div>
