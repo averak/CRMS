@@ -10,4 +10,9 @@
   height: 50px;
   width: 170px;
   margin-left: auto;
+  z-index: 1;
+}
+
+app-users-table {
+  z-index: 0;
 }
