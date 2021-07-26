@@ -40,6 +40,7 @@ export class UserNewFormComponent implements OnInit {
     // リクエスト送信
     this.userService.createUser(requestBody).subscribe(
       () => {
+        this.userService.fetchUsers();
         this.handleGoBack();
         this.alertService.openSnackBar('ユーザを新規作成しました', 'SUCCESS');
       },

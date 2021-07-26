@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { UserModel } from 'src/app/model/user-model';
-import { UsersModel } from 'src/app/model/users-model';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
@@ -21,9 +20,8 @@ export class UsersContentsComponent implements OnInit {
   ngOnInit(): void {
     // ユーザ一覧を取得
     this.userService.getUsers().subscribe(
-      (users: UsersModel) => {
-        this.users = users.users;
-        this.userService.setUsers(this.users);
+      (users: UserModel[]) => {
+        this.users = users;
         this.users = this.userService.sortUsers(this.users);
       },
       (error) => {
@@ -53,6 +51,7 @@ export class UsersContentsComponent implements OnInit {
   deleteUser(user: UserModel): void {
     this.userService.deleteUser(user.id).subscribe(
       () => {
+        this.userService.fetchUsers();
         this.alertService.openSnackBar('ユーザを削除しました', 'SUCCESS');
       },
       (error) => {

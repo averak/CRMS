@@ -15,23 +15,21 @@ import { LoginUserPasswordUpdateRequest } from 'src/app/request/login-user-passw
   providedIn: 'root',
 })
 export class UserService {
-  users!: UserModel[];
   loginUser: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>({} as UserModel);
+  users: BehaviorSubject<UserModel[]> = new BehaviorSubject<UserModel[]>([]);
 
-  constructor(private httpBaseService: HttpBaseService) {
-    this.users = [];
-  }
+  constructor(private httpBaseService: HttpBaseService) {}
 
   getLoginUser(): Observable<UserModel> {
     if (Object.keys(this.loginUser.getValue()).length === 0) {
-      this.updateLoginUserSubject();
+      this.fetchLoginUser();
     }
 
     return this.loginUser;
   }
 
-  updateLoginUserSubject(): void {
-    this.getLoginUserInfo().subscribe(
+  fetchLoginUser(): void {
+    this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users/me`).subscribe(
       (user: UserModel) => {
         this.loginUser.next(user);
       },
@@ -39,20 +37,25 @@ export class UserService {
     );
   }
 
-  getLoginUserInfo(): Observable<UserModel> {
-    return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users/me`);
+  getUsers(): Observable<UserModel[]> {
+    if (Object.keys(this.users.getValue()).length === 0) {
+      this.fetchUsers();
+    }
+
+    return this.users;
   }
 
-  getUsers(): Observable<UsersModel> {
-    return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users`);
-  }
-
-  setUsers(users: UserModel[]): void {
-    this.users = users;
+  fetchUsers(): void {
+    this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users`).subscribe(
+      (users: UsersModel) => {
+        this.users.next(users.users);
+      },
+      (error) => this.loginUser.error(error)
+    );
   }
 
   selectById(userId: number): UserModel | undefined {
-    return this.users.find((user) => user.id == userId);
+    return this.users.getValue().find((user) => user.id == userId);
   }
 
   createUser(requestBody: UserCreateRequest) {

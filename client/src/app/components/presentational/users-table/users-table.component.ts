@@ -1,4 +1,12 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { UserModel } from 'src/app/model/user-model';
@@ -8,7 +16,7 @@ import { UserModel } from 'src/app/model/user-model';
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.css'],
 })
-export class UsersTableComponent implements OnInit {
+export class UsersTableComponent implements OnInit, OnChanges {
   @Input() users!: UserModel[];
   @Output() userEditTransit: EventEmitter<any> = new EventEmitter<any>();
   @Output() userDeleteTransit: EventEmitter<any> = new EventEmitter<any>();
@@ -28,5 +36,10 @@ export class UsersTableComponent implements OnInit {
 
   onDeleteClick(user: UserModel): void {
     this.userDeleteTransit.emit(user);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.users = changes.users.currentValue;
+    this.ngOnInit();
   }
 }
