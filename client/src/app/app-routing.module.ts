@@ -8,6 +8,8 @@ import { LoginComponent } from './components/page/login/login.component';
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 // reservations
 import { ReservationsComponent } from './components/page/reservations/reservations.component';
+// activity
+import { ActivitiesComponent } from './components/page/activities/activities.component';
 // admin
 import { AdminComponent } from './components/page/admin/admin.component';
 import { UsersComponent } from './components/page/admin/users/users.component';
@@ -56,6 +58,7 @@ const routes: Routes = [
           },
         ],
       },
+      { path: 'activities', component: ActivitiesComponent },
       {
         path: 'mypage',
         component: MypageComponent,
