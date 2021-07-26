@@ -117,6 +117,10 @@ public class ReservationService {
         // 権限をチェック
         this.reservationLogic.checkEditPermission(reservationId, loginUser.getId());
 
+        // 削除可能な予約かチェック
+        final var reservation = this.reservationRepository.selectById(reservationId);
+        this.reservationLogic.checkDeletableReservation(reservation);
+
         this.reservationRepository.deleteById(reservationId);
     }
 
