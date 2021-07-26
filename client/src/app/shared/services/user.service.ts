@@ -24,18 +24,22 @@ export class UserService {
 
   getLoginUser(): Observable<UserModel> {
     if (Object.keys(this.loginUser.getValue()).length === 0) {
-      this.getSessionUser().subscribe(
-        (user: UserModel) => {
-          this.loginUser.next(user);
-        },
-        (error) => this.loginUser.error(error)
-      );
+      this.updateLoginUserSubject();
     }
 
     return this.loginUser;
   }
 
-  getSessionUser(): Observable<UserModel> {
+  updateLoginUserSubject(): void {
+    this.getLoginUserInfo().subscribe(
+      (user: UserModel) => {
+        this.loginUser.next(user);
+      },
+      (error) => this.loginUser.error(error)
+    );
+  }
+
+  getLoginUserInfo(): Observable<UserModel> {
     return this.httpBaseService.getRequest<any>(`${environment.API_PREFIX}/api/users/me`);
   }
 

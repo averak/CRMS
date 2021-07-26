@@ -52,6 +52,8 @@ export class MypageProfileEditFormComponent implements OnInit {
           // リクエスト送信
           this.userService.updateLoginUser(requestBody).subscribe(
             () => {
+              this.userService.updateLoginUserSubject();
+
               this.handleGoBack();
               this.alertService.openSnackBar('プロフィールを更新しました', 'SUCCESS');
             },
