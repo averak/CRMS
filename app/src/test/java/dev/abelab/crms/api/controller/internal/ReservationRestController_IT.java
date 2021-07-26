@@ -411,7 +411,18 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// setup
-			final var reservation = ReservationSample.builder().build();
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, 2);
+
+			final var reservation = ReservationSample.builder() //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
+				.build();
+
 			// 予約者かどうか
 			if (isReservationUser) {
 				reservation.setUserId(loginUser.getId());
@@ -450,7 +461,18 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// setup
-			final var reservation = ReservationSample.builder().build();
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, 1);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, 2);
+
+			final var reservation = ReservationSample.builder() //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
+				.build();
+
 			// 予約者かどうか
 			if (isReservationUser) {
 				reservation.setUserId(loginUser.getId());
@@ -471,6 +493,33 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			return Stream.of(
 				// 一般ユーザ & 非予約者
 				arguments(UserRoleEnum.MEMBER, false));
+		}
+
+		@Test
+		void 正_過去の予約は削除不可() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var startAtCalendar = Calendar.getInstance();
+			startAtCalendar.setTime(SAMPLE_DATE);
+			startAtCalendar.add(Calendar.HOUR, -2);
+			final var finishAtCalendar = Calendar.getInstance();
+			finishAtCalendar.setTime(SAMPLE_DATE);
+			finishAtCalendar.add(Calendar.HOUR, -1);
+
+			final var reservation = ReservationSample.builder() //
+				.startAt(startAtCalendar.getTime()) //
+				.finishAt(finishAtCalendar.getTime()) //
+				.build();
+			reservation.setUserId(loginUser.getId());
+			reservationRepository.insert(reservation);
+
+			// test
+			final var request = deleteRequest(format(DELETE_RESERVATION_PATH, reservation.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
+			execute(request, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_DELETED));
 		}
 
 		@Test
