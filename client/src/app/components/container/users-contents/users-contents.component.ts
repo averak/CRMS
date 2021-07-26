@@ -30,7 +30,7 @@ export class UsersContentsComponent implements OnInit {
     );
   }
 
-  onUserNewClick(): void {
+  onClickCreateButton(): void {
     this.userNewTransit.emit();
   }
 
