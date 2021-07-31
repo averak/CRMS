@@ -119,6 +119,41 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
     }
 
     /**
+     * Test for check deletable reservation
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class CheckDeletableReservationTest {
+
+        @Test
+        void 正_削除可能な予約かチェック() {
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var reservation = ReservationSample.builder() //
+                .userId(SAMPLE_INT) //
+                .startAt(tomorrow) //
+                .finishAt(tomorrow) //
+                .build();
+
+            // verify
+            assertDoesNotThrow(() -> reservationLogic.checkDeletableReservation(reservation));
+        }
+
+        @Test
+        void 異_過去の予約は削除不可() {
+            final var yesterday = DateTimeUtil.getTomorrow();
+            final var reservation = ReservationSample.builder() //
+                .userId(SAMPLE_INT) //
+                .startAt(yesterday) //
+                .finishAt(yesterday) //
+                .build();
+
+            // verify
+            assertDoesNotThrow(() -> reservationLogic.checkDeletableReservation(reservation));
+        }
+
+    }
+
+    /**
      * Test for get with user
      */
     @Nested
@@ -137,6 +172,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
                 }
             };
 
+            // verify
             final var reservationWithUser = reservationLogic.getWithUser(reservation);
             assertThat(reservationWithUser.getUser()).isEqualTo(user);
         }
