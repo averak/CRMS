@@ -50,6 +50,19 @@ public class ReservationLogic {
     }
 
     /**
+     * 削除可能な予約かチェック
+     *
+     * @param reservation 予約
+     */
+    public void checkDeletableReservation(final Reservation reservation) {
+        // 過去の日時
+        final var now = new Date();
+        if (now.after(reservation.getStartAt())) {
+            throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_DELETED);
+        }
+    }
+
+    /**
      * 予約時間のバリデーション
      */
     public void validateReservationTime(final Date startAt, final Date finishAt, final int userId, final int reservationId) {
@@ -104,19 +117,6 @@ public class ReservationLogic {
                 throw new ConflictException(ErrorCode.CONFLICT_RESERVATION_TIME);
             }
         });
-    }
-
-    /**
-     * 削除可能な予約かチェック
-     *
-     * @param reservation 予約
-     */
-    public void checkDeletableReservation(final Reservation reservation) {
-        // 過去の日時
-        final var now = new Date();
-        if (now.after(reservation.getStartAt())) {
-            throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_DELETED);
-        }
     }
 
     /**

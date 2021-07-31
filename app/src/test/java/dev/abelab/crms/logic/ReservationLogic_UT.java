@@ -2,6 +2,7 @@ package dev.abelab.crms.logic;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -30,6 +31,9 @@ import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.util.DateTimeUtil;
+import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BadRequestException;
+import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.ForbiddenException;
 
 public class ReservationLogic_UT extends AbstractLogic_UT {
@@ -105,7 +109,9 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            assertThrows(ForbiddenException.class, () -> reservationLogic.checkEditPermission(reservation.getId(), user.getId()));
+            final var exception =
+                assertThrows(ForbiddenException.class, () -> reservationLogic.checkEditPermission(reservation.getId(), user.getId()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.USER_HAS_NO_PERMISSION);
         }
 
         Stream<Arguments> 異_編集権限がない() {
@@ -140,7 +146,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
         @Test
         void 異_過去の予約は削除不可() {
-            final var yesterday = DateTimeUtil.getTomorrow();
+            final var yesterday = DateTimeUtil.getYesterday();
             final var reservation = ReservationSample.builder() //
                 .userId(SAMPLE_INT) //
                 .startAt(yesterday) //
@@ -148,7 +154,129 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
                 .build();
 
             // verify
-            assertDoesNotThrow(() -> reservationLogic.checkDeletableReservation(reservation));
+            final var exception = assertThrows(BadRequestException.class, () -> reservationLogic.checkDeletableReservation(reservation));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.PAST_RESERVATION_CANNOT_BE_DELETED);
+
+        }
+
+    }
+
+    /**
+     * Test for validate reservation time
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class ValidateReservationTimeTest {
+
+        @Test
+        void 正_予約可能な日時() {
+            new Expectations() {
+                {
+                    crmsProperty.getReservableHours();
+                    result = 3;
+                }
+                {
+                    reservationRepository.selectByUserId(anyInt);
+                    result = new ArrayList<Reservation>();
+                }
+            };
+
+            // verify
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11);
+            assertDoesNotThrow(() -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+        }
+
+        @Test
+        void 異_過去の日時() {
+            // verify
+            final var yesterday = DateTimeUtil.getYesterday();
+            final var startAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 10);
+            final var finishAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 11);
+            final var exception = assertThrows(BadRequestException.class,
+                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
+        }
+
+        @Test
+        void 異_開始時刻よりも前に終了時刻が設定されている() {
+            // verify
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var exception = assertThrows(BadRequestException.class,
+                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
+        }
+
+        @Test
+        void 異_開始時刻と終了時刻が同じ() {
+            // verify
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var exception = assertThrows(BadRequestException.class,
+                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
+        }
+
+        @Test
+        void 異_制限時間を超過している() {
+            new Expectations() {
+                {
+                    crmsProperty.getReservableHours();
+                    result = 3;
+                }
+            };
+
+            // verify
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 14);
+            final var exception = assertThrows(BadRequestException.class,
+                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.TOO_LONG_RESERVATION_HOURS);
+
+        }
+
+        @ParameterizedTest
+        @MethodSource
+        void 異_同時刻は既に予約済み(final int startHour, final int finishHour) {
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var reservation = ReservationSample.builder() //
+                .userId(SAMPLE_INT) //
+                .startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 9)) //
+                .finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
+                .build();
+
+            new Expectations() {
+                {
+                    crmsProperty.getReservableHours();
+                    result = 3;
+                }
+                {
+                    reservationRepository.selectByUserId(anyInt);
+                    result = Arrays.asList(reservation);
+                }
+            };
+
+            // verify
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, startHour);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, finishHour);
+            final var exception = assertThrows(ConflictException.class,
+                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, 0));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.CONFLICT_RESERVATION_TIME);
+        }
+
+        Stream<Arguments> 異_同時刻は既に予約済み() {
+            return Stream.of(
+                // 開始時刻が重複
+                arguments(10, 12),
+                // 終了時刻が重複
+                arguments(8, 10),
+                // 開始時刻，終了時刻共に重複
+                arguments(9, 11));
         }
 
     }
