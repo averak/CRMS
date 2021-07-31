@@ -1,6 +1,6 @@
 exception:
   internal_server_error:
-    unexpected_error: "Unexpected error has occured."
+    unexpected_error: "Unexpected error has occurred."
     failed_to_send_slack: "Failed to send slack."
   not_found:
     error_code: "Error Code does not exists."
@@ -14,13 +14,14 @@ exception:
   forbidden:
     user_has_no_permission: "User has no permission."
   bad_request:
-    validation_error: "Validation error has occured."
-    invalid_reservation: "Reservation is invalid."
-    too_long_reservation_hours: "Reservation hours is too long."
+    validation_error: "Validation error has occurred."
     too_short_password: "Password is to short."
+    invalid_reservation_time: "Reservation time is invalid."
+    too_long_reservation_hours: "Reservation hours is too long."
     past_reservation_cannot_be_created: "Past reservation cannot be created."
     past_reservation_cannot_be_changed: "Past reservation cannot be changed."
     past_reservation_cannot_be_deleted: "Past reservation cannot be deleted."
+    not_within_reservable_time_range: "Not within reservable time range."
   unauthorized:
     user_not_logged_in: "User has no logged in."
     wrong_password: "Password is wrong."

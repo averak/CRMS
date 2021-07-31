@@ -163,18 +163,18 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 		Stream<Arguments> 異_無効な予約時間は予約不可() {
 			return Stream.of(
 				// 過去の日時
-				arguments(YESTERDAY, 10, 11, new BadRequestException(ErrorCode.INVALID_RESERVATION)),
+				arguments(YESTERDAY, 10, 11, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_CREATED)),
 				// 開始時刻よりも前に終了時刻が設定されている
-				arguments(TOMORROW, 11, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION)),
+				arguments(TOMORROW, 11, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
 				// 開始時刻と終了時刻が同じ
-				arguments(TOMORROW, 10, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION)),
+				arguments(TOMORROW, 10, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
 				// 制限時間を超過している
 				arguments(TOMORROW, 10, 14, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)),
 				// 予約可能範囲に収まっていない
-				arguments(TOMORROW, 6, 8, new BadRequestException(ErrorCode.INVALID_RESERVATION)),
-				arguments(TOMORROW, 8, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION)),
-				arguments(TOMORROW, 19, 21, new BadRequestException(ErrorCode.INVALID_RESERVATION)),
-				arguments(TOMORROW, 21, 23, new BadRequestException(ErrorCode.INVALID_RESERVATION)));
+				arguments(TOMORROW, 6, 8, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
+				arguments(TOMORROW, 8, 10, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
+				arguments(TOMORROW, 19, 21, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
+				arguments(TOMORROW, 21, 23, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)));
 		}
 
 		@ParameterizedTest

@@ -48,17 +48,20 @@ public enum ErrorCode {
      */
     VALIDATION_ERROR(1400, "exception.bad_request.validation_error"),
 
-    INVALID_RESERVATION(1401, "exception.bad_request.invalid_reservation"),
+    TOO_SHORT_PASSWORD(1401, "exception.bad_request.too_short_password"),
 
-    TOO_LONG_RESERVATION_HOURS(1402, "exception.bad_request.too_long_reservation_hours"),
+    INVALID_RESERVATION_TIME(1402, "exception.bad_request.invalid_reservation_time"),
 
-    PAST_RESERVATION_CANNOT_BE_CREATED(1403, "exception.bad_request.past_reservation_cannot_be_created"),
+    TOO_LONG_RESERVATION_HOURS(1403, "exception.bad_request.too_long_reservation_hours"),
 
-    PAST_RESERVATION_CANNOT_BE_CHANGED(1404, "exception.bad_request.past_reservation_cannot_be_changed"),
+    PAST_RESERVATION_CANNOT_BE_CREATED(1404, "exception.bad_request.past_reservation_cannot_be_created"),
 
-    PAST_RESERVATION_CANNOT_BE_DELETED(1405, "exception.bad_request.past_reservation_cannot_be_deleted"),
+    PAST_RESERVATION_CANNOT_BE_CHANGED(1405, "exception.bad_request.past_reservation_cannot_be_changed"),
 
-    TOO_SHORT_PASSWORD(1406, "exception.bad_request.too_short_password"),
+    PAST_RESERVATION_CANNOT_BE_DELETED(1406, "exception.bad_request.past_reservation_cannot_be_deleted"),
+
+    NOT_WITHIN_RESERVABLE_TIME_RANGE(1407, "exception.bad_request.not_within_reservable_time_range"),
+
 
     /**
      * Unauthorized: 1500~1599

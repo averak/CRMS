@@ -82,17 +82,17 @@ public class ReservationLogic {
         // 過去の日時
         final var now = new Date();
         if (now.after(startAt)) {
-            throw new BadRequestException(ErrorCode.INVALID_RESERVATION);
+            throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_CREATED);
         }
 
         // 開始時刻よりも前に終了時刻が設定されている
         if (startAt.after(finishAt)) {
-            throw new BadRequestException(ErrorCode.INVALID_RESERVATION);
+            throw new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME);
         }
 
         // 開始時刻と終了時刻が同じ
         if (startAt.equals(finishAt)) {
-            throw new BadRequestException(ErrorCode.INVALID_RESERVATION);
+            throw new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME);
         }
 
         // 制限時間を超過している
@@ -102,7 +102,7 @@ public class ReservationLogic {
 
         // 予約可能範囲（09:00〜20:00）に収まっていない
         if (DateTimeUtil.getHour(startAt) < this.RESERVABLE_START_HOUR || DateTimeUtil.getHour(finishAt) > this.RESERVABLE_FINISH_HOUR) {
-            throw new BadRequestException(ErrorCode.INVALID_RESERVATION);
+            throw new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE);
         }
 
         // 同時刻はすでに予約済み

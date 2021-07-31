@@ -1,5 +1,6 @@
 package dev.abelab.crms.logic;
 
+import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
@@ -31,11 +32,16 @@ import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.util.DateTimeUtil;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.ForbiddenException;
 
 public class ReservationLogic_UT extends AbstractLogic_UT {
+
+    static final Date TOMORROW = DateTimeUtil.getTomorrow();
+
+    static final Date YESTERDAY = DateTimeUtil.getYesterday();
 
     @Injectable
     UserRepository userRepository;
@@ -180,68 +186,32 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             assertDoesNotThrow(() -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
         }
 
-        @Test
-        void 異_過去の日時() {
-            // verify
-            final var yesterday = DateTimeUtil.getYesterday();
-            final var startAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR_OF_DAY, 10);
-            final var finishAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR_OF_DAY, 11);
-            final var exception = assertThrows(BadRequestException.class,
-                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
-        }
-
-        @Test
-        void 異_開始時刻よりも前に終了時刻が設定されている() {
-            // verify
-            final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 11);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
-            final var exception = assertThrows(BadRequestException.class,
-                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
-        }
-
-        @Test
-        void 異_開始時刻と終了時刻が同じ() {
-            // verify
-            final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
-            final var exception = assertThrows(BadRequestException.class,
-                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
-        }
-
-        @Test
-        void 異_制限時間を超過している() {
-            // verify
-            final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 14);
-            final var exception = assertThrows(BadRequestException.class,
-                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.TOO_LONG_RESERVATION_HOURS);
-        }
-
         @ParameterizedTest
         @MethodSource
-        void 異_予約可能範囲に収まっていない(final int startHour, final int finishHour) {
+        void 異_無効な予約時間は予約不可(final Date date, final int startHour, final int finishHour, final BaseException exception) {
             // verify
-            final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, startHour);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, finishHour);
-            final var exception = assertThrows(BadRequestException.class,
+            final var startAt = DateTimeUtil.editDateTime(date, Calendar.HOUR_OF_DAY, startHour);
+            final var finishAt = DateTimeUtil.editDateTime(date, Calendar.HOUR_OF_DAY, finishHour);
+            final var occurredException = assertThrows(exception.getClass(),
                 () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
+            assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
         }
 
-        Stream<Arguments> 異_予約可能範囲に収まっていない() {
-            return Stream.of( //
-                arguments(6, 8), //
-                arguments(8, 10), //
-                arguments(19, 21), //
-                arguments(20, 22)); //
+        Stream<Arguments> 異_無効な予約時間は予約不可() {
+            return Stream.of(
+                // 過去の日時
+                arguments(YESTERDAY, 10, 11, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_CREATED)),
+                // 開始時刻よりも前に終了時刻が設定されている
+                arguments(TOMORROW, 11, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
+                // 開始時刻と終了時刻が同じ
+                arguments(TOMORROW, 10, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
+                // 制限時間を超過している
+                arguments(TOMORROW, 10, 14, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)),
+                // 予約可能範囲に収まっていない
+                arguments(TOMORROW, 6, 8, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
+                arguments(TOMORROW, 8, 10, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
+                arguments(TOMORROW, 19, 21, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
+                arguments(TOMORROW, 21, 23, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)));
         }
 
         @ParameterizedTest
