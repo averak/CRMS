@@ -175,8 +175,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
             // verify
             final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11);
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 11);
             assertDoesNotThrow(() -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
         }
 
@@ -184,8 +184,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         void 異_過去の日時() {
             // verify
             final var yesterday = DateTimeUtil.getYesterday();
-            final var startAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 10);
-            final var finishAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 11);
+            final var startAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR_OF_DAY, 10);
+            final var finishAt = DateTimeUtil.editDateTime(yesterday, Calendar.HOUR_OF_DAY, 11);
             final var exception = assertThrows(BadRequestException.class,
                 () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
@@ -195,8 +195,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         void 異_開始時刻よりも前に終了時刻が設定されている() {
             // verify
             final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 11);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
             final var exception = assertThrows(BadRequestException.class,
                 () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
@@ -206,8 +206,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         void 異_開始時刻と終了時刻が同じ() {
             // verify
             final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
             final var exception = assertThrows(BadRequestException.class,
                 () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
@@ -217,12 +217,31 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         void 異_制限時間を超過している() {
             // verify
             final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 14);
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 14);
             final var exception = assertThrows(BadRequestException.class,
                 () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.TOO_LONG_RESERVATION_HOURS);
+        }
 
+        @ParameterizedTest
+        @MethodSource
+        void 異_予約可能範囲に収まっていない(final int startHour, final int finishHour) {
+            // verify
+            final var tomorrow = DateTimeUtil.getTomorrow();
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, startHour);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, finishHour);
+            final var exception = assertThrows(BadRequestException.class,
+                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_RESERVATION);
+        }
+
+        Stream<Arguments> 異_予約可能範囲に収まっていない() {
+            return Stream.of( //
+                arguments(6, 8), //
+                arguments(8, 10), //
+                arguments(19, 21), //
+                arguments(20, 22)); //
         }
 
         @ParameterizedTest
@@ -231,8 +250,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             final var tomorrow = DateTimeUtil.getTomorrow();
             final var reservation = ReservationSample.builder() //
                 .userId(SAMPLE_INT) //
-                .startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 9)) //
-                .finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
+                .startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 12)) //
+                .finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 14)) //
                 .build();
 
             new Expectations() {
@@ -243,8 +262,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, startHour);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, finishHour);
+            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, startHour);
+            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, finishHour);
             final var exception =
                 assertThrows(ConflictException.class, () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, 0));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.CONFLICT_RESERVATION_TIME);
@@ -253,11 +272,11 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         Stream<Arguments> 異_同時刻は既に予約済み() {
             return Stream.of(
                 // 開始時刻が重複
-                arguments(10, 12),
+                arguments(13, 15),
                 // 終了時刻が重複
-                arguments(8, 10),
+                arguments(11, 13),
                 // 開始時刻，終了時刻共に重複
-                arguments(9, 11));
+                arguments(13, 14));
         }
 
     }
