@@ -12,17 +12,61 @@ public class DateTimeUtil {
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM月dd日(E)", Locale.JAPAN);
 
     /**
-     * 翌日を取得
+     * 今日の日時を取得
      *
-     * return 翌日
+     * return 今日の日時
      */
-    public static Date getNextDate() {
+    public static Date getToday() {
         final var calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 翌日の日時を取得
+     *
+     * return 翌日の日時
+     */
+    public static Date getTomorrow() {
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(getToday());
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
+
+    /**
+     * 昨日の日時を取得
+     *
+     * return 翌日の日時
+     */
+    public static Date getYesterday() {
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(getToday());
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        return calendar.getTime();
+    }
+
+    /**
+     * 指定した日時を取得
+     *
+     * @param year   年
+     *
+     * @param month  月
+     *
+     * @param day    日
+     *
+     * @param hour   時
+     *
+     * @param minute 分
+     *
+     * @return 日時
+     */
+    public static Date getDateTime(final int year, final int month, final int day, final int hour, final int minute) {
+        final var calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute);
         return calendar.getTime();
     }
 
@@ -46,6 +90,42 @@ public class DateTimeUtil {
      */
     public static String convertDateToString(final Date date) {
         return dateFormatter.format(date);
+    }
+
+    /**
+     * 日時を加算する
+     *
+     * @param date   日時
+     *
+     * @param field  calendar field
+     *
+     * @param amount 加算量
+     *
+     * @return 加算後の日時
+     */
+    public static Date addDateTime(final Date date, final int field, final int amount) {
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(field, amount);
+        return calendar.getTime();
+    }
+
+    /**
+     * 日時の属性を編集する
+     *
+     * @param date  日時
+     *
+     * @param field calendar field
+     *
+     * @param value 変更後の値
+     *
+     * @return 編集後の日時
+     */
+    public static Date editDateTime(final Date date, final int field, final int value) {
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(field, value);
+        return calendar.getTime();
     }
 
 }

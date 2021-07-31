@@ -77,7 +77,7 @@ public class SlackClient {
                 break;
         }
 
-        builder.append(DateTimeUtil.convertDateToString(DateTimeUtil.getNextDate())).append("\n");
+        builder.append(DateTimeUtil.convertDateToString(DateTimeUtil.getTomorrow())).append("\n");
         builder.append(UserUtil.getFullName(reservation.getUser())).append("  ");
         builder.append(DateTimeUtil.convertTimeToString(reservation.getStartAt())).append(" - ");
         builder.append(DateTimeUtil.convertTimeToString(reservation.getFinishAt())).append("\n");

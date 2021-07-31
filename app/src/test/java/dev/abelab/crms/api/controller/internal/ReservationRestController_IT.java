@@ -30,6 +30,7 @@ import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.api.request.ReservationUpdateRequest;
 import dev.abelab.crms.api.response.ReservationResponse;
 import dev.abelab.crms.api.response.ReservationsResponse;
+import dev.abelab.crms.util.DateTimeUtil;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ConflictException;
@@ -113,15 +114,10 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 2);
+			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.addDateTime(tomorrow, Calendar.HOUR, 11)) //
 				.build();
 
 			// test
@@ -167,7 +163,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 		Stream<Arguments> 異_開始時刻が終了時刻よりも後だと予約不可() {
 			return Stream.of(
 				// 開始時刻よりも前に終了時刻が設定されている
-				arguments(new Date(), SAMPLE_DATE),
+				arguments(DateTimeUtil.getTomorrow(), DateTimeUtil.getToday()),
 				// 開始時刻と終了時刻が同じ
 				arguments(SAMPLE_DATE, SAMPLE_DATE));
 		}
@@ -180,13 +176,9 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.set(2000, 1, 1, 9, 0);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.set(2000, 1, 1, 12, 0);
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.getDateTime(2000, 1, 1, 10, 0)) //
+				.finishAt(DateTimeUtil.getDateTime(2000, 1, 1, 11, 0)) //
 				.build();
 
 			// test
@@ -203,16 +195,12 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 1 + crmsProperty.getReservableHours());
-			finishAtCalendar.add(Calendar.MINUTE, 1);
+			final var tomorrow = DateTimeUtil.getTomorrow();
+			final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
+			final var finishAt = DateTimeUtil.addDateTime(startAt, Calendar.HOUR, 1 + crmsProperty.getReservableHours());
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(startAt) //
+				.finishAt(finishAt) //
 				.build();
 
 			// test
@@ -228,30 +216,19 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
 			final var jwt = getLoginUserJwt(loginUser);
 
-			// 9~13時は既に予約済み
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.DATE, 1);
-			startAtCalendar.set(Calendar.HOUR, 9);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.DATE, 1);
-			finishAtCalendar.set(Calendar.HOUR, 11);
-
+			// 9~11時が既に予約済み
+			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var reservation = ReservationSample.builder() //
-				.id(1) //
 				.userId(loginUser.getId()) //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 9)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
 				.build();
 			reservationRepository.insert(reservation);
 
 			// request body
-			startAtCalendar.set(Calendar.HOUR, startHour);
-			finishAtCalendar.set(Calendar.HOUR, finishHour);
 			final var requestBody = ReservationCreateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, startHour)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, finishHour)) //
 				.build();
 
 			// test
@@ -287,23 +264,18 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// setup
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 2);
-
-			final var reservation = ReservationSample.builder().id(1).userId(loginUser.getId()).startAt(startAtCalendar.getTime())
-				.finishAt(finishAtCalendar.getTime()).build();
+			final var tomorrow = DateTimeUtil.getTomorrow();
+			final var reservation = ReservationSample.builder() //
+				.userId(loginUser.getId()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
+				.build();
 			reservationRepository.insert(reservation);
 
 			// request body
-			startAtCalendar.add(Calendar.HOUR, 1);
-			finishAtCalendar.add(Calendar.HOUR, 1);
 			final var requestBody = ReservationUpdateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 13)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 14)) //
 				.build();
 
 			// test
@@ -346,15 +318,10 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			reservationRepository.insert(reservation);
 
 			// request body
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 2);
+			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var requestBody = ReservationUpdateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
 				.build();
 
 			// test
@@ -376,21 +343,44 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// request body
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 2);
+			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var requestBody = ReservationUpdateRequest.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
 				.build();
 
 			// test
 			final var request = putRequest(String.format(UPDATE_RESERVATION_PATH, 1), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
+		}
+
+		@Test
+		void 正_過去の予約は更新不可() throws Exception {
+			// login user
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var jwt = getLoginUserJwt(loginUser);
+
+			// setup
+			final var yesterday = DateTimeUtil.getYesterday();
+			final var reservation = ReservationSample.builder() //
+				.userId(loginUser.getId()) //
+				.startAt(DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 11)) //
+				.build();
+			reservationRepository.insert(reservation);
+
+			// request body
+			final var tomorrow = DateTimeUtil.getTomorrow();
+			final var requestBody = ReservationUpdateRequest.builder() //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 13)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 14)) //
+				.build();
+
+			// test
+			final var request = putRequest(String.format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, jwt);
+			execute(request, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_MODIFIED));
 		}
 
 	}
@@ -410,16 +400,11 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// setup
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 2);
-
+			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var reservation = ReservationSample.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.userId(loginUser.getId()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
 				.build();
 
 			// 予約者かどうか
@@ -460,16 +445,11 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// setup
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, 1);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, 2);
-
+			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var reservation = ReservationSample.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.userId(loginUser.getId()) //
+				.startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 11)) //
 				.build();
 
 			// 予約者かどうか
@@ -501,18 +481,12 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// setup
-			final var startAtCalendar = Calendar.getInstance();
-			startAtCalendar.setTime(SAMPLE_DATE);
-			startAtCalendar.add(Calendar.HOUR, -2);
-			final var finishAtCalendar = Calendar.getInstance();
-			finishAtCalendar.setTime(SAMPLE_DATE);
-			finishAtCalendar.add(Calendar.HOUR, -1);
-
+			final var yesterday = DateTimeUtil.getYesterday();
 			final var reservation = ReservationSample.builder() //
-				.startAt(startAtCalendar.getTime()) //
-				.finishAt(finishAtCalendar.getTime()) //
+				.userId(loginUser.getId()) //
+				.startAt(DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 10)) //
+				.finishAt(DateTimeUtil.editDateTime(yesterday, Calendar.HOUR, 11)) //
 				.build();
-			reservation.setUserId(loginUser.getId());
 			reservationRepository.insert(reservation);
 
 			// test
