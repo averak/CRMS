@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.Reservation;
+import dev.abelab.crms.enums.ReservationActionEnum;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
@@ -75,6 +76,9 @@ public class ReservationService {
             .finishAt(requestBody.getFinishAt()) //
             .build();
         this.reservationRepository.insert(reservation);
+
+        // Slackに通知
+        this.slackClient.sendEditReservationNotification(this.reservationLogic.getWithUser(reservation), ReservationActionEnum.REGISTERED);
     }
 
     /**
@@ -100,6 +104,9 @@ public class ReservationService {
         reservation.setStartAt(requestBody.getStartAt());
         reservation.setFinishAt(requestBody.getFinishAt());
         this.reservationRepository.update(reservation);
+
+        // Slackに通知
+        this.slackClient.sendEditReservationNotification(this.reservationLogic.getWithUser(reservation), ReservationActionEnum.CHANGED);
     }
 
     /**
@@ -122,6 +129,9 @@ public class ReservationService {
         this.reservationLogic.checkDeletableReservation(reservation);
 
         this.reservationRepository.deleteById(reservationId);
+
+        // Slackに通知
+        this.slackClient.sendEditReservationNotification(this.reservationLogic.getWithUser(reservation), ReservationActionEnum.DELETED);
     }
 
     /**
@@ -130,12 +140,10 @@ public class ReservationService {
     @Transactional
     public void lotteryReservations() {
         // 翌日の予約一覧を取得
-        final var reservationWithUserModels = this.reservationLogic.getNextDayReservations();
+        final var reservations = this.reservationLogic.getNextDayReservations();
 
-        // 抽選結果をSlackに送信
-        if (!reservationWithUserModels.isEmpty()) {
-            this.slackClient.sendLotteryResult(reservationWithUserModels);
-        }
+        // Slackに通知
+        this.slackClient.sendLotteryResult(reservations);
     }
 
 }

@@ -1,11 +1,7 @@
 package dev.abelab.crms.client;
 
-import java.lang.StringBuilder;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.List;
-import java.text.SimpleDateFormat;
+import java.lang.StringBuilder;
 
 import org.springframework.stereotype.Component;
 import com.slack.api.Slack;
@@ -18,6 +14,7 @@ import dev.abelab.crms.property.SlackProperty;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.InternalServerErrorException;
 import dev.abelab.crms.util.UserUtil;
+import dev.abelab.crms.util.DateTimeUtil;
 
 @Slf4j
 @Component
@@ -27,10 +24,6 @@ public class SlackClient {
 
     private final SlackProperty slackProperty;
 
-    private final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.JAPAN);
-
-    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM月dd日(E)", Locale.JAPAN);
-
     public SlackClient(SlackProperty slackProperty) {
         this.slackProperty = slackProperty;
         this.slack = Slack.getInstance();
@@ -38,22 +31,60 @@ public class SlackClient {
 
     /**
      * 抽選結果を送信
+     *
+     * @param reservations 予約（+ユーザ）一覧
      */
     public void sendLotteryResult(final List<ReservationWithUserModel> reservations) {
         final var builder = new StringBuilder();
-        reservations.stream().forEach(reservation -> {
-            builder.append(UserUtil.getFullName(reservation.getUser())).append("  ") //
-                .append(this.timeFormatter.format(reservation.getStartAt())).append(" - ") //
-                .append(this.timeFormatter.format(reservation.getFinishAt())) //
-                .append("\n");
-        });
 
-        final var calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        // 翌日の日付
+        final var nextDate = DateTimeUtil.getNextDate();
+        builder.append(DateTimeUtil.convertDateToString(nextDate));
 
-        final var message = this.dateFormatter.format(calendar.getTime()) + "\n" + builder.toString();
-        this.sendMessage(message);
+        // 予約一覧
+        if (reservations.isEmpty()) {
+            builder.append("この日の予約はありません");
+        } else {
+            reservations.stream().forEach(reservation -> {
+                builder.append(UserUtil.getFullName(reservation.getUser())).append("  ");
+                builder.append(DateTimeUtil.convertTimeToString(reservation.getStartAt())).append(" - ");
+                builder.append(DateTimeUtil.convertTimeToString(reservation.getFinishAt())).append("\n");
+            });
+        }
+
+        this.sendMessage(builder.toString());
+    }
+
+    /**
+     * 予約変更を通知
+     *
+     * @param reservation 予約（+ユーザ）
+     *
+     * @param action      予約アクション
+     */
+    public void sendEditReservationNotification(final ReservationWithUserModel reservation, final ReservationActionEnum action) {
+        final var builder = new StringBuilder();
+
+        switch (action) {
+            case REGISTERED:
+                builder.append("【予約追加】\n");
+                break;
+            case CHANGED:
+                builder.append("【予約変更】\n");
+                break;
+            case DELETED:
+                builder.append("【予約削除】\n");
+                break;
+            default:
+                break;
+        }
+
+        builder.append(UserUtil.getFullName(reservation.getUser())).append(" ");
+        builder.append(DateTimeUtil.convertTimeToString(reservation.getStartAt())).append(" - ");
+        builder.append(DateTimeUtil.convertTimeToString(reservation.getFinishAt())).append("\n");
+
+        this.sendMessage(builder.toString());
+
     }
 
     /**
