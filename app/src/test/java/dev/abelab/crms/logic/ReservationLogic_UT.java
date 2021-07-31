@@ -135,11 +135,10 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
         @Test
         void 正_削除可能な予約かチェック() {
-            final var tomorrow = DateTimeUtil.getTomorrow();
             final var reservation = ReservationSample.builder() //
                 .userId(SAMPLE_INT) //
-                .startAt(tomorrow) //
-                .finishAt(tomorrow) //
+                .startAt(TOMORROW) //
+                .finishAt(TOMORROW) //
                 .build();
 
             // verify
@@ -148,11 +147,10 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
         @Test
         void 異_過去の予約は削除不可() {
-            final var yesterday = DateTimeUtil.getYesterday();
             final var reservation = ReservationSample.builder() //
                 .userId(SAMPLE_INT) //
-                .startAt(yesterday) //
-                .finishAt(yesterday) //
+                .startAt(YESTERDAY) //
+                .finishAt(YESTERDAY) //
                 .build();
 
             // verify
@@ -180,9 +178,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            final var tomorrow = DateTimeUtil.getTomorrow();
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 10);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 11);
+            final var startAt = DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, 10);
+            final var finishAt = DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, 11);
             assertDoesNotThrow(() -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
         }
 
@@ -217,11 +214,10 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         @ParameterizedTest
         @MethodSource
         void 異_同時刻は既に予約済み(final int startHour, final int finishHour) {
-            final var tomorrow = DateTimeUtil.getTomorrow();
             final var reservation = ReservationSample.builder() //
                 .userId(SAMPLE_INT) //
-                .startAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 12)) //
-                .finishAt(DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, 14)) //
+                .startAt(DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, 12)) //
+                .finishAt(DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, 14)) //
                 .build();
 
             new Expectations() {
@@ -232,8 +228,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, startHour);
-            final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR_OF_DAY, finishHour);
+            final var startAt = DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, startHour);
+            final var finishAt = DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, finishHour);
             final var exception =
                 assertThrows(ConflictException.class, () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, 0));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.CONFLICT_RESERVATION_TIME);
@@ -288,21 +284,18 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         void 正_翌日の予約一覧を取得() {
             final var user = UserSample.builder().build();
 
-            final var yesterday = DateTimeUtil.getYesterday();
-            final var tomorrow = DateTimeUtil.getTomorrow();
-            final var dayAfterTomorrow = DateTimeUtil.addDateTime(tomorrow, Calendar.DAY_OF_MONTH, 1);
-
             // 予約一覧
+            final var dayAfterTOMORROW = DateTimeUtil.addDateTime(TOMORROW, Calendar.DAY_OF_MONTH, 1);
             final List<Reservation> reservations = Arrays.asList( //
                 // 過去の予約
-                ReservationSample.builder().id(1).userId(user.getId()).startAt(yesterday).finishAt(yesterday).build(), //
-                ReservationSample.builder().id(2).userId(user.getId()).startAt(yesterday).finishAt(yesterday).build(), //
+                ReservationSample.builder().id(1).userId(user.getId()).startAt(YESTERDAY).finishAt(YESTERDAY).build(), //
+                ReservationSample.builder().id(2).userId(user.getId()).startAt(YESTERDAY).finishAt(YESTERDAY).build(), //
                 // 翌日の予約
-                ReservationSample.builder().id(3).userId(user.getId()).startAt(tomorrow).finishAt(tomorrow).build(), //
-                ReservationSample.builder().id(4).userId(user.getId()).startAt(tomorrow).finishAt(tomorrow).build(), //
+                ReservationSample.builder().id(3).userId(user.getId()).startAt(TOMORROW).finishAt(TOMORROW).build(), //
+                ReservationSample.builder().id(4).userId(user.getId()).startAt(TOMORROW).finishAt(TOMORROW).build(), //
                 // 翌日以降の予約
-                ReservationSample.builder().id(5).userId(user.getId()).startAt(dayAfterTomorrow).finishAt(tomorrow).build(), //
-                ReservationSample.builder().id(6).userId(user.getId()).startAt(dayAfterTomorrow).finishAt(tomorrow).build() //
+                ReservationSample.builder().id(5).userId(user.getId()).startAt(dayAfterTOMORROW).finishAt(TOMORROW).build(), //
+                ReservationSample.builder().id(6).userId(user.getId()).startAt(dayAfterTOMORROW).finishAt(TOMORROW).build() //
             );
 
             new Expectations() {
