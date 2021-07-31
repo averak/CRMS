@@ -119,6 +119,31 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
     }
 
     /**
+     * Test for get with user
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class GetWithUserTest {
+
+        @Test
+        void 正_予約からユーザを取得() {
+            final var user = UserSample.builder().build();
+            final var reservation = ReservationSample.builder().userId(SAMPLE_INT).build();
+
+            new Expectations() {
+                {
+                    userRepository.selectById(anyInt);
+                    result = user;
+                }
+            };
+
+            final var reservationWithUser = reservationLogic.getWithUser(reservation);
+            assertThat(reservationWithUser.getUser()).isEqualTo(user);
+        }
+
+    }
+
+    /**
      * Test for get next day reservations
      */
     @Nested
