@@ -111,7 +111,7 @@ public class ReservationLogic {
             if (reservation.getId() == reservationId) {
                 // 過去の予約は更新不可
                 if (now.after(reservation.getFinishAt())) {
-                    throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_MODIFIED);
+                    throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_CHANGED);
                 }
                 return;
             }

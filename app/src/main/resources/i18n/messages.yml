@@ -18,7 +18,8 @@ exception:
     invalid_reservation: "Reservation is invalid."
     too_long_reservation_hours: "Reservation hours is too long."
     too_short_password: "Password is to short."
-    past_reservation_cannot_be_modified: "Past reservation cannot be modified."
+    past_reservation_cannot_be_created: "Past reservation cannot be created."
+    past_reservation_cannot_be_changed: "Past reservation cannot be changed."
     past_reservation_cannot_be_deleted: "Past reservation cannot be deleted."
   unauthorized:
     user_not_logged_in: "User has no logged in."

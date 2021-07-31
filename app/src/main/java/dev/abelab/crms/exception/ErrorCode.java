@@ -52,11 +52,13 @@ public enum ErrorCode {
 
     TOO_LONG_RESERVATION_HOURS(1402, "exception.bad_request.too_long_reservation_hours"),
 
-    PAST_RESERVATION_CANNOT_BE_MODIFIED(1403, "exception.bad_request.past_reservation_cannot_be_modified"),
+    PAST_RESERVATION_CANNOT_BE_CREATED(1403, "exception.bad_request.past_reservation_cannot_be_created"),
 
-    PAST_RESERVATION_CANNOT_BE_DELETED(1404, "exception.bad_request.past_reservation_cannot_be_deleted"),
+    PAST_RESERVATION_CANNOT_BE_CHANGED(1404, "exception.bad_request.past_reservation_cannot_be_changed"),
 
-    TOO_SHORT_PASSWORD(1405, "exception.bad_request.too_short_password"),
+    PAST_RESERVATION_CANNOT_BE_DELETED(1405, "exception.bad_request.past_reservation_cannot_be_deleted"),
+
+    TOO_SHORT_PASSWORD(1406, "exception.bad_request.too_short_password"),
 
     /**
      * Unauthorized: 1500~1599
