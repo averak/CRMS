@@ -49,13 +49,13 @@ public class UserRoleLogic_UT extends AbstractLogic_UT {
 
         @ParameterizedTest
         @MethodSource
-        void 正_無効なロールを付与(final int roleId) {
+        void 異_無効なロールを付与(final int roleId) {
             // verify
             final var exception = assertThrows(NotFoundException.class, () -> userRoleLogic.checkForValidRoleId(roleId));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_ROLE);
         }
 
-        Stream<Arguments> 正_無効なロールを付与() {
+        Stream<Arguments> 異_無効なロールを付与() {
             return Stream.of( // ロールID
                 arguments(0), //
                 arguments(UserRoleEnum.values().length + 1));
