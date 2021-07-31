@@ -14,7 +14,9 @@ This app is a clubroom reservation management system.
 ### Requirements
 
 - Java OpenJDK 11
-- docker-compose
+- Spring Boot 2.5
+- Angular 12
+- MySQL 8.0
 
 ### Usage
 
@@ -30,6 +32,13 @@ When build successful, you can find .jar file in `app/build/libs`
 
 #### How to run
 
+First, you need to launch mysql with `docker-compose`.
+
+```sh
+$ docker-compose up -d
+```
+
+Then you can launch application.
 Default port is `8080`. If you want to change port, run with `-Dserver.port=XXXX`.
 
 ```sh
@@ -43,7 +52,7 @@ $ ./gradlew bootRun
 #### How to test
 
 ```sh
-# 1 all tests
+# 1. all tests
 $ ./gradlew test
 
 # 2. only unit tests
