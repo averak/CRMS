@@ -13,9 +13,11 @@ import com.slack.api.webhook.Payload;
 
 import lombok.extern.slf4j.Slf4j;
 import dev.abelab.crms.model.ReservationWithUserModel;
+import dev.abelab.crms.enums.ReservationActionEnum;
 import dev.abelab.crms.property.SlackProperty;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.InternalServerErrorException;
+import dev.abelab.crms.util.UserUtil;
 
 @Slf4j
 @Component
@@ -25,6 +27,10 @@ public class SlackClient {
 
     private final SlackProperty slackProperty;
 
+    private final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.JAPAN);
+
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM月dd日(E)", Locale.JAPAN);
+
     public SlackClient(SlackProperty slackProperty) {
         this.slackProperty = slackProperty;
         this.slack = Slack.getInstance();
@@ -33,22 +39,20 @@ public class SlackClient {
     /**
      * 抽選結果を送信
      */
-    public void sendLotteryResult(final List<ReservationWithUserModel> reservationWithUserModels) {
+    public void sendLotteryResult(final List<ReservationWithUserModel> reservations) {
         final var builder = new StringBuilder();
-        final var timeFormatter = new SimpleDateFormat("HH:mm", Locale.JAPAN);
-        reservationWithUserModels.stream().forEach(reservationWithUserModel -> {
-            final var user = reservationWithUserModel.getUser();
-            builder.append(String.format("%s %s", user.getLastName(), user.getFirstName())).append("  ") //
-                .append(timeFormatter.format(reservationWithUserModel.getStartAt())).append(" - ") //
-                .append(timeFormatter.format(reservationWithUserModel.getFinishAt())) //
+        reservations.stream().forEach(reservation -> {
+            builder.append(UserUtil.getFullName(reservation.getUser())).append("  ") //
+                .append(this.timeFormatter.format(reservation.getStartAt())).append(" - ") //
+                .append(this.timeFormatter.format(reservation.getFinishAt())) //
                 .append("\n");
         });
 
-        final var dateFormatter = new SimpleDateFormat("MM月dd日(E)", Locale.JAPAN);
         final var calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        final var message = dateFormatter.format(calendar.getTime()) + "\n" + builder.toString();
+
+        final var message = this.dateFormatter.format(calendar.getTime()) + "\n" + builder.toString();
         this.sendMessage(message);
     }
 
