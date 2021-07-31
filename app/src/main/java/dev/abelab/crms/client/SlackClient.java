@@ -38,7 +38,6 @@ public class SlackClient {
         final var builder = new StringBuilder();
 
         builder.append("【明日の予約】\n");
-        builder.append(DateTimeUtil.convertDateToString(DateTimeUtil.getNextDate())).append("\n");
 
         // 予約一覧
         if (reservations.isEmpty()) {
