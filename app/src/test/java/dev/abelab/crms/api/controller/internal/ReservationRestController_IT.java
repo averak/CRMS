@@ -24,7 +24,6 @@ import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.db.entity.ReservationSample;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
-import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.api.request.ReservationUpdateRequest;
@@ -54,9 +53,6 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 
 	@Autowired
 	ReservationRepository reservationRepository;
-
-	@Autowired
-	CrmsProperty crmsProperty;
 
 	/**
 	 * 予約一覧取得APIのテスト
@@ -197,7 +193,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			// request body
 			final var tomorrow = DateTimeUtil.getTomorrow();
 			final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
-			final var finishAt = DateTimeUtil.addDateTime(startAt, Calendar.HOUR, 1 + crmsProperty.getReservableHours());
+			final var finishAt = DateTimeUtil.addDateTime(startAt, Calendar.HOUR, 4);
 			final var requestBody = ReservationCreateRequest.builder() //
 				.startAt(startAt) //
 				.finishAt(finishAt) //

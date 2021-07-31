@@ -13,7 +13,6 @@ import dev.abelab.crms.db.entity.Reservation;
 import dev.abelab.crms.model.ReservationWithUserModel;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
-import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BadRequestException;
@@ -24,11 +23,24 @@ import dev.abelab.crms.exception.ForbiddenException;
 @Component
 public class ReservationLogic {
 
+    /**
+     * 予約可能時間
+     */
+    private final int RESERVABLE_HOURS = 3;
+
+    /**
+     * 予約可能開始時刻
+     */
+    private final int RESERVABLE_START_HOUR = 9;
+
+    /**
+     * 予約可能終了時刻
+     */
+    private final int RESERVABLE_FINISH_HOUR = 9;
+
     private final UserRepository userRepository;
 
     private final ReservationRepository reservationRepository;
-
-    private final CrmsProperty crmsProperty;
 
     private final ModelMapper modelMapper;
 
@@ -84,7 +96,7 @@ public class ReservationLogic {
 
         // 制限時間を超過している
         final var diffHours = (finishAt.getTime() - startAt.getTime()) / (1000.0 * 60.0 * 60.0);
-        if (diffHours > this.crmsProperty.getReservableHours()) {
+        if (diffHours > this.RESERVABLE_HOURS) {
             throw new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS);
         }
 

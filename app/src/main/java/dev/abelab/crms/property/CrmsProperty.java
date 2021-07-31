@@ -21,11 +21,6 @@ public class CrmsProperty {
     String hostname;
 
     /**
-     * reservable hour
-     */
-    Integer reservableHours;
-
-    /**
      * Admin
      */
     Admin admin;

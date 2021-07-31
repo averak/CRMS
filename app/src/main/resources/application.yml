@@ -36,7 +36,6 @@ crms:
     map:
       package: db.mapper
   protocol: http
-  reservable-hours: 3
   hostname: localhost:${server.port}
   admin:
     first-name: 健太朗

@@ -29,7 +29,6 @@ import dev.abelab.crms.db.entity.ReservationSample;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
-import dev.abelab.crms.property.CrmsProperty;
 import dev.abelab.crms.util.DateTimeUtil;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BadRequestException;
@@ -43,9 +42,6 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
     @Injectable
     ReservationRepository reservationRepository;
-
-    @Injectable
-    CrmsProperty crmsProperty;
 
     @Tested
     ModelMapper modelMapper;
@@ -172,10 +168,6 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
         void 正_予約可能な日時() {
             new Expectations() {
                 {
-                    crmsProperty.getReservableHours();
-                    result = 3;
-                }
-                {
                     reservationRepository.selectByUserId(anyInt);
                     result = new ArrayList<Reservation>();
                 }
@@ -223,13 +215,6 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
         @Test
         void 異_制限時間を超過している() {
-            new Expectations() {
-                {
-                    crmsProperty.getReservableHours();
-                    result = 3;
-                }
-            };
-
             // verify
             final var tomorrow = DateTimeUtil.getTomorrow();
             final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, 10);
@@ -252,10 +237,6 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
             new Expectations() {
                 {
-                    crmsProperty.getReservableHours();
-                    result = 3;
-                }
-                {
                     reservationRepository.selectByUserId(anyInt);
                     result = Arrays.asList(reservation);
                 }
@@ -264,8 +245,8 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             // verify
             final var startAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, startHour);
             final var finishAt = DateTimeUtil.editDateTime(tomorrow, Calendar.HOUR, finishHour);
-            final var exception = assertThrows(ConflictException.class,
-                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, 0));
+            final var exception =
+                assertThrows(ConflictException.class, () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, 0));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.CONFLICT_RESERVATION_TIME);
         }
 
