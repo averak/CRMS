@@ -1,6 +1,5 @@
 package dev.abelab.crms.api.controller.internal;
 
-import static java.lang.String.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
@@ -268,7 +267,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
+			final var request = putRequest(String.format(UPDATE_USER_PATH, user.getId()), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
@@ -304,7 +303,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = putRequest(format(UPDATE_USER_PATH, user.getId()), requestBody);
+			final var request = putRequest(String.format(UPDATE_USER_PATH, user.getId()), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
@@ -325,7 +324,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = putRequest(format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
+			final var request = putRequest(String.format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}
@@ -350,7 +349,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			userRepository.insert(user);
 
 			// test
-			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, user.getId()));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
@@ -370,7 +369,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			userRepository.insert(user);
 
 			// test
-			final var request = deleteRequest(format(DELETE_USER_PATH, user.getId()));
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, user.getId()));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 
@@ -385,7 +384,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// test
-			final var request = deleteRequest(format(DELETE_USER_PATH, SAMPLE_INT));
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, SAMPLE_INT));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
 		}

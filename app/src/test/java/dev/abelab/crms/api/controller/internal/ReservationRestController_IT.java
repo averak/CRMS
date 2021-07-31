@@ -1,6 +1,5 @@
 package dev.abelab.crms.api.controller.internal;
 
-import static java.lang.String.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
@@ -308,7 +307,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = putRequest(format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
+			final var request = putRequest(String.format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
@@ -359,7 +358,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = putRequest(format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
+			final var request = putRequest(String.format(UPDATE_RESERVATION_PATH, reservation.getId()), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
@@ -389,7 +388,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = putRequest(format(UPDATE_RESERVATION_PATH, 1), requestBody);
+			final var request = putRequest(String.format(UPDATE_RESERVATION_PATH, 1), requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
 		}
@@ -434,7 +433,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			reservationRepository.insert(reservation);
 
 			// test
-			final var request = deleteRequest(format(DELETE_RESERVATION_PATH, reservation.getId()));
+			final var request = deleteRequest(String.format(DELETE_RESERVATION_PATH, reservation.getId()));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, HttpStatus.OK);
 
@@ -484,7 +483,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			reservationRepository.insert(reservation);
 
 			// test
-			final var request = deleteRequest(format(DELETE_RESERVATION_PATH, reservation.getId()));
+			final var request = deleteRequest(String.format(DELETE_RESERVATION_PATH, reservation.getId()));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
 		}
@@ -517,7 +516,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			reservationRepository.insert(reservation);
 
 			// test
-			final var request = deleteRequest(format(DELETE_RESERVATION_PATH, reservation.getId()));
+			final var request = deleteRequest(String.format(DELETE_RESERVATION_PATH, reservation.getId()));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_DELETED));
 		}
@@ -529,7 +528,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 			final var jwt = getLoginUserJwt(loginUser);
 
 			// test
-			final var request = deleteRequest(format(DELETE_RESERVATION_PATH, 1));
+			final var request = deleteRequest(String.format(DELETE_RESERVATION_PATH, 1));
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
 		}
