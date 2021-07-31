@@ -37,9 +37,8 @@ public class SlackClient {
     public void sendLotteryResult(final List<ReservationWithUserModel> reservations) {
         final var builder = new StringBuilder();
 
-        // 翌日の日付
-        final var nextDate = DateTimeUtil.getNextDate();
-        builder.append(DateTimeUtil.convertDateToString(nextDate));
+        builder.append("【明日の予約】\n");
+        builder.append(DateTimeUtil.convertDateToString(DateTimeUtil.getNextDate())).append("\n");
 
         // 予約一覧
         if (reservations.isEmpty()) {
@@ -79,7 +78,8 @@ public class SlackClient {
                 break;
         }
 
-        builder.append(UserUtil.getFullName(reservation.getUser())).append(" ");
+        builder.append(DateTimeUtil.convertDateToString(DateTimeUtil.getNextDate())).append("\n");
+        builder.append(UserUtil.getFullName(reservation.getUser())).append("  ");
         builder.append(DateTimeUtil.convertTimeToString(reservation.getStartAt())).append(" - ");
         builder.append(DateTimeUtil.convertTimeToString(reservation.getFinishAt())).append("\n");
 
