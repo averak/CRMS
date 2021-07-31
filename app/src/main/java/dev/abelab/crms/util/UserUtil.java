@@ -23,4 +23,15 @@ public class UserUtil {
             .build();
     }
 
+    /**
+     * フルネームを取得
+     *
+     * @param user ユーザ
+     *
+     * @return フルネーム
+     */
+    public static String getFullName(final User user) {
+        return String.format("%s %s", user.getLastName(), user.getFirstName());
+    }
+
 }
