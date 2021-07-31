@@ -19,7 +19,7 @@ public class DateTimeUtil {
     public static Date getToday() {
         final var calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         return calendar.getTime();
@@ -126,6 +126,32 @@ public class DateTimeUtil {
         calendar.setTime(date);
         calendar.set(field, value);
         return calendar.getTime();
+    }
+
+    /**
+     * 日時から時間を取得する
+     *
+     * @param date 日時
+     *
+     * @return 時間
+     */
+    public static int getHour(final Date date) {
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 時間差分を計算
+     *
+     * @param date1 日時1
+     *
+     * @param date2 日時2
+     *
+     * @return 時間差分
+     */
+    public static int diffHours(final Date date1, final Date date2) {
+        return (int) Math.abs((date1.getTime() - date2.getTime()) / (1000.0 * 60.0 * 60.0));
     }
 
 }

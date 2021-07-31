@@ -14,6 +14,7 @@ import dev.abelab.crms.model.ReservationWithUserModel;
 import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.enums.UserRoleEnum;
+import dev.abelab.crms.util.DateTimeUtil;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ConflictException;
@@ -36,7 +37,7 @@ public class ReservationLogic {
     /**
      * 予約可能終了時刻
      */
-    private final int RESERVABLE_FINISH_HOUR = 9;
+    private final int RESERVABLE_FINISH_HOUR = 20;
 
     private final UserRepository userRepository;
 
@@ -95,9 +96,13 @@ public class ReservationLogic {
         }
 
         // 制限時間を超過している
-        final var diffHours = (finishAt.getTime() - startAt.getTime()) / (1000.0 * 60.0 * 60.0);
-        if (diffHours > this.RESERVABLE_HOURS) {
+        if (DateTimeUtil.diffHours(startAt, finishAt) > this.RESERVABLE_HOURS) {
             throw new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS);
+        }
+
+        // 予約可能範囲（09:00〜20:00）に収まっていない
+        if (DateTimeUtil.getHour(startAt) < this.RESERVABLE_START_HOUR || DateTimeUtil.getHour(finishAt) > this.RESERVABLE_FINISH_HOUR) {
+            throw new BadRequestException(ErrorCode.INVALID_RESERVATION);
         }
 
         // 同時刻はすでに予約済み
@@ -108,7 +113,6 @@ public class ReservationLogic {
                 if (now.after(reservation.getFinishAt())) {
                     throw new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_MODIFIED);
                 }
-
                 return;
             }
 
