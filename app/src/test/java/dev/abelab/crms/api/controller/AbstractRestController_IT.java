@@ -49,7 +49,7 @@ public abstract class AbstractRestController_IT {
 	protected static final String SAMPLE_STR = "SAMPLE STRING";
 	protected static final Date SAMPLE_DATE = new Date();
 	protected static final String LOGIN_USER_EMAIL = "login_user@abelab.dev";
-	protected static final String LOGIN_USER_PASSWORD = "rG$RiyWCVgsF";
+	protected static final String LOGIN_USER_PASSWORD = "f4BabxEr7xA6";
 	protected static final Integer LOGIN_USER_ADMISSION_AT = SAMPLE_INT;
 
 	/**

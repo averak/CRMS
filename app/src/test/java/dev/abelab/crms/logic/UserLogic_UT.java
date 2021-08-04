@@ -241,10 +241,14 @@ public class UserLogic_UT extends AbstractLogic_UT {
             return Stream.of(
                 // 有効なパスワード
                 arguments("f4BabxEr", null), //
-                arguments("SSa67tAX7xA6", null), //
+                arguments("f4BabxEr7xA6", null), //
                 // 無効なパスワード
                 arguments("", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)), //
-                arguments("f4BabxE", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)));
+                arguments("f4BabxE", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)), //
+                arguments("f4babxer", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
+                arguments("F4BABXER", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
+                arguments("fxbabxEr", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD))
+            );
         }
 
     }

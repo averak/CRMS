@@ -29,6 +29,7 @@ import dev.abelab.crms.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.api.response.UsersResponse;
 import dev.abelab.crms.exception.ErrorCode;
+import dev.abelab.crms.exception.BaseException;
 import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ConflictException;
 import dev.abelab.crms.exception.NotFoundException;
@@ -123,7 +124,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
 				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
+				.password(LOGIN_USER_PASSWORD) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT) //
@@ -157,7 +158,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
 				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
+				.password(LOGIN_USER_PASSWORD) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT) //
@@ -179,7 +180,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
 				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
+				.password(LOGIN_USER_PASSWORD) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT) //
@@ -204,7 +205,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
 				.lastName(SAMPLE_STR) //
-				.password(SAMPLE_STR) //
+				.password(LOGIN_USER_PASSWORD) //
 				.email(SAMPLE_STR) //
 				.roleId(0) //
 				.admissionYear(SAMPLE_INT) //
@@ -216,8 +217,9 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
 		}
 
-		@Test
-		void 異_パスワードが短すぎる() throws Exception {
+		@ParameterizedTest
+		@MethodSource
+		void 異_無効なパスワード(final String password, final BaseException exception) throws Exception {
 			// login user
 			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
 			final var jwt = getLoginUserJwt(loginUser);
@@ -226,7 +228,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var requestBody = UserCreateRequest.builder() //
 				.firstName(SAMPLE_STR) //
 				.lastName(SAMPLE_STR) //
-				.password("*******") //
+				.password(password) //
 				.email(SAMPLE_STR) //
 				.roleId(UserRoleEnum.MEMBER.getId()) //
 				.admissionYear(SAMPLE_INT) //
@@ -235,7 +237,17 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			// test
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, jwt);
-			execute(request, new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD));
+			execute(request, exception);
+		}
+
+		Stream<Arguments> 異_無効なパスワード() {
+			return Stream.of( //
+				arguments("", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)), //
+				arguments("f4BabxE", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)), //
+				arguments("f4babxer", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
+				arguments("F4BABXER", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
+				arguments("fxbabxEr", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)) //
+			);
 		}
 
 	}
