@@ -26,6 +26,7 @@ import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.property.JwtProperty;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.BaseException;
+import dev.abelab.crms.exception.BadRequestException;
 import dev.abelab.crms.exception.ForbiddenException;
 import dev.abelab.crms.exception.UnauthorizedException;
 
@@ -213,6 +214,37 @@ public class UserLogic_UT extends AbstractLogic_UT {
             // verify
             final var exception = assertThrows(UnauthorizedException.class, () -> userLogic.verifyPassword(user, anyString()));
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.WRONG_PASSWORD);
+        }
+
+    }
+
+    /**
+     * Test for validate password
+     */
+    @Nested
+    @TestInstance(PER_CLASS)
+    class validatePasswordTest {
+
+        @ParameterizedTest
+        @MethodSource
+        void パスワードが有効かチェック(final String password, final BaseException exception) {
+            // verify
+            if (exception == null) {
+                assertDoesNotThrow(() -> userLogic.validatePassword(password));
+            } else {
+                final var occurredException = assertThrows(exception.getClass(), () -> userLogic.validatePassword(password));
+                assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
+            }
+        }
+
+        Stream<Arguments> パスワードが有効かチェック() {
+            return Stream.of(
+                // 有効なパスワード
+                arguments("f4BabxEr", null), //
+                arguments("SSa67tAX7xA6", null), //
+                // 無効なパスワード
+                arguments("", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)), //
+                arguments("f4BabxE", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)));
         }
 
     }
