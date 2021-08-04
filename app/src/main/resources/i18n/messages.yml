@@ -15,7 +15,8 @@ exception:
     user_has_no_permission: "User has no permission."
   bad_request:
     validation_error: "Validation error has occurred."
-    too_short_password: "Password is to short."
+    too_short_password: "Password is too short."
+    too_simple_password: "Password is too simple."
     invalid_reservation_time: "Reservation time is invalid."
     too_long_reservation_hours: "Reservation hours is too long."
     past_reservation_cannot_be_created: "Past reservation cannot be created."
