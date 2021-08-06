@@ -10,7 +10,7 @@
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "check": "npm-run-all check:*",
     "check:lint": "ng lint",
-    "check:format": "prettier --check src",
+    "check:format": "ng lint --fix",
     "format": "prettier --write src"
   },
   "private": true,
