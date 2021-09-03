@@ -19,8 +19,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 
 import { UserModel } from 'src/app/model/user-model';
-import { CalendarEventWithReservation } from 'src/app/model/calendar-event-with-reservation';
-import { ReservationModel } from 'src/app/model/reservation-model';
+import { ReservationModel, CalendarEventWithReservation } from 'src/app/model/reservation-model';
 import { ReservationColorEnum } from 'src/app/enums/reservation-color-enum';
 import { ReservationNewDialogComponent } from 'src/app/components/container/reservation-new-dialog/reservation-new-dialog.component';
 import { UserService } from 'src/app/shared/services/user.service';

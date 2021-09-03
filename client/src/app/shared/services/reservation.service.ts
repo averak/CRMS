@@ -3,8 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { HttpBaseService } from 'src/app/shared/services/http-base.service';
-import { ReservationModel } from 'src/app/model/reservation-model';
-import { ReservationsModel } from 'src/app/model/reservations-model';
+import { ReservationModel, ReservationsModel } from 'src/app/model/reservation-model';
 import { ReservationCreateRequest } from 'src/app/request/reservation-create-request';
 import { ReservationUpdateRequest } from 'src/app/request/reservation-update-request';
 

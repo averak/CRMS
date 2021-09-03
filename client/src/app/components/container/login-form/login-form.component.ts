@@ -26,8 +26,8 @@ export class LoginFormComponent implements OnInit {
 
   handleLogin(requestBody: UserLoginRequest) {
     this.authService.login(requestBody).subscribe(
-      (resp) => {
-        this.cookieService.set(environment.COOKIE_AUTH_KEY, resp.headers.get('Authorization'));
+      (accessToken) => {
+        this.authService.setCredentials(accessToken);
         this.alertService.openSnackBar('ログインに成功しました', 'SUCCESS');
         this.loginTransit.emit();
       },

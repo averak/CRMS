@@ -18,14 +18,7 @@ export class HttpBaseService {
   ) {}
 
   getRequest<T>(url: string, redirectErrorPage: boolean = false) {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.get<T>(url, options).pipe(
+    return this.http.get<T>(url, this.getRequestOptions()).pipe(
       catchError((error) => {
         const errorCodes: number[] = Object.keys(this.errorMessageService.messages).map(Number);
 
@@ -45,14 +38,7 @@ export class HttpBaseService {
   }
 
   postRequest<T>(url: string, requestBody: any, redirectErrorPage: boolean = false) {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.post<T>(url, requestBody, options).pipe(
+    return this.http.post<T>(url, requestBody, this.getRequestOptions()).pipe(
       catchError((error) => {
         const errorCodes: number[] = Object.keys(this.errorMessageService.messages).map(Number);
 
@@ -72,14 +58,7 @@ export class HttpBaseService {
   }
 
   putRequest<T>(url: string, requestBody: any, redirectErrorPage: boolean = false) {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.put<T>(url, requestBody, options).pipe(
+    return this.http.put<T>(url, requestBody, this.getRequestOptions()).pipe(
       catchError((error) => {
         const errorCodes: number[] = Object.keys(this.errorMessageService.messages).map(Number);
 
@@ -99,14 +78,7 @@ export class HttpBaseService {
   }
 
   deleteRequest<T>(url: string, redirectErrorPage: boolean = false) {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.authService.getJwt(),
-      }),
-    };
-
-    return this.http.delete<T>(url, options).pipe(
+    return this.http.delete<T>(url, this.getRequestOptions()).pipe(
       catchError((error) => {
         const errorCodes: number[] = Object.keys(this.errorMessageService.messages).map(Number);
 
@@ -123,5 +95,14 @@ export class HttpBaseService {
         throw this.errorMessageService.getErrorMessage(error.error.code);
       })
     );
+  }
+
+  protected getRequestOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: this.authService.getCredentials(),
+      }),
+    };
   }
 }

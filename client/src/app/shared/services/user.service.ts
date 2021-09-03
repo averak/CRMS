@@ -3,8 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { HttpBaseService } from 'src/app/shared/services/http-base.service';
-import { UserModel } from 'src/app/model/user-model';
-import { UsersModel } from 'src/app/model/users-model';
+import { UserModel, UsersModel } from 'src/app/model/user-model';
 import { UserRoleEnum } from 'src/app/enums/user-role-enum';
 import { UserCreateRequest } from 'src/app/request/user-create-request';
 import { UserUpdateRequest } from 'src/app/request/user-update-request';

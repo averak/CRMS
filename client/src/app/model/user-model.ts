@@ -9,3 +9,12 @@ export interface UserModel {
   roleId: number;
   admissionYear: number;
 }
+
+export interface UsersModel {
+  users: UserModel[];
+}
+
+export interface AccessTokenModel {
+  accessToken: string;
+  tokenType: string;
+}
