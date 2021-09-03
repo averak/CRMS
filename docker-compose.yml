@@ -14,6 +14,7 @@ services:
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./mysql/log/local:/var/log/mysql
+      - ./mysql/db:/var/lib/mysql
   db-test:
     build: ./mysql
     restart: always
@@ -27,4 +28,4 @@ services:
       - "3307:3306"
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
-      - ./mysql/log/local:/var/log/mysql
+      - ./mysql/log/test:/var/log/mysql
