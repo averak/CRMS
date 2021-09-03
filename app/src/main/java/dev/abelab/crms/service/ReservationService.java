@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.modelmapper.ModelMapper;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.Reservation;
@@ -12,15 +13,18 @@ import dev.abelab.crms.repository.UserRepository;
 import dev.abelab.crms.repository.ReservationRepository;
 import dev.abelab.crms.api.request.ReservationCreateRequest;
 import dev.abelab.crms.api.request.ReservationUpdateRequest;
+import dev.abelab.crms.api.response.ReservationResponse;
 import dev.abelab.crms.api.response.ReservationsResponse;
+import dev.abelab.crms.api.response.UserResponse;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.ReservationLogic;
 import dev.abelab.crms.client.SlackClient;
-import dev.abelab.crms.util.ReservationUtil;
 
 @RequiredArgsConstructor
 @Service
 public class ReservationService {
+
+    private final ModelMapper modelMapper;
 
     private final UserLogic userLogic;
 
@@ -48,7 +52,9 @@ public class ReservationService {
         final var reservationResponses = reservations.stream().map(reservation -> {
             // 予約者を取得
             final var user = this.userRepository.selectById(reservation.getUserId());
-            return ReservationUtil.buildReservationResponse(reservation, user);
+            final var reservationResponse = this.modelMapper.map(reservation, ReservationResponse.class);
+            reservationResponse.setUser(this.modelMapper.map(user, UserResponse.class));
+            return reservationResponse;
         }).collect(Collectors.toList());
 
         return new ReservationsResponse(reservationResponses);
@@ -70,11 +76,8 @@ public class ReservationService {
         this.reservationLogic.validateReservationTime(requestBody.getStartAt(), requestBody.getFinishAt(), loginUser.getId(), 0);
 
         // 予約の作成
-        final var reservation = Reservation.builder() //
-            .userId(loginUser.getId()) //
-            .startAt(requestBody.getStartAt()) //
-            .finishAt(requestBody.getFinishAt()) //
-            .build();
+        final var reservation = this.modelMapper.map(requestBody, Reservation.class);
+        reservation.setUserId(loginUser.getId());
         this.reservationRepository.insert(reservation);
 
         // Slackに通知

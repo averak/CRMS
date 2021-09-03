@@ -7,9 +7,10 @@ import lombok.*;
 /**
  * 予約一覧レスポンス
  */
-@Value
+@Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReservationsResponse {
 
     /**

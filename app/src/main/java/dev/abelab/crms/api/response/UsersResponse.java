@@ -7,9 +7,10 @@ import lombok.*;
 /**
  * ユーザ一覧レスポンス
  */
-@Value
+@Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsersResponse {
 
     /**

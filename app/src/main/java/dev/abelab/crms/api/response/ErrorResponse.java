@@ -2,9 +2,13 @@ package dev.abelab.crms.api.response;
 
 import lombok.*;
 
-@Value
+/**
+ * エラー情報レスポンス
+ */
+@Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ErrorResponse {
 
     /**
