@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.modelmapper.ModelMapper;
 
 import lombok.*;
 import dev.abelab.crms.db.entity.User;
@@ -16,11 +17,12 @@ import dev.abelab.crms.api.request.LoginUserUpdateRequest;
 import dev.abelab.crms.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
-import dev.abelab.crms.util.UserUtil;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
+    private final ModelMapper modelMapper;
 
     private final UserLogic userLogic;
 
@@ -45,7 +47,8 @@ public class UserService {
 
         // ユーザの取得
         final var users = this.userRepository.findAll();
-        final var userResponses = users.stream().map(UserUtil::buildUserResponse) //
+        final var userResponses = users.stream() //
+            .map(user -> this.modelMapper.map(user, UserResponse.class)) //
             .collect(Collectors.toList());
 
         return new UsersResponse(userResponses);
@@ -73,15 +76,8 @@ public class UserService {
         this.userLogic.validatePassword(requestBody.getPassword());
 
         // ユーザの作成
-        final var user = User.builder() //
-            .firstName(requestBody.getFirstName()) //
-            .lastName(requestBody.getLastName()) //
-            .email(requestBody.getEmail()) //
-            .password(this.userLogic.encodePassword(requestBody.getPassword())) //
-            .roleId(requestBody.getRoleId()) //
-            .admissionYear(requestBody.getAdmissionYear()) //
-            .build();
-
+        final var user = this.modelMapper.map(requestBody, User.class);
+        user.setPassword(this.userLogic.encodePassword(requestBody.getPassword()));
         this.userRepository.insert(user);
     }
 
@@ -101,6 +97,9 @@ public class UserService {
 
         // 管理者かチェック
         this.userLogic.checkAdmin(loginUser.getId());
+
+        // 作成するアカウントのロールの有効性をチェック
+        this.userRoleLogic.checkForValidRoleId(requestBody.getRoleId());
 
         final var user = this.userRepository.selectById(userId);
         user.setFirstName(requestBody.getFirstName());
@@ -144,7 +143,7 @@ public class UserService {
         // ユーザの取得
         final var user = userRepository.selectById(loginUser.getId());
 
-        return UserUtil.buildUserResponse(user);
+        return this.modelMapper.map(user, UserResponse.class);
     }
 
     /**

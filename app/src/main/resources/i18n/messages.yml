@@ -5,7 +5,7 @@ exception:
   not_found:
     error_code: "Error Code does not exists."
     user: "User does not exists."
-    role: "Role does not exists."
+    user_role: "User role does not exists."
     reservation: "Reservation does not exists."
     api: "API does not exists."
   conflict:
@@ -15,7 +15,7 @@ exception:
     user_has_no_permission: "User has no permission."
   bad_request:
     validation_error: "Validation error has occurred."
-    too_short_password: "Password is too short."
+    invalid_password_size: "Password is invalid."
     too_simple_password: "Password is too simple."
     invalid_reservation_time: "Reservation time is invalid."
     too_long_reservation_hours: "Reservation hours is too long."

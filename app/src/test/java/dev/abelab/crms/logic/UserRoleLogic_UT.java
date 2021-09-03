@@ -52,7 +52,7 @@ public class UserRoleLogic_UT extends AbstractLogic_UT {
         void 異_無効なロールを付与(final int roleId) {
             // verify
             final var exception = assertThrows(NotFoundException.class, () -> userRoleLogic.checkForValidRoleId(roleId));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_ROLE);
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_USER_ROLE);
         }
 
         Stream<Arguments> 異_無効なロールを付与() {

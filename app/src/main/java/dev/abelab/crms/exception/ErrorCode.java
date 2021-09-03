@@ -25,7 +25,7 @@ public enum ErrorCode {
 
     NOT_FOUND_USER(1101, "exception.not_found.user"),
 
-    NOT_FOUND_ROLE(1102, "exception.not_found.role"),
+    NOT_FOUND_USER_ROLE(1102, "exception.not_found.user_role"),
 
     NOT_FOUND_RESERVATION(1103, "exception.not_found.reservation"),
 
@@ -48,7 +48,7 @@ public enum ErrorCode {
      */
     VALIDATION_ERROR(1400, "exception.bad_request.validation_error"),
 
-    TOO_SHORT_PASSWORD(1401, "exception.bad_request.too_short_password"),
+    INVALID_PASSWORD_SIZE(1401, "exception.bad_request.invalid_password_size"),
 
     TOO_SIMPLE_PASSWORD(1402, "exception.bad_request.too_simple_password"),
 

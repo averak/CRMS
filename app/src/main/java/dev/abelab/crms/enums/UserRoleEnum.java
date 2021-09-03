@@ -36,7 +36,7 @@ public enum UserRoleEnum {
      */
     public static UserRoleEnum findById(final int id) {
         return Arrays.stream(values()).filter(e -> e.getId() == id) //
-            .findFirst().orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_ROLE));
+            .findFirst().orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER_ROLE));
     }
 
 }
