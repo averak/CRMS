@@ -236,38 +236,4 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
     }
 
-    /**
-     * Test for validate password
-     */
-    @Nested
-    @TestInstance(PER_CLASS)
-    class validatePasswordTest {
-
-        @ParameterizedTest
-        @MethodSource
-        void パスワードが有効かチェック(final String password, final BaseException exception) {
-            // verify
-            if (exception == null) {
-                assertDoesNotThrow(() -> userLogic.validatePassword(password));
-            } else {
-                final var occurredException = assertThrows(exception.getClass(), () -> userLogic.validatePassword(password));
-                assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
-            }
-        }
-
-        Stream<Arguments> パスワードが有効かチェック() {
-            return Stream.of(
-                // 有効なパスワード
-                arguments("f4BabxEr", null), //
-                arguments("f4BabxEr7xA6", null), //
-                // 無効なパスワード
-                arguments("", new BadRequestException(ErrorCode.INVALID_PASSWORD_SIZE)), //
-                arguments("f4BabxE", new BadRequestException(ErrorCode.INVALID_PASSWORD_SIZE)), //
-                arguments("f4babxer", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
-                arguments("F4BABXER", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
-                arguments("fxbabxEr", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)));
-        }
-
-    }
-
 }
