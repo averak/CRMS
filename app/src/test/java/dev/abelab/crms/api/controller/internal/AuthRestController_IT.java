@@ -18,9 +18,11 @@ import org.springframework.http.HttpHeaders;
 import dev.abelab.crms.api.controller.AbstractRestController_IT;
 import dev.abelab.crms.db.entity.UserSample;
 import dev.abelab.crms.api.request.LoginRequest;
+import dev.abelab.crms.api.response.AccessTokenResponse;
 import dev.abelab.crms.enums.UserRoleEnum;
 import dev.abelab.crms.exception.ErrorCode;
 import dev.abelab.crms.exception.NotFoundException;
+import dev.abelab.crms.exception.UnauthorizedException;
 
 /**
  * AuthRestController Integration Test
@@ -51,11 +53,12 @@ public class AuthRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// test
-			final var request = postRequest("/api/login", requestBody);
-			final var response = execute(request, HttpStatus.OK);
+			final var request = postRequest(LOGIN_PATH, requestBody);
+			final var response = execute(request, HttpStatus.OK, AccessTokenResponse.class);
 
 			// verify
-			assertThat(response.getResponse().getHeader(HttpHeaders.AUTHORIZATION)).isNotNull();
+			assertThat(response.getAccessToken()).isNotNull();
+			assertThat(response.getTokenType()).isEqualTo("Bearer");
 		}
 
 		Stream<Arguments> 正_存在するユーザがログイン() {
@@ -79,8 +82,24 @@ public class AuthRestController_IT extends AbstractRestController_IT {
 				.build();
 
 			// login
-			final var request = postRequest("/api/login", requestBody);
+			final var request = postRequest(LOGIN_PATH, requestBody);
 			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
+		}
+
+		@Test
+		void 異_パスワードが間違えている() throws Exception {
+			// setup
+			createLoginUser(UserRoleEnum.MEMBER);
+
+			// login request body
+			final var requestBody = LoginRequest.builder() //
+				.email(LOGIN_USER_EMAIL) //
+				.password(LOGIN_USER_PASSWORD + "dummy") //
+				.build();
+
+			// test
+			final var request = postRequest(LOGIN_PATH, requestBody);
+			execute(request, new UnauthorizedException(ErrorCode.WRONG_PASSWORD));
 		}
 
 	}

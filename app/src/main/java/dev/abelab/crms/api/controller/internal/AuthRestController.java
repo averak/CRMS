@@ -1,8 +1,6 @@
 package dev.abelab.crms.api.controller.internal;
 
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import dev.abelab.crms.api.request.LoginRequest;
+import dev.abelab.crms.api.response.AccessTokenResponse;
 import dev.abelab.crms.service.AuthService;
 
 @Api(tags = "Auth")
@@ -26,7 +25,7 @@ public class AuthRestController {
      *
      * @param requestBody ログイン情報
      *
-     * @return JWT
+     * @return アクセストークンレスポンス
      */
     @ApiOperation(value = "ログイン", //
         notes = "ユーザのログイン処理を行う。" //
@@ -38,12 +37,10 @@ public class AuthRestController {
     })
     @PostMapping(value = "/login")
     @ResponseStatus(HttpStatus.OK)
-    public void login( //
-        @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody, //
-        final HttpServletResponse response //
+    public AccessTokenResponse login( //
+        @Validated @ApiParam(name = "body", required = true, value = "ログイン情報") @RequestBody final LoginRequest requestBody //
     ) {
-        final var jwt = this.authService.login(requestBody);
-        response.setHeader(HttpHeaders.AUTHORIZATION, jwt);
+        return this.authService.login(requestBody);
     }
 
 }

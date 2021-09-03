@@ -124,7 +124,7 @@ public class UserLogic_UT extends AbstractLogic_UT {
     class getLoginTest {
 
         @Test
-        void 正_有効なJWTからログインユーザを取得() {
+        void 正_有効な資格情報からログインユーザを取得() {
             // setup
             final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).build();
 
@@ -145,8 +145,28 @@ public class UserLogic_UT extends AbstractLogic_UT {
 
             // verify
             final var jwt = userLogic.generateJwt(user);
-            final var loginUser = userLogic.getLoginUser(jwt);
+            final var loginUser = userLogic.getLoginUser("Bearer " + jwt);
             assertThat(loginUser.getId()).isEqualTo(user.getId());
+        }
+
+        @ParameterizedTest
+        @MethodSource
+        void 異_不正な認証の種類(final String credentials, final BaseException exception) {
+            // verify
+            final var occurredException = assertThrows(exception.getClass(), () -> userLogic.getLoginUser(credentials));
+            assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
+        }
+
+        Stream<Arguments> 異_不正な認証の種類() {
+            return Stream.of(
+                // 認証種類の記載なし
+                arguments(SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
+                // 不正な認証種類
+                arguments("Basic " + SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
+                arguments("Digest " + SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
+                arguments("HOBA " + SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
+                arguments("Mutual " + SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
+                arguments("AWS4-HMAC-SHA256 " + SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)));
         }
 
         @ParameterizedTest
@@ -160,15 +180,13 @@ public class UserLogic_UT extends AbstractLogic_UT {
             };
 
             // verify
-            final var occurredException = assertThrows(exception.getClass(), () -> userLogic.getLoginUser(jwt));
+            final var occurredException = assertThrows(exception.getClass(), () -> userLogic.getLoginUser("Bearer " + jwt));
             assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
 
         }
 
         Stream<Arguments> 異_無効なJWT() {
             return Stream.of(
-                // 無効
-                arguments(SAMPLE_STR, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN)),
                 // 期限切れ
                 arguments(
                     "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJTQU1QTEUiLCJpZCI6MSwiaWF0IjoxNjI1OTEyMjUxLCJleHAiOjE2MjU5MTIyNTF9.sg0Nf3hQ7d7NpfO569v9zrwF1mvgIq9bewULiZ7H0UF2--UgqPa98XFiF6kpvNLlnv7om6KpmRB6HOzeImfD2w",
@@ -247,8 +265,7 @@ public class UserLogic_UT extends AbstractLogic_UT {
                 arguments("f4BabxE", new BadRequestException(ErrorCode.TOO_SHORT_PASSWORD)), //
                 arguments("f4babxer", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
                 arguments("F4BABXER", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)), //
-                arguments("fxbabxEr", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD))
-            );
+                arguments("fxbabxEr", new BadRequestException(ErrorCode.TOO_SIMPLE_PASSWORD)));
         }
 
     }

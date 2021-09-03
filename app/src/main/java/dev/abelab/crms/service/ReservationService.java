@@ -35,14 +35,14 @@ public class ReservationService {
     /**
      * 予約一覧を取得
      *
-     * @param jwt JWT
+     * @param credentials 資格情報
      *
      * @return 予約一覧レスポンス
      */
     @Transactional
-    public ReservationsResponse getReservations(final String jwt) {
+    public ReservationsResponse getReservations(final String credentials) {
         // ログインユーザを取得
-        this.userLogic.getLoginUser(jwt);
+        this.userLogic.getLoginUser(credentials);
 
         final var reservations = this.reservationRepository.findAll();
         final var reservationResponses = reservations.stream().map(reservation -> {
@@ -57,14 +57,14 @@ public class ReservationService {
     /**
      * 予約を作成
      *
-     * @param jwt         JWT
+     * @param credentials 資格情報
      *
      * @param requestBody 予約作成リクエスト
      */
     @Transactional
-    public void createReservation(final String jwt, final ReservationCreateRequest requestBody) {
+    public void createReservation(final String credentials, final ReservationCreateRequest requestBody) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 開始時刻と終了時刻のバリデーション
         this.reservationLogic.validateReservationTime(requestBody.getStartAt(), requestBody.getFinishAt(), loginUser.getId(), 0);
@@ -84,14 +84,14 @@ public class ReservationService {
     /**
      * 予約を更新
      *
-     * @param jwt         JWT
+     * @param credentials 資格情報
      *
      * @param requestBody 予約更新リクエスト
      */
     @Transactional
-    public void updateReservation(final String jwt, final int reservationId, final ReservationUpdateRequest requestBody) {
+    public void updateReservation(final String credentials, final int reservationId, final ReservationUpdateRequest requestBody) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 権限をチェック
         this.reservationLogic.checkEditPermission(reservationId, loginUser.getId());
@@ -112,14 +112,14 @@ public class ReservationService {
     /**
      * 予約を削除
      *
-     * @param jwt           JWT
+     * @param credentials   資格情報
      *
      * @param reservationId 予約ID
      */
     @Transactional
-    public void deleteReservation(final String jwt, final int reservationId) {
+    public void deleteReservation(final String credentials, final int reservationId) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 権限をチェック
         this.reservationLogic.checkEditPermission(reservationId, loginUser.getId());

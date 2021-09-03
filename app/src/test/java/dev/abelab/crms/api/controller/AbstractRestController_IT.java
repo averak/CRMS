@@ -249,24 +249,14 @@ public abstract class AbstractRestController_IT {
 	}
 
 	/**
-	 * ユーザのJWTを取得
+	 * ログインユーザの資格情報を取得
 	 *
-	 * @param user ユーザ
+	 * @param user ログインユーザ
 	 *
-	 * @return JWT
+	 * @return 資格情報
 	 */
-	public String getLoginUserJwt(User user) throws Exception {
-		// login request body
-		final var requestBody = LoginRequest.builder() //
-			.email(LOGIN_USER_EMAIL) //
-			.password(LOGIN_USER_PASSWORD) //
-			.build();
-
-		// login
-		final var request = postRequest("/api/login", requestBody);
-		final var result = mockMvc.perform(request).andReturn();
-
-		return result.getResponse().getHeader(HttpHeaders.AUTHORIZATION);
+	public String getLoginUserCredentials(User user) throws Exception {
+		return "Bearer " + this.userLogic.generateJwt(user);
 	}
 
 	@BeforeEach

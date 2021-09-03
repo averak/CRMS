@@ -31,14 +31,14 @@ public class UserService {
     /**
      * ユーザ一覧を取得
      *
-     * @param jwt JWT
+     * @param credentials 資格情報
      *
      * @return ユーザ一覧レスポンス
      */
     @Transactional
-    public UsersResponse getUsers(final String jwt) {
+    public UsersResponse getUsers(final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 管理者かチェック
         this.userLogic.checkAdmin(loginUser.getId());
@@ -54,14 +54,14 @@ public class UserService {
     /**
      * ユーザを作成
      *
-     * @param jwt         JWT
+     * @param credentials 資格情報
      *
      * @param requestBody ユーザ作成リクエスト
      */
     @Transactional
-    public void createUser(final UserCreateRequest requestBody, final String jwt) {
+    public void createUser(final UserCreateRequest requestBody, final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 管理者かチェック
         this.userLogic.checkAdmin(loginUser.getId());
@@ -88,16 +88,16 @@ public class UserService {
     /**
      * ユーザを更新
      *
-     * @param jwt         JWT
+     * @param credentials 資格情報
      *
      * @param userId      ユーザID
      *
      * @param requestBody ユーザ更新リクエスト
      */
     @Transactional
-    public void updateUser(final int userId, final UserUpdateRequest requestBody, final String jwt) {
+    public void updateUser(final int userId, final UserUpdateRequest requestBody, final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 管理者かチェック
         this.userLogic.checkAdmin(loginUser.getId());
@@ -114,14 +114,14 @@ public class UserService {
     /**
      * ユーザを削除
      *
-     * @param jwt    JWT
+     * @param credentials 資格情報
      *
-     * @param userId ユーザID
+     * @param userId      ユーザID
      */
     @Transactional
-    public void deleteUser(final int userId, final String jwt) {
+    public void deleteUser(final int userId, final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // 管理者かチェック
         this.userLogic.checkAdmin(loginUser.getId());
@@ -132,14 +132,14 @@ public class UserService {
     /**
      * ログインユーザ詳細を取得
      *
-     * @param jwt JWT
+     * @param credentials 資格情報
      *
      * @return ユーザ詳細レスポンス
      */
     @Transactional
-    public UserResponse getLoginUser(final String jwt) {
+    public UserResponse getLoginUser(final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // ユーザの取得
         final var user = userRepository.selectById(loginUser.getId());
@@ -150,14 +150,14 @@ public class UserService {
     /**
      * ログインユーザを更新
      *
-     * @param jwt JWT
+     * @param credentials 資格情報
      *
      * @return ユーザ詳細レスポンス
      */
     @Transactional
-    public void updateLoginUser(final LoginUserUpdateRequest requestBody, final String jwt) {
+    public void updateLoginUser(final LoginUserUpdateRequest requestBody, final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // ログインユーザの更新
         loginUser.setFirstName(requestBody.getFirstName());
@@ -169,14 +169,14 @@ public class UserService {
     /**
      * ログインユーザのパスワードを更新
      *
-     * @param jwt JWT
+     * @param credentials 資格情報
      *
      * @return ユーザ詳細レスポンス
      */
     @Transactional
-    public void updateLoginPasswordUser(final LoginUserPasswordUpdateRequest requestBody, final String jwt) {
+    public void updateLoginPasswordUser(final LoginUserPasswordUpdateRequest requestBody, final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(jwt);
+        final var loginUser = this.userLogic.getLoginUser(credentials);
 
         // パスワードチェック
         this.userLogic.verifyPassword(loginUser, requestBody.getCurrentPassword());

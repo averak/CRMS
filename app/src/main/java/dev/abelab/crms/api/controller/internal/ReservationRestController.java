@@ -25,7 +25,7 @@ public class ReservationRestController {
     /**
      * 予約一覧取得API
      *
-     * @param jwt JWT
+     * @param credentials 資格情報
      *
      * @return 予約一覧レスポンス
      */
@@ -41,15 +41,15 @@ public class ReservationRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ReservationsResponse getReservations( //
-        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials //
     ) {
-        return this.reservationService.getReservations(jwt);
+        return this.reservationService.getReservations(credentials);
     }
 
     /**
      * 予約作成API
      *
-     * @param jwt         JWT
+     * @param credentials 資格情報
      *
      * @param requestBody 予約作成リクエスト
      */
@@ -68,16 +68,16 @@ public class ReservationRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createReservation( //
-        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
         @Validated @ApiParam(name = "body", required = true, value = "新規予約情報") @RequestBody final ReservationCreateRequest requestBody //
     ) {
-        this.reservationService.createReservation(jwt, requestBody);
+        this.reservationService.createReservation(credentials, requestBody);
     }
 
     /**
      * 予約更新API
      *
-     * @param jwt         JWT
+     * @param credentials 資格情報
      *
      * @param requestBody 予約更新リクエスト
      */
@@ -97,17 +97,17 @@ public class ReservationRestController {
     @PutMapping(value = "/{reservation_id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateReservation( //
-        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
         @ApiParam(name = "reservation_id", required = true, value = "予約ID") @PathVariable("reservation_id") final int reservationId, //
         @Validated @ApiParam(name = "body", required = true, value = "予約更新情報") @RequestBody final ReservationUpdateRequest requestBody //
     ) {
-        this.reservationService.updateReservation(jwt, reservationId, requestBody);
+        this.reservationService.updateReservation(credentials, reservationId, requestBody);
     }
 
     /**
      * 予約削除API
      *
-     * @param jwt           JWT
+     * @param credentials   資格情報
      *
      * @param reservationId 予約ID
      */
@@ -125,10 +125,10 @@ public class ReservationRestController {
     @DeleteMapping(value = "/{reservation_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteReservation( //
-        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String jwt, //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
         @ApiParam(name = "reservation_id", required = true, value = "予約ID") @PathVariable("reservation_id") final int reservationId //
     ) {
-        this.reservationService.deleteReservation(jwt, reservationId);
+        this.reservationService.deleteReservation(credentials, reservationId);
     }
 
 }
