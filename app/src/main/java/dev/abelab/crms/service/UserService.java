@@ -17,6 +17,7 @@ import dev.abelab.crms.api.request.LoginUserUpdateRequest;
 import dev.abelab.crms.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.crms.logic.UserLogic;
 import dev.abelab.crms.logic.UserRoleLogic;
+import dev.abelab.crms.util.AuthUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -73,7 +74,7 @@ public class UserService {
         this.userRoleLogic.checkForValidRoleId(requestBody.getRoleId());
 
         // 有効なパスワードかチェック
-        this.userLogic.validatePassword(requestBody.getPassword());
+        AuthUtil.validatePassword(requestBody.getPassword());
 
         // ユーザの作成
         final var user = this.modelMapper.map(requestBody, User.class);
@@ -181,7 +182,7 @@ public class UserService {
         this.userLogic.verifyPassword(loginUser, requestBody.getCurrentPassword());
 
         // 有効なパスワードかチェック
-        this.userLogic.validatePassword(requestBody.getNewPassword());
+        AuthUtil.validatePassword(requestBody.getNewPassword());
 
         // ログインユーザの更新
         loginUser.setPassword(this.userLogic.encodePassword(requestBody.getNewPassword()));
