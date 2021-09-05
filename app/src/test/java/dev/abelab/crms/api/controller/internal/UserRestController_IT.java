@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
@@ -87,7 +87,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var response = execute(request, HttpStatus.OK, UsersResponse.class);
 
 			// verify
-			final var users = Arrays.asList(loginUser, user1, user2);
+			final var users = List.of(loginUser, user1, user2);
 			assertThat(response.getUsers().size()).isEqualTo(users.size());
 			assertThat(response.getUsers()) //
 				.extracting(UserResponse::getId, UserResponse::getEmail, UserResponse::getFirstName, UserResponse::getLastName,

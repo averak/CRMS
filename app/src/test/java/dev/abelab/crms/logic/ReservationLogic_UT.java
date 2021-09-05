@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
@@ -223,7 +222,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
             new Expectations() {
                 {
                     reservationRepository.selectByUserId(anyInt);
-                    result = Arrays.asList(reservation);
+                    result = List.of(reservation);
                 }
             };
 
@@ -286,7 +285,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
 
             // 予約一覧
             final var dayAfterTOMORROW = DateTimeUtil.addDateTime(TOMORROW, Calendar.DAY_OF_MONTH, 1);
-            final List<Reservation> reservations = Arrays.asList( //
+            final List<Reservation> reservations = List.of( //
                 // 過去の予約
                 ReservationSample.builder().id(1).userId(user.getId()).startAt(YESTERDAY).finishAt(YESTERDAY).build(), //
                 ReservationSample.builder().id(2).userId(user.getId()).startAt(YESTERDAY).finishAt(YESTERDAY).build(), //
