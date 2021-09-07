@@ -37,15 +37,23 @@ export class UserNewFormComponent implements OnInit {
       admissionYear: user.admissionYear,
     };
 
-    // リクエスト送信
-    this.userService.createUser(requestBody).subscribe(
-      () => {
-        this.userService.fetchUsers();
-        this.handleGoBack();
-        this.alertService.openSnackBar('ユーザを新規作成しました', 'SUCCESS');
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
+    this.alertService.confirmDialog(
+      '作成確認',
+      'この内容でユーザを作成しますか？',
+      (result: boolean): void => {
+        if (result) {
+          // リクエスト送信
+          this.userService.createUser(requestBody).subscribe(
+            () => {
+              this.userService.fetchUsers();
+              this.handleGoBack();
+              this.alertService.openSnackBar('ユーザを新規作成しました', 'SUCCESS');
+            },
+            (error) => {
+              this.alertService.openSnackBar(error, 'ERROR');
+            }
+          );
+        }
       }
     );
   }
