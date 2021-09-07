@@ -160,7 +160,9 @@ export class ReservationsCalendarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.reservations = changes.reservations.currentValue;
-    this.ngOnInit();
+    if (changes.reservations !== undefined) {
+      this.reservations = changes.reservations.currentValue;
+      this.ngOnInit();
+    }
   }
 }
