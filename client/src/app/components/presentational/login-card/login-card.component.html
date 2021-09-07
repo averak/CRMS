@@ -4,7 +4,7 @@
   </mat-card-header>
 
   <mat-card-content>
-    <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
+    <form class="login-form" #loginForm="ngForm">
       <mat-form-field>
         <input
           matInput
@@ -31,7 +31,13 @@
         <mat-error> パスワードを入力してください </mat-error>
       </mat-form-field>
 
-      <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">
+      <button
+        appPreventDoubleClick
+        mat-raised-button
+        color="primary"
+        [disabled]="loginForm.invalid"
+        (click)="onSubmit()"
+      >
         Login
       </button>
     </form>

@@ -52,7 +52,7 @@ export class UserEditFormComponent implements OnInit {
 
     this.alertService.confirmDialog(
       '更新確認',
-      'この内容でユーザ情報を更新しますか？',
+      'この内容でユーザを更新しますか？',
       (result: boolean): void => {
         if (result) {
           // リクエスト送信
