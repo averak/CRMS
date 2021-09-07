@@ -39,7 +39,9 @@ export class UsersTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.users = changes.users.currentValue;
-    this.ngOnInit();
+    if (changes.users !== undefined) {
+      this.users = changes.users.currentValue;
+      this.ngOnInit();
+    }
   }
 }
