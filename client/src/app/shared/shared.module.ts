@@ -35,6 +35,9 @@ import { SidenavComponent } from 'src/app/shared/components/sidenav/sidenav.comp
 import { HeaderUserMenuComponent } from 'src/app/shared/components/header/header-user-menu/header-user-menu.component';
 import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
 
+// directives
+import { PreventDoubleClickDirective } from './directives/prevent-double-click.directive';
+
 @NgModule({
   declarations: [
     ConfirmDialogComponent,
@@ -43,6 +46,7 @@ import { FooterComponent } from 'src/app/shared/components/footer/footer.compone
     SidenavComponent,
     HeaderUserMenuComponent,
     FooterComponent,
+    PreventDoubleClickDirective,
   ],
   imports: [
     FormsModule,
@@ -104,6 +108,9 @@ import { FooterComponent } from 'src/app/shared/components/footer/footer.compone
     SnackBarComponent,
     HeaderComponent,
     FooterComponent,
+
+    // directives
+    PreventDoubleClickDirective,
   ],
 })
 export class SharedModule {}
