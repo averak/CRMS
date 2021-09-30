@@ -41,10 +41,7 @@ public class UserService {
     @Transactional
     public UsersResponse getUsers(final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(credentials);
-
-        // 管理者かチェック
-        this.userLogic.checkAdmin(loginUser.getId());
+        this.userLogic.getLoginUser(credentials);
 
         // ユーザの取得
         final var users = this.userRepository.findAll();
