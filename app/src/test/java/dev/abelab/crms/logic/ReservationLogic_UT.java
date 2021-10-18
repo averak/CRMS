@@ -3,7 +3,6 @@ package dev.abelab.crms.logic;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
@@ -167,47 +166,46 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
     @TestInstance(PER_CLASS)
     class ValidateReservationTimeTest {
 
-        @Test
-        void 正_予約可能な日時() {
-            new Expectations() {
-                {
-                    reservationRepository.selectByUserId(anyInt);
-                    result = new ArrayList<Reservation>();
-                }
-            };
-
-            // verify
-            final var startAt = DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, 10);
-            final var finishAt = DateTimeUtil.editDateTime(TOMORROW, Calendar.HOUR_OF_DAY, 11);
-            assertDoesNotThrow(() -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-        }
-
         @ParameterizedTest
         @MethodSource
-        void 異_無効な予約時間は予約不可(final Date date, final int startHour, final int finishHour, final BaseException exception) {
-            // verify
-            final var startAt = DateTimeUtil.editDateTime(date, Calendar.HOUR_OF_DAY, startHour);
-            final var finishAt = DateTimeUtil.editDateTime(date, Calendar.HOUR_OF_DAY, finishHour);
-            final var occurredException = assertThrows(exception.getClass(),
-                () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
-            assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
+        void 有効な予約時間かチェック(final Date date, final int startHour, final int startMinute, final int finishHour, final int finishMinute,
+            final BaseException exception) {
+            // given
+            final var startAt = DateTimeUtil.editDateTimeHourAndMinute(date, startHour, startMinute);
+            final var finishAt = DateTimeUtil.editDateTimeHourAndMinute(date, finishHour, finishMinute);
+
+            // test & verify
+            if (exception == null) {
+                assertDoesNotThrow(() -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+            } else {
+                final var occurredException = assertThrows(exception.getClass(),
+                    () -> reservationLogic.validateReservationTime(startAt, finishAt, SAMPLE_INT, SAMPLE_INT));
+                assertThat(occurredException.getErrorCode()).isEqualTo(exception.getErrorCode());
+
+            }
         }
 
-        Stream<Arguments> 異_無効な予約時間は予約不可() {
+        Stream<Arguments> 有効な予約時間かチェック() {
             return Stream.of(
+                // 有効
+                arguments(TOMORROW, 10, 0, 16, 0, null), //
+                arguments(TOMORROW, 9, 0, 11, 0, null), //
+                arguments(TOMORROW, 20, 0, 22, 0, null), //
+                // 無効
                 // 過去の日時
-                arguments(YESTERDAY, 10, 11, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_CREATED)),
+                arguments(YESTERDAY, 10, 0, 11, 0, new BadRequestException(ErrorCode.PAST_RESERVATION_CANNOT_BE_CREATED)), //
                 // 開始時刻よりも前に終了時刻が設定されている
-                arguments(TOMORROW, 11, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
+                arguments(TOMORROW, 11, 0, 10, 0, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)), //
                 // 開始時刻と終了時刻が同じ
-                arguments(TOMORROW, 10, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
+                arguments(TOMORROW, 10, 0, 10, 0, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)), //
                 // 制限時間を超過している
-                arguments(TOMORROW, 10, 17, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)),
+                arguments(TOMORROW, 10, 0, 16, 1, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)), //
                 // 予約可能範囲に収まっていない
-                arguments(TOMORROW, 6, 8, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
-                arguments(TOMORROW, 8, 10, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
-                arguments(TOMORROW, 21, 23, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
-                arguments(TOMORROW, 22, 23, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)));
+                arguments(TOMORROW, 6, 0, 8, 59, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)), //
+                arguments(TOMORROW, 8, 59, 11, 0, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)), //
+                arguments(TOMORROW, 20, 0, 22, 1, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)), //
+                arguments(TOMORROW, 22, 1, 23, 0, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)) //
+            );
         }
 
         @ParameterizedTest
