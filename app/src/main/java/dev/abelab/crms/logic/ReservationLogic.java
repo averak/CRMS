@@ -25,9 +25,9 @@ import dev.abelab.crms.exception.ForbiddenException;
 public class ReservationLogic {
 
     /**
-     * 予約可能時間
+     * 最大予約可能時間
      */
-    private final int RESERVABLE_HOURS = 3;
+    private final int MAX_RESERVABLE_HOURS = 6;
 
     /**
      * 予約可能開始時刻
@@ -37,7 +37,7 @@ public class ReservationLogic {
     /**
      * 予約可能終了時刻
      */
-    private final int RESERVABLE_FINISH_HOUR = 20;
+    private final int RESERVABLE_FINISH_HOUR = 22;
 
     private final UserRepository userRepository;
 
@@ -96,7 +96,7 @@ public class ReservationLogic {
         }
 
         // 制限時間を超過している
-        if (DateTimeUtil.diffHours(startAt, finishAt) > this.RESERVABLE_HOURS) {
+        if (DateTimeUtil.diffHours(startAt, finishAt) > this.MAX_RESERVABLE_HOURS) {
             throw new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS);
         }
 
