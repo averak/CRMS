@@ -27,17 +27,17 @@ public class ReservationLogic {
     /**
      * 最大予約可能時間
      */
-    private final int MAX_RESERVABLE_HOURS = 6;
+    private final double MAX_RESERVABLE_HOURS = 6.0;
 
     /**
      * 予約可能開始時刻
      */
-    private final int RESERVABLE_START_HOUR = 9;
+    private final double RESERVABLE_START_HOUR = 9.0;
 
     /**
      * 予約可能終了時刻
      */
-    private final int RESERVABLE_FINISH_HOUR = 22;
+    private final double RESERVABLE_FINISH_HOUR = 22.0;
 
     private final UserRepository userRepository;
 
@@ -100,7 +100,7 @@ public class ReservationLogic {
             throw new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS);
         }
 
-        // 予約可能範囲（09:00〜20:00）に収まっていない
+        // 予約可能範囲（09:00〜22:00）に収まっていない
         if (DateTimeUtil.getHour(startAt) < this.RESERVABLE_START_HOUR || DateTimeUtil.getHour(finishAt) > this.RESERVABLE_FINISH_HOUR) {
             throw new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE);
         }

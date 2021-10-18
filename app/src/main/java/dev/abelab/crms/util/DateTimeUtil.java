@@ -129,16 +129,34 @@ public class DateTimeUtil {
     }
 
     /**
+     * 日時の時間を編集する
+     *
+     * @param date   日時
+     *
+     * @param hour   時間
+     *
+     * @param minute 分
+     *
+     * @return 編集後の日時
+     */
+    public static Date editDateTimeHourAndMinute(final Date date, final int hour, final int minute) {
+        final var calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        return calendar.getTime();
+    }
+
+    /**
      * 日時から時間を取得する
      *
      * @param date 日時
      *
      * @return 時間
      */
-    public static int getHour(final Date date) {
-        final var calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.HOUR_OF_DAY);
+    public static double getHour(final Date date) {
+        final var date_00_00 = DateTimeUtil.editDateTimeHourAndMinute(date, 0, 0);
+        return DateTimeUtil.diffHours(date, date_00_00);
     }
 
     /**
@@ -150,8 +168,8 @@ public class DateTimeUtil {
      *
      * @return 時間差分
      */
-    public static int diffHours(final Date date1, final Date date2) {
-        return (int) Math.abs((date1.getTime() - date2.getTime()) / (1000.0 * 60.0 * 60.0));
+    public static double diffHours(final Date date1, final Date date2) {
+        return Math.abs((date1.getTime() - date2.getTime()) / (1000.0 * 60.0 * 60.0));
     }
 
 }
