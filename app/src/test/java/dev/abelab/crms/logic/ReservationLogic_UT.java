@@ -199,7 +199,7 @@ public class ReservationLogic_UT extends AbstractLogic_UT {
                 // 開始時刻と終了時刻が同じ
                 arguments(TOMORROW, 10, 0, 10, 0, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)), //
                 // 制限時間を超過している
-                arguments(TOMORROW, 10, 0, 16, 1, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)), //
+                arguments(TOMORROW, 9, 0, 22, 0, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)), //
                 // 予約可能範囲に収まっていない
                 arguments(TOMORROW, 6, 0, 8, 59, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)), //
                 arguments(TOMORROW, 8, 59, 11, 0, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)), //

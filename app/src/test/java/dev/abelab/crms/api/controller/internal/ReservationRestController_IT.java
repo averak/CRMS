@@ -169,7 +169,7 @@ public class ReservationRestController_IT extends AbstractRestController_IT {
 				// 開始時刻と終了時刻が同じ
 				arguments(TOMORROW, 10, 10, new BadRequestException(ErrorCode.INVALID_RESERVATION_TIME)),
 				// 制限時間を超過している
-				arguments(TOMORROW, 10, 17, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)),
+				arguments(TOMORROW, 9, 22, new BadRequestException(ErrorCode.TOO_LONG_RESERVATION_HOURS)),
 				// 予約可能範囲に収まっていない
 				arguments(TOMORROW, 6, 8, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
 				arguments(TOMORROW, 8, 10, new BadRequestException(ErrorCode.NOT_WITHIN_RESERVABLE_TIME_RANGE)),
