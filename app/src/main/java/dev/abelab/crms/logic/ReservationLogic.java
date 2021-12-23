@@ -27,7 +27,7 @@ public class ReservationLogic {
     /**
      * 最大予約可能時間
      */
-    private final double MAX_RESERVABLE_HOURS = 6.0;
+    private final double MAX_RESERVABLE_HOURS = 12.0;
 
     /**
      * 予約可能開始時刻
